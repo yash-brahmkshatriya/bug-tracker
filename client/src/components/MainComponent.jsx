@@ -4,7 +4,7 @@ import { Box, makeStyles, Typography } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
-    backgroundColor: theme.palette.primary.light,
+    backgroundColor: theme.palette.secondary.main,
   },
 }));
 
