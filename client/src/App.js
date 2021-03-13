@@ -2,6 +2,7 @@ import React from 'react';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { appTheme } from './theme';
 import { CssBaseline } from '@material-ui/core';
+import Sample from './components/Sample';
 import MainComponent from './components/MainComponent';
 
 function App() {
