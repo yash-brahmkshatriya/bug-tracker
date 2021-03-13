@@ -12,20 +12,21 @@ const useStyles = makeStyles((theme) => ({
 function MainComponent() {
   const classes = useStyles();
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      justifyContent="space-around"
-      className={classes.root}
-    >
-      <Box>
+    <div>
+      <Box >
         <Navbar />
       </Box>
-
-      <Box flex={10}>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <Box flex={5}>
         <LandingPage />
       </Box>
-    </Box>
+      </div>
   );
 }
 

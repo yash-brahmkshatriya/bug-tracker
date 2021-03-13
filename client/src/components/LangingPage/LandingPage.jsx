@@ -15,7 +15,7 @@ const LandingPage = (props) => {
         alignContent="space-between"
         spacing={3}
         align="center"
-        alignItems="center"
+        alignItem="center"
       >
         <Grid item className={classes.image} flex={1}>
           <img src={image1} />

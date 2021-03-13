@@ -9,7 +9,9 @@ export default makeStyles((theme) => ({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: "10px 50px",
+    padding: "0px 50px",
+    position:"fixed",
+    zIndex:"20",
   },
   button: {
     color: theme.palette.primary.dark,
