@@ -8,57 +8,78 @@ import useStyles from "./styles";
 const LandingPage = (props) => {
   const classes = useStyles();
   return (
-    <>
-      <Container>
-        <Grid
-          container
-          justify="space-between"
-          alignItems="stretch"
-          spacing={3}
-          align="center"
-          alignItems="center"
-        >
-          <Grid item xs={5} sm={7}>
-            <img src={image1} />
-          </Grid>
-          <Grid item xs={12} sm={4} className={classes.content}>
-            <Typography variant="h4">some text</Typography>
-          </Grid>
+    <Container>
+      <Grid
+        container
+        justify="space-between"
+        alignContent="space-between"
+        spacing={3}
+        align="center"
+        alignItems="center"
+      >
+        <Grid item className={classes.image} flex={1}>
+          <img src={image1} />
         </Grid>
-        <Grid
-          container
-          justify="space-between"
-          alignItems="stretch"
-          spacing={3}
-          align="center"
-          alignItems="center"
-        >
-          <Grid item xs={12} sm={4} className={classes.content}>
-            <Typography variant="h4">
-              some text is overlapping with images
-            </Typography>
-          </Grid>
-          <Grid item xs={5} sm={7}>
-            <img src={image2} />
-          </Grid>
+        <Grid item className={classes.content} flex={1}>
+          <Typography variant="h5" paragraph>
+            some text Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            Nihil, voluptas aspernatur repudiandae labore explicabo ex
+            asperiores facilis perferendis esse incidunt sunt, voluptatibus quis
+            numquam sed aliquid animi quibusdam alias! Placeat. some text Lorem
+            ipsum dolor sit amet consectetur adipisicing elit. Nihil, voluptas
+            aspernatur repudiandae labore explicabo ex asperiores facilis
+            perferendis esse incidunt sunt, voluptatibus quis numquam sed
+            aliquid animi quibusdam alias! Placeat.
+          </Typography>
         </Grid>
-        <Grid
-          container
-          justify="space-between"
-          alignItems="stretch"
-          spacing={3}
-          align="center"
-          alignItems="center"
-        >
-          <Grid item xs={5} sm={7}>
-            <img src={image3} />
-          </Grid>
-          <Grid item xs={12} sm={4} className={classes.content}>
-            <Typography variant="h4">some text</Typography>
-          </Grid>
+      </Grid>
+
+      <Grid
+        container
+        justify="space-between"
+        alignContent="space-between"
+        spacing={3}
+        align="center"
+        alignItems="center"
+      >
+        <Grid item className={classes.content} flex={1}>
+          <Typography variant="h5" paragraph>
+            some text Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            Nihil, voluptas aspernatur repudiandae labore explicabo ex
+            asperiores facilis perferendis esse incidunt sunt, voluptatibus quis
+            numquam sed aliquid animi quibusdam alias! Placeat.
+          </Typography>
         </Grid>
-      </Container>
-    </>
+        <Grid item className={classes.image} flex={1}>
+          <img src={image2} />
+        </Grid>
+      </Grid>
+
+      <Grid
+        container
+        justify="space-between"
+        alignContent="space-between"
+        spacing={3}
+        align="center"
+        alignItems="center"
+      >
+        <Grid item className={classes.image} flex={1}>
+          <img src={image3} />
+        </Grid>
+        <Grid item className={classes.content} flex={1}>
+          <Typography variant="h5" paragraph>
+            some text Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            Nihil, voluptas aspernatur repudiandae labore explicabo ex
+            asperiores facilis perferendis esse incidunt sunt, voluptatibus quis
+            numquam sed aliquid animi quibusdam alias! Placeat. some text Lorem
+            ipsum dolor sit amet consectetur adipisicing elit. Nihil, voluptas
+            aspernatur repudiandae labore explicabo ex asperiores facilis
+            perferendis esse incidunt sunt, voluptatibus quis numquam sed
+            aliquid animi quibusdam alias! Placeat.
+          </Typography>
+        </Grid>
+      </Grid>
+    </Container>
   );
 };
 
