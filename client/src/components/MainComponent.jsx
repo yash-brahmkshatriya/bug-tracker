@@ -22,7 +22,7 @@ function MainComponent() {
         <Navbar />
       </Box>
 
-      <Box flex={10}>
+      <Box m={5}>
         <LandingPage />
       </Box>
     </Box>
