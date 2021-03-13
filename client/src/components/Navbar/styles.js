@@ -11,6 +11,9 @@ export default makeStyles((theme) => ({
     alignItems: "center",
     padding: "10px 50px",
   },
+  button: {
+    color: theme.palette.primary.dark,
+  },
   heading: {
     color: "grey",
     textDecoration: "none",
@@ -21,7 +24,7 @@ export default makeStyles((theme) => ({
   toolbar: {
     display: "flex",
     justifyContent: "flex-end",
-    width: "400px",
+    color: theme.palette.primary.dark,
   },
   profile: {
     display: "flex",
@@ -35,6 +38,7 @@ export default makeStyles((theme) => ({
   brandContainer: {
     display: "flex",
     alignItems: "center",
+    justifyContent: "space-between",
   },
   purple: {
     color: theme.palette.getContrastText(deepPurple[500]),

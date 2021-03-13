@@ -5,8 +5,7 @@ import LandingPage from "./LangingPage/LandingPage";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "100vh",
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.light,
   },
 }));
 
@@ -22,7 +21,8 @@ function MainComponent() {
       <Box>
         <Navbar />
       </Box>
-      <Box flex={5}>
+
+      <Box flex={10}>
         <LandingPage />
       </Box>
     </Box>
