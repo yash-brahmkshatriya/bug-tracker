@@ -1,19 +1,19 @@
-import React from "react";
-import useStyles from "./styles";
-import { AppBar, Typography, Toolbar, Button } from "@material-ui/core";
-import logo from "../../images/test.png";
+import React from 'react';
+import useStyles from './styles';
+import { AppBar, Typography, Toolbar, Button } from '@material-ui/core';
+
 const Navbar = (props) => {
   const classes = useStyles();
   const user = false;
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">
-      <img className={classes.image} src={logo} alt="icon" height="60" />
-      <Typography
-        // component={Link}
-        to="/"
-        className={classes.heading}
-        variant="h2"
-      >
+      <img
+        className={classes.image}
+        src="/assets/images/test.png"
+        alt="icon"
+        height="60"
+      />
+      <Typography to="/" className={classes.heading} variant="h2">
         Bug-Tracker
       </Typography>
       <Toolbar className={classes.toolbar}>
@@ -32,12 +32,7 @@ const Navbar = (props) => {
             </Button>
           </div>
         ) : (
-          <Button
-            // component={Link}
-            to="/"
-            variant="contained"
-            color="primary"
-          >
+          <Button to="/" variant="contained" color="primary">
             Sign In
           </Button>
         )}
