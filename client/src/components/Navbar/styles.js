@@ -1,44 +1,47 @@
-import { makeStyles } from '@material-ui/core/styles';
-import { deepPurple } from '@material-ui/core/colors';
+import { makeStyles } from "@material-ui/core/styles";
+import { deepPurple } from "@material-ui/core/colors";
 
 export const useStyles = makeStyles((theme) => ({
   appBar: {
-    borderRadius: 15,
-    margin: '30px 0',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '10px 50px',
+    margin: "0 0 30px 0",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: "10px 50px",
+    color: "white",
+    backgroundColor: theme.palette.secondary.main,
+  },
+  root: {
+    flexGrow: 1,
+  },
+  title: {
+    // flexGrow: 1,
   },
   button: {
-    color: theme.palette.primary.dark,
-  },
-  heading: {
-    // color: "grey",
-    textDecoration: 'none',
+    color: "white",
+    "&:hover": {
+      backgroundColor: theme.palette.primary.light,
+      color: theme.palette.primary.dark,
+    },
   },
   image: {
-    marginLeft: '15px',
+    marginLeft: "15px",
   },
   toolbar: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    color: theme.palette.primary.dark,
+    display: "flex",
+    justifyContent: "flex-end",
   },
   profile: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    width: '400px',
+    display: "flex",
+    justifyContent: "space-between",
+    width: "400px",
   },
-  userName: {
-    display: 'flex',
-    alignItems: 'center',
-  },
+
   brandContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   purple: {
     color: theme.palette.getContrastText(deepPurple[500]),
