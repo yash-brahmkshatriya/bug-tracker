@@ -1,19 +1,19 @@
 import React from 'react';
-import useStyles from './styles';
+import { useStyles } from './styles';
 import { AppBar, Typography, Toolbar, Button } from '@material-ui/core';
 
 const Navbar = (props) => {
   const classes = useStyles();
   const user = false;
   return (
-    <AppBar className={classes.appBar} position="static" color="inherit">
+    <AppBar className={classes.appBar} position="static" color="secondary">
       <img
         className={classes.image}
         src="/assets/images/test.png"
         alt="icon"
         height="60"
       />
-      <Typography to="/" className={classes.heading} variant="h2">
+      <Typography to="/" className={classes.heading} color="" variant="h2">
         Bug-Tracker
       </Typography>
       <Toolbar className={classes.toolbar}>

@@ -33,7 +33,13 @@ const LandingPage = (props) => {
           <img src="/assets/images/img2.jpeg" className={classes.img} />
         </Grid>
       ) : null}
-      <Grid item container sm={12} md={6}>
+      <Grid
+        item
+        container
+        sm={12}
+        md={6}
+        style={{ background: theme.palette.secondary.main }}
+      >
         <Typography variant="h6" paragraph align="justify">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil,
           voluptas aspernatur repudiandae labore explicabo ex asperiores facilis
@@ -45,7 +51,14 @@ const LandingPage = (props) => {
         </Typography>
       </Grid>
       {isSmall ? null : (
-        <Grid item container sm={12} md={6} justify="center">
+        <Grid
+          item
+          container
+          sm={12}
+          md={6}
+          justify="center"
+          style={{ background: theme.palette.secondary.main }}
+        >
           <img src="/assets/images/img2.jpeg" className={classes.img} />
         </Grid>
       )}
