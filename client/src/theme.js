@@ -1,4 +1,4 @@
-import { createMuiTheme } from "@material-ui/core";
+import { createMuiTheme } from '@material-ui/core';
 
 // export const appTheme = createMuiTheme({
 //   palette: {
@@ -17,14 +17,14 @@ import { createMuiTheme } from "@material-ui/core";
 export const appTheme = createMuiTheme({
   palette: {
     primary: {
-      light: "#EDF2F4",
-      main: "#8D99AE",
-      dark: "#2B2D42",
+      light: '#EDF2F4',
+      main: '#8D99AE',
+      dark: '#2B2D42',
       // contrastText: "#EF233C",
-      contrastText: "white",
+      contrastText: 'white',
     },
     secondary: {
-      main: "#D90429",
+      main: '#dc143c',
     },
   },
 });
