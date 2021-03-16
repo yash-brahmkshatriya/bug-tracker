@@ -1,11 +1,12 @@
-import React from "react";
-import { Box, makeStyles } from "@material-ui/core";
-import Navbar from "./Navbar/Navbar";
-import LandingPage from "./LangingPage/LandingPage";
+import React from 'react';
+import { Box, makeStyles } from '@material-ui/core';
+import Navbar from './Navbar/Navbar';
+import LandingPage from './LangingPage/LandingPage';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.primary.light,
+    minHeight: '100vh',
   },
 }));
 

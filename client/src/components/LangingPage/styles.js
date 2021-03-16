@@ -1,20 +1,10 @@
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from '@material-ui/core/styles';
 
-export default makeStyles((theme) => ({
+export const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
+    flex: 1,
   },
-  content: {
-    padding: theme.spacing(3, 2),
-    // width: "50%",
-    display: "flex",
-    // flexDirection: "column",
-    justifyContent: "center",
-  },
-
-  image: {
-    padding: theme.spacing(3, 2),
-    display: "flex",
-    justifyContent: "center",
+  img: {
+    width: '100%',
   },
 }));
