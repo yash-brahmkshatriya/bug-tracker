@@ -8,7 +8,6 @@ export const useStyles = makeStyles((theme) => {
   const imageMargin = isSmall ? `0px` : `15px`;
   return {
     appBar: {
-      margin: "0 0 32px 0",
       display: "flex",
       flexDirection: "row",
       justifyContent: "space-between",
