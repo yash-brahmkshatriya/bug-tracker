@@ -31,4 +31,8 @@ const Thread = mongoose.Schema(
     timestamps: true,
   }
 );
+<<<<<<< HEAD
 module.exports = mongoose.model("Thread", Bug);
+=======
+module.exports = mongoose.model("Thread", Thread);
+>>>>>>> deep

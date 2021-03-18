@@ -16,4 +16,8 @@ const User = mongoose.Schema({
   },
 });
 
+<<<<<<< HEAD
 module.exports = mongoose.model("User", User);
+=======
+module.exports = mongoose.model("User", User);
+>>>>>>> deep
