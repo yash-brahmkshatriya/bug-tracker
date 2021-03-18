@@ -1,8 +1,17 @@
-import React from 'react';
-import { useStyles } from './styles';
-import { AppBar, Typography, Toolbar, Button } from '@material-ui/core';
+import React from "react";
+import { useStyles } from "./styles";
+import {
+  AppBar,
+  Typography,
+  Toolbar,
+  Button,
+  useTheme,
+  useMediaQuery,
+} from "@material-ui/core";
 
 const Navbar = (props) => {
+  const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.down("xs"));
   const classes = useStyles();
   const user = false;
 
@@ -13,10 +22,11 @@ const Navbar = (props) => {
           className={classes.image}
           src="/assets/images/buglogo.png"
           alt="icon"
-          height="60"
+          //height="60"
+          style={isSmall ? { transform: "scale(0.6)" } : {}}
         />
         <Typography
-          variant="h3"
+          variant={isSmall ? "h5" : "h3"}
           className={classes.title}
           fontWeight="fontWeightBold"
         >
