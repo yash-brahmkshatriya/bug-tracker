@@ -16,6 +16,8 @@ const LandingPage = (props) => {
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
+    <Box display="flex" flexDirection="column" flex={1}>
+      {appDescription.map((item, idx) => (
         <Grid
           container
           spacing={10}
