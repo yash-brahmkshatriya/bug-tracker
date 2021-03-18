@@ -7,7 +7,7 @@ const port = process.env.PORT || 8000;
 const app = express();
 
 mongoose
-  .connect('mongodb://127.0.0.1:27017/BugTracker', {
+  .connect('mongodb://127.0.0.1:27017/BugTracknpm er', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
