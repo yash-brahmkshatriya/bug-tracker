@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const User = mongoose.Schema({
   email: {
@@ -11,8 +11,9 @@ const User = mongoose.Schema({
   },
   type: {
     type: String,
-    default: 'Reporter',
+    enum: ["Project-Manager", "Bug-Reporter", "Reveloper"],
+    default: "Bug-Reporter",
   },
 });
 
-module.exports = mongoose.model('Users', User);
+module.exports = mongoose.model("User", User);
