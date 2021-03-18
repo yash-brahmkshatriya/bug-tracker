@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 var comment = new Schema(
   {
@@ -8,7 +8,7 @@ var comment = new Schema(
     },
     author: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
     },
   },
   {
@@ -20,7 +20,7 @@ const Thread = mongoose.Schema(
   {
     bug: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Bug",
+      ref: 'Bug',
     },
     comments: [comment],
     isClosed: {
@@ -31,8 +31,4 @@ const Thread = mongoose.Schema(
     timestamps: true,
   }
 );
-<<<<<<< HEAD
-module.exports = mongoose.model("Thread", Bug);
-=======
-module.exports = mongoose.model("Thread", Thread);
->>>>>>> deep
+module.exports = mongoose.model('Thread', Thread);
