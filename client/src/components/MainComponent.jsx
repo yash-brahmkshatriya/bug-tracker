@@ -1,12 +1,13 @@
-import React from 'react';
-import { Box, makeStyles } from '@material-ui/core';
-import Navbar from './Navbar/Navbar';
-import LandingPage from './LangingPage/LandingPage';
+import React from "react";
+import { Box, makeStyles } from "@material-ui/core";
+import Navbar from "./Navbar/Navbar";
+import LandingPage from "./LangingPage/LandingPage";
+import Footer from "./Footer/Footer";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.primary.light,
-    minHeight: '100vh',
+    minHeight: "100vh",
   },
 }));
 
@@ -17,23 +18,16 @@ function MainComponent() {
       <Box >
         <Navbar />
       </Box>
-<<<<<<< HEAD
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <Box flex={5}>
-=======
-
-      <Box m={5}>
->>>>>>> 31e9190b523d38096af9150e9e8aab5d798d6786
         <LandingPage />
       </Box>
-      </div>
-  );
+      </div>      <Box m={5} marginTop={15}>
+        <LandingPage />
+      </Box>
+      <Box>
+        <Footer />
+      </Box>
+    </Box>
+   );
 }
 
 export default MainComponent;
