@@ -22,8 +22,7 @@ const Navbar = (props) => {
           className={classes.image}
           src="/assets/images/buglogo.png"
           alt="icon"
-          //height="60"
-          style={isSmall ? { transform: "scale(0.6)" } : {}}
+          style={isSmall ? { transform: "scale(0.6)", marginLeft: "0px" } : {}}
         />
         <Typography
           variant={isSmall ? "h5" : "h3"}
