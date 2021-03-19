@@ -6,7 +6,7 @@ userRouter
   .route('/googleLogin')
   .post(auth.googleLogin)
   .get(universalCtrl.requestNotAccepted)
-  .post(universalCtrl.requestNotAccepted)
+  .delete(universalCtrl.requestNotAccepted)
   .put(universalCtrl.requestNotAccepted);
 
 userRouter

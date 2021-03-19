@@ -77,16 +77,17 @@ exports.getUserIdFromToken = (req) => {
   }
 };
 
-exports.verifyUser = (userType) => (req, res, next) => {
+exports.verifyUser = (userType = undefined) => (req, res, next) => {
   try {
     var user_id = verifyToken(req.headers);
     User.findById(user_id)
       .then((user) => {
-        if (user.type == userType) next();
+        if (userType == 'any' || user.type == userType) next();
         else throw new Error('User Type not matched');
       })
       .catch((err) => {
-        throw new Error(err);
+        // throw new Error(err);
+        res.status(403).end(`Unauthorized ${err}`);
       });
   } catch (err) {
     res.status(403).end(`Unauthorized ${err}`);
@@ -94,8 +95,8 @@ exports.verifyUser = (userType) => (req, res, next) => {
 };
 
 exports.getTestUser = (req, res) => {
-  let userType = req.body.userType;
-  User.find({ email: `${userType}@test.com` })
+  let userType = req.body.userType.toLowerCase();
+  User.findOne({ email: `${userType}@test.com` })
     .then((user) =>
       res.status(200).json({ user, auth_token: generateToken(user) })
     )

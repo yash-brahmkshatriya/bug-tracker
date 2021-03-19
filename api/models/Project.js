@@ -7,15 +7,10 @@ const Project = mongoose.Schema({
       ref: 'User',
     },
   ],
-  threads: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Thread',
-    },
-  ],
   projectManager: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
+    required: true,
   },
   tags: [String],
 });
