@@ -7,7 +7,7 @@ const port = process.env.PORT || 8000;
 const app = express();
 
 mongoose
-  .connect('mongodb://127.0.0.1:27017/BugTracknpm er', {
+  .connect('mongodb://127.0.0.1:27017/BugTracker', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
@@ -20,6 +20,8 @@ mongoose
 app.use(cors());
 app.use(express.json());
 app.use('/api/user', require('./api/routes/user'));
+app.use('/api/project', require('./api/routes/project'));
+app.use('/api/thread', require('./api/routes/thread'));
 
 app.listen(port, () => {
   console.log(`Listening at ${port}`);

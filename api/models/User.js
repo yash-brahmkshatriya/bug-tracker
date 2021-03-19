@@ -11,7 +11,7 @@ const User = mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ['Project-Manager', 'Bug-Reporter', 'Reveloper'],
+    enum: ['Project-Manager', 'Bug-Reporter', 'Developer'],
     default: 'Bug-Reporter',
   },
 });
