@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const Thread = require("../models/Thread");
 const Project = mongoose.Schema({
   name: {
     type: String,
@@ -7,7 +7,6 @@ const Project = mongoose.Schema({
   },
   description: {
     type: String,
-    required: true,
   },
   developers: [
     {
@@ -21,6 +20,7 @@ const Project = mongoose.Schema({
     required: true,
   },
   tags: [String],
+  threads: [Thread],
 });
 
 module.exports = mongoose.model("Project", Project);

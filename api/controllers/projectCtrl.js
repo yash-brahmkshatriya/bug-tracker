@@ -13,7 +13,22 @@ exports.createProject = (req, res) => {
     .then((data) => res.status(200).json(data))
     .catch((err) => universalCtrl.serverDbError(err)(req, res));
 };
-
+// review this controller
+exports.getProject = (req, res) => {
+  let projectId = req.params.projectId;
+  Project.findById(projectId)
+    .populate("developers projectManager")
+    .then((data) => {
+      Thread.find({ projectId })
+        .populate("bugReporter")
+        .then((threadArr) => {
+          data.threads = threadArr;
+          res.status(200).json(data);
+        });
+    })
+    .catch((err) => universalCtrl.serverDbError(err)(req, res));
+};
+// how to populate threads if ref is not given
 exports.getProject = (req, res) => {
   let projectId = req.params.projectId;
   Project.findById(projectId)
@@ -24,11 +39,12 @@ exports.getProject = (req, res) => {
 
 exports.updateProject = (req, res) => {
   const projectId = req.params.projectId;
-  const { name, description } = req.body;
+  const { name, description, tags } = req.body;
   Project.findById(projectId)
     .then((project) => {
       project.name = name ? name : project.name;
-      project.description = description ? description : project.description;
+      project.description = description;
+      project.tags = tags;
       project
         .save()
         .then((data) => res.status(202).json(data))
