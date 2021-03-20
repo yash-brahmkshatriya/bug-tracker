@@ -78,6 +78,9 @@ exports.updateComment = (req, res) => {
 
 exports.updateThread = (req, res) => {
   const threadId = req.params.threadId;
+  // Bug-reporter can update => title, description
+  // Project-Manager can update => bugPriority, isClosed
+  // update rights can be handle from front end
   const { title, description, bugPriority, isClosed } = req.body;
   Thread.findById(threadId)
     .then((thread) => {
@@ -95,4 +98,54 @@ exports.updateThread = (req, res) => {
       } else res.status(404).end(`Thread with ID ${threadId} not found`);
     })
     .catch((err) => universalCtrl.serverDbError(err));
+};
+
+exports.updateCommentAsync = (req, res) => {
+  const threadId = req.params.threadId;
+  const commentId = req.params.commentId;
+  try {
+    const thread = Thread.findById(threadId);
+    if (!mongoose.Types.ObjectId.isValid(commentId))
+      return res.status(404).send(`No Thread with id: ${id} exist`);
+
+    if (!mongoose.Types.ObjectId.isValid(id))
+      return res.status(404).send(`No Comment with id: ${id} exist`);
+
+    if (thread.comments.id(commentId) != null) 
+      let { updatedComment } = req.body.comment;
+
+    if (updatedComment) {
+      // thread.comments.id(commentId).comment = updatedComment;
+      const index = thread.comments.findIndex((comment) => comment._id === String(commentId));
+      thread.comments[index] = updatedComment;
+      await Thread.findByIdAndUpdate(threadId, thread, { new: true });
+      res.json(thread); 
+    }
+  } catch {
+    // .catch((err) => universalCtrl.serverDbError(err));
+    res.status(404).json({ message: error.message });
+  }
+      
+};
+
+exports.updateThreadAsync = async (req, res) => {
+  const threadId = req.params.threadId;
+  const { title, description, bugPriority, isClosed } = req.body;
+  try {
+    const thread = await Thread.findById(threadId);
+    if (!mongoose.Types.ObjectId.isValid(id))
+      return res.status(404).send(`No Thread with id: ${id} exist`);
+  
+    // const updatedThread = {...thread, title, description, bugPriority, isClosed}; correct or not
+    thread.title = title;
+    thread.description = description;
+    thread.bugPriority = bugPriority;
+    thread.isClosed = isClosed;
+  
+    await Thread.findByIdAndUpdate(threadId, thread, { new: true });
+    res.json(thread);
+  } catch {
+    // .catch((err) => universalCtrl.serverDbError(err));
+    res.status(404).json({ message: error.message });
+  }
 };
