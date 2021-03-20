@@ -39,7 +39,7 @@ exports.getProject = (req, res) => {
 
 exports.updateProject = (req, res) => {
   const projectId = req.params.projectId;
-  const { name, description, tags } = req.body;
+  const { name, description,tags} = req.body;
   Project.findById(projectId)
     .then((project) => {
       project.name = name ? name : project.name;
@@ -47,15 +47,46 @@ exports.updateProject = (req, res) => {
       project.tags = tags;
       project
         .save()
-        .then((data) => res.status(202).json(data))
+        .then((data) => res.status(200).json(data))
         .catch((err) => universalCtrl.serverDbError(err)(req, res));
     })
     .catch((err) => universalCtrl.serverDbError(err)(req, res));
 };
-// addDeveloper
-// deleteDeveloper
-// addTags
-// deleteTags
+exports.addDeveloper = (req,res) => {
+  const projectId = req.params.projectId;
+  const{ name,email} = req.body;
+  User.find({email, type:"Developer"}).then((user) => {
+    if(user)
+    {
+        Project.findById(projectId).then((project) =>{
+        project.developers.push(user._id); // Check this
+        project.save().then((data) => res.status(200).json(data))
+        .catch((err) => universalCtrl.serverDbError(err)(req, res));
+      })
+    }
+    else
+    {
+      res.status(404).end('USER not found');
+    }
+  })
+  .catch((err) => universalCtrl.serverDbError(err)(req, res));
+};
+
+exports.deleteDeveloper = (req, res) => {
+    Project.findById(req.params.projectId)
+    .then(
+      (project) => {
+      if (project != null && project.developers.id(req.params.developerId) != null) {
+        project.developers.id(req.params.developerId).remove();
+        project.save().then(
+        (project) => {
+           res.status(202).json(project); })
+          .catch((err) => universalCtrl.serverDbError(err)(req, res));
+        } 
+       })
+    .catch((err) => next(err));
+};
+
 
 // exports.getAllProjects = (req, res) => {
 //   let userId = auth.getUserIdFromToken(req);
