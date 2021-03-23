@@ -6,7 +6,7 @@ const threadCtrl = require('../controllers/threadCtrl');
 
 projectRouter
   .route('/')
-  .get(auth.verifyUser('any'), projectCtrl.getAllProjects)
+  .get(auth.verifyUser, projectCtrl.getAllProjects)
   .post(auth.verifyUser, projectCtrl.createProject);
 
 projectRouter
