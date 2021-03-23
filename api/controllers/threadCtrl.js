@@ -7,7 +7,7 @@ exports.createThread = (req, res) => {
   let thread = new Thread({
     ...req.body,
     projectId,
-    bugReporter: auth.getUserIdFromToken(req),
+    contributor: auth.getUserIdFromToken(req),
   });
   thread
     .save()
@@ -17,24 +17,22 @@ exports.createThread = (req, res) => {
 
 exports.getSpecificThread = (req, res) => {
   const threadId = req.params.threadId;
-  auth.getUserTypeFromToken(req).then((user) => {
-    if (user.type === 'Project-Manager') {
-      Thread.findByIdAndUpdate(
-        threadId,
-        { $set: { seen: true } },
-        { new: true }
-      )
-        .populate('bugReporter comments.author')
-        .then((data) => res.status(200).json(data))
-        .catch((err) => universalCtrl.serverDbError(err));
-    } else {
-      Thread.findById(threadId)
-        .populate('bugReporter')
-        .populate('comments.author')
-        .then((data) => res.status(200).json(data))
-        .catch((err) => universalCtrl.serverDbError(err));
-    }
-  });
+  let userId = auth.getUserIdFromToken(req);
+  Thread.findById(threadId)
+    .populate('contributor comments.author projectId')
+    .then((thread) => {
+      if (thread.projectId.projectManager == userId) {
+        Thread.findByIdAndUpdate(
+          threadId,
+          { $set: { seen: true } },
+          { new: true }
+        )
+          .populate('contributor comments.author projectId')
+          .then((data) => res.status(200).json(data))
+          .catch((err) => universalCtrl.serverDbError(err));
+      } else res.status(200).json(thread);
+    })
+    .catch((err) => universalCtrl.serverDbError(err));
 };
 
 exports.getAllThreadsOfProject = (req, res) => {
@@ -47,16 +45,27 @@ exports.getAllThreadsOfProject = (req, res) => {
 exports.postComment = (req, res) => {
   const threadId = req.params.threadId;
   let { comment } = req.body;
+  let role = 'Contributor';
   let author = auth.getUserIdFromToken(req);
-  Thread.findByIdAndUpdate(
-    threadId,
-    {
-      $push: { comments: { comment, author } },
-    },
-    { new: true }
-  )
-    .populate('comments.author')
-    .then((data) => res.status(200).json(data))
+  Thread.findById(threadId)
+    .populate('projectId')
+    .then((thread) => {
+      if (thread.projectId.developers.includes(userId)) {
+        role = 'Developer';
+      } else if (thread.projectId.projectManager == userId) {
+        role = 'Project Manager';
+      }
+      Thread.findByIdAndUpdate(
+        threadId,
+        {
+          $push: { comments: { comment, author, role } },
+        },
+        { new: true }
+      )
+        .populate('comments.author')
+        .then((data) => res.status(200).json(data))
+        .catch((err) => universalCtrl.serverDbError(err)(req, res));
+    })
     .catch((err) => universalCtrl.serverDbError(err)(req, res));
 };
 
@@ -83,24 +92,34 @@ exports.updateComment = (req, res) => {
 
 exports.updateThread = (req, res) => {
   const threadId = req.params.threadId;
-  let { title, description, bugPriority, isClosed } = req.body;
-  auth.getUserTypeFromToken(req).then((user) => {
-    if (user.type === 'Project-Manager') {
-      if (title || description) {
-        universalCtrl.unauthorizedError('Unauthorized')(req, res);
-      } else {
+  let userId = auth.getUserIdFromToken(req);
+  let { bugPriority, isClosed, title, description } = req.body;
+  Thread.findById(threadId)
+    .populate('projectId')
+    .then((thread) => {
+      if (
+        thread.projectId.projectManager == userId &&
+        thread.contributor == userId
+      ) {
         Thread.findByIdAndUpdate(threadId, { $set: req.body }, { new: true })
           .then((data) => res.status(200).json(data))
           .catch((err) => universalCtrl.serverDbError(err)(req, res));
-      }
-    } else if (user.type == 'Bug-Reporter') {
-      if (bugPriority || isClosed) {
-        universalCtrl.unauthorizedError('Unauthorized')(req, res);
+      } else if (thread.projectId.projectManager == userId) {
+        if (title || description) {
+          universalCtrl.unauthorizedError('Unauthorized')(req, res);
+        } else {
+          Thread.findByIdAndUpdate(threadId, { $set: req.body }, { new: true })
+            .then((data) => res.status(200).json(data))
+            .catch((err) => universalCtrl.serverDbError(err)(req, res));
+        }
       } else {
-        Thread.findByIdAndUpdate(threadId, { $set: req.body }, { new: true })
-          .then((data) => res.status(200).json(data))
-          .catch((err) => universalCtrl.serverDbError(err)(req, res));
+        if (bugPriority || isClosed) {
+          universalCtrl.unauthorizedError('Unauthorized')(req, res);
+        } else {
+          Thread.findByIdAndUpdate(threadId, { $set: req.body }, { new: true })
+            .then((data) => res.status(200).json(data))
+            .catch((err) => universalCtrl.serverDbError(err)(req, res));
+        }
       }
-    } else universalCtrl.unauthorizedError('Unauthorized')(req, res);
-  });
+    });
 };
