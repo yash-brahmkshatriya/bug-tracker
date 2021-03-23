@@ -9,11 +9,6 @@ const User = mongoose.Schema({
     type: String,
     required: true,
   },
-  type: {
-    type: String,
-    enum: ['Project-Manager', 'Bug-Reporter', 'Developer'],
-    default: 'Bug-Reporter',
-  },
 });
 
 module.exports = mongoose.model('User', User);

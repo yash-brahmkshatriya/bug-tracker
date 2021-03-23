@@ -10,6 +10,11 @@ var comment = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
     },
+    role: {
+      type: String,
+      required: true,
+      default: 'Contributor',
+    },
   },
   {
     timestamps: true,
@@ -31,7 +36,7 @@ const Thread = mongoose.Schema(
       type: String,
       required: true,
     },
-    bugReporter: {
+    contributor: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
     },

@@ -7,51 +7,46 @@ const threadCtrl = require('../controllers/threadCtrl');
 projectRouter
   .route('/')
   .get(auth.verifyUser('any'), projectCtrl.getAllProjects)
-  .post(auth.verifyUser('Project-Manager'), projectCtrl.createProject);
-// GET ma All projects GET aavse
+  .post(auth.verifyUser, projectCtrl.createProject);
 
 projectRouter
   .route('/:projectId')
-  .get(auth.verifyUser('any'), projectCtrl.getProject)
-  .put(auth.verifyUser('Project-Manager'), projectCtrl.updateProject)
-  .delete(auth.verifyUser('Project-Manager'), projectCtrl.deleteProject)
+  .get(auth.verifyUser, projectCtrl.getProject)
+  .put(auth.verifyUser, auth.verifyProjectOwner, projectCtrl.updateProject)
+  .delete(auth.verifyUser, auth.verifyProjectOwner, projectCtrl.deleteProject)
   .post(universalCtrl.requestNotAccepted);
 
 projectRouter
   .route('/:projectId/manageDev')
-  .post(auth.verifyUser('Project-Manager'), projectCtrl.manageDevelopers)
+  .post(auth.verifyUser, auth.verifyProjectOwner, projectCtrl.manageDevelopers)
   .get(universalCtrl.requestNotAccepted)
   .put(universalCtrl.requestNotAccepted)
   .delete(universalCtrl.requestNotAccepted);
 
 projectRouter
   .route('/:projectId/threads')
-  .get(auth.verifyUser('any'), threadCtrl.getAllThreadsOfProject)
-  .post(auth.verifyUser('Bug-Reporter'), threadCtrl.createThread)
+  .get(auth.verifyUser, threadCtrl.getAllThreadsOfProject)
+  .post(auth.verifyUser, threadCtrl.createThread)
   .put(universalCtrl.requestNotAccepted)
   .delete(universalCtrl.requestNotAccepted);
 
 projectRouter
   .route('/:projectId/threads/:threadId')
-  .get(auth.verifyUser('any'), threadCtrl.getSpecificThread)
-  .put(auth.verifyUser('any'), threadCtrl.updateThread)
+  .get(auth.verifyUser, threadCtrl.getSpecificThread)
+  .put(auth.verifyUser, auth.verifyThreadOwner, threadCtrl.updateThread)
   .post(universalCtrl.requestNotAccepted)
   .delete(universalCtrl.requestNotAccepted);
 
 projectRouter
   .route('/:projectId/threads/:threadId/comments')
-  .get(auth.verifyUser('any'), threadCtrl.getComments)
-  .post(auth.verifyUser('any'), threadCtrl.postComment)
+  .get(auth.verifyUser, threadCtrl.getComments)
+  .post(auth.verifyUser, threadCtrl.postComment)
   .put(universalCtrl.requestNotAccepted)
   .delete(universalCtrl.requestNotAccepted);
 
 projectRouter
   .route('/:projectId/threads/:threadId/comments/:commentId')
-  .put(
-    auth.verifyUser('any'),
-    auth.verifyCommentOwner,
-    threadCtrl.updateComment
-  )
+  .put(auth.verifyUser, auth.verifyCommentOwner, threadCtrl.updateComment)
   .get(universalCtrl.requestNotAccepted)
   .delete(universalCtrl.requestNotAccepted)
   .post(universalCtrl.requestNotAccepted);

@@ -53,7 +53,7 @@ exports.manageDevelopers = (req, res) => {
 exports.addDeveloper = (req, res) => {
   const projectId = req.params.projectId;
   const { email } = req.body;
-  User.findOne({ email, type: 'Developer' })
+  User.findOne({ email })
     .then((user) => {
       if (user) {
         Project.findByIdAndUpdate(
@@ -95,33 +95,23 @@ exports.getAllProjects = (req, res) => {
   User.findById(userId)
     .then((user) => {
       if (user) {
-        switch (user.type) {
-          case 'Project-Manager':
-            Project.find({ projectManager: userId })
-              .then((data) => res.status(200).json(data))
+        Thread.find({ contributor: userId })
+          .then((threads) => {
+            let projectIds = threads.map((thread) => thread.projectId);
+            projectIds = [...new Set(projectIds)];
+            Project.find({
+              $or: [
+                { _id: { $in: [projectIds] } },
+                { projectManager: userId },
+                { developers: { $in: userId } },
+              ],
+            })
+              .populate('projectManager developers')
+              .then((projects) => res.status(200).json(projects))
               .catch((err) => universalCtrl.serverDbError(err)(req, res));
-            break;
-          case 'Developer':
-            Project.find({ developers: { $in: userId } })
-              .then((data) => res.status(200).json(data))
-              .catch((err) => universalCtrl.serverDbError(err)(req, res));
-            break;
-          case 'Bug-Reporter':
-            Thread.find({ bugReporter: userId })
-              .then((threads) => {
-                let projectIds = threads.map((thread) => thread.projectId);
-                projectIds = [...new Set(projectIds)];
-                Project.find({ _id: { $in: [projectIds] } })
-                  .populate('projectManager')
-                  .then((data) => res.status(200).json(data))
-                  .catch((err) => universalCtrl.serverDbError(err)(req, res));
-              })
-              .catch((err) => universalCtrl.serverDbError(err)(req, res));
-            break;
-          default:
-            res.json(200).json({});
-        }
-      }
+          })
+          .catch((err) => universalCtrl.serverDbError(err)(req, res));
+      } else universalCtrl.unauthorizedError('User not found')(req, res);
     })
-    .catch((err) => universalCtrl.serverDbError(err));
+    .catch((err) => universalCtrl.serverDbError(err)(req, res));
 };
