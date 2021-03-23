@@ -113,5 +113,5 @@ exports.getAllProjects = (req, res) => {
           .catch((err) => universalCtrl.serverDbError(err)(req, res));
       } else universalCtrl.unauthorizedError('User not found')(req, res);
     })
-    .catch((err) => universalCtrl.serverDbError(err));
+    .catch((err) => universalCtrl.serverDbError(err)(req, res));
 };

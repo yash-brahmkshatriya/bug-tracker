@@ -29,10 +29,10 @@ exports.getSpecificThread = (req, res) => {
         )
           .populate('contributor comments.author projectId')
           .then((data) => res.status(200).json(data))
-          .catch((err) => universalCtrl.serverDbError(err));
+          .catch((err) => universalCtrl.serverDbError(err)(req, res));
       } else res.status(200).json(thread);
     })
-    .catch((err) => universalCtrl.serverDbError(err));
+    .catch((err) => universalCtrl.serverDbError(err)(req, res));
 };
 
 exports.getAllThreadsOfProject = (req, res) => {

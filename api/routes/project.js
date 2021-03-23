@@ -6,9 +6,8 @@ const threadCtrl = require('../controllers/threadCtrl');
 
 projectRouter
   .route('/')
-  .get(auth.verifyUser('any'), projectCtrl.getAllProjects) //baaki
+  .get(auth.verifyUser('any'), projectCtrl.getAllProjects)
   .post(auth.verifyUser, projectCtrl.createProject);
-// GET ma All projects GET aavse
 
 projectRouter
   .route('/:projectId')
