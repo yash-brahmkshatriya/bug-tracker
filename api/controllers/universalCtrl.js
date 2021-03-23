@@ -3,3 +3,5 @@ exports.requestNotAccepted = (req, res) => {
 };
 
 exports.serverDbError = (err) => (req, res) => res.status(500).send(err);
+
+exports.unauthorizedError = (err) => (req, res) => res.status(403).send(err);
