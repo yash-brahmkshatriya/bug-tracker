@@ -1,5 +1,7 @@
 const User = require('../models/User');
+const Thread = require('../models/Thread');
 const jwt = require('jsonwebtoken');
+const universalCtrl = require('./universalCtrl');
 const { OAuth2Client } = require('google-auth-library');
 
 const GC_ID = process.env.GOOGLE_CLIENT_ID;
@@ -77,11 +79,17 @@ exports.getUserIdFromToken = (req) => {
   }
 };
 
+exports.getUserTypeFromToken = (req) => {
+  const userId = this.getUserIdFromToken(req);
+  return User.findById(userId);
+};
+
 exports.verifyUser = (userType = undefined) => (req, res, next) => {
   try {
     var user_id = verifyToken(req.headers);
     User.findById(user_id)
       .then((user) => {
+        req.userType = userType;
         if (userType == 'any' || user.type == userType) next();
         else throw new Error('User Type not matched');
       })
@@ -92,6 +100,17 @@ exports.verifyUser = (userType = undefined) => (req, res, next) => {
   } catch (err) {
     res.status(403).end(`Unauthorized ${err}`);
   }
+};
+
+exports.verifyCommentOwner = (req, res, next) => {
+  const { threadId, commentId } = req.params;
+  const userId = this.getUserIdFromToken(req);
+  Thread.findById(threadId)
+    // .populate('comments.author')
+    .then((data) => {
+      if (data.comments.id(commentId).author == userId) next();
+      else universalCtrl.unauthorizedError('Unauthorized')(req, res);
+    });
 };
 
 exports.getTestUser = (req, res) => {

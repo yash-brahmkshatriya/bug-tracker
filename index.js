@@ -21,7 +21,6 @@ app.use(cors());
 app.use(express.json());
 app.use('/api/user', require('./api/routes/user'));
 app.use('/api/project', require('./api/routes/project'));
-app.use('/api/thread', require('./api/routes/thread'));
 
 app.listen(port, () => {
   console.log(`Listening at ${port}`);
