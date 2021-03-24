@@ -133,7 +133,7 @@ exports.verifyCommentOwner = (req, res, next) => {
 };
 
 exports.getTestUser = (req, res) => {
-  let email = req.body;
+  let email = req.body.email;
   if (email.endsWith('test.com')) {
     User.findOne({ email })
       .then((user) =>
