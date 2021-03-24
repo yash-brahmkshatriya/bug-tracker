@@ -42,7 +42,14 @@ const Thread = mongoose.Schema(
     },
     bugPriority: {
       type: String,
-      enum: ['Critical', 'High', 'Medium', 'Low', 'Not applicable'],
+      enum: [
+        'Critical',
+        'High',
+        'Medium',
+        'Low',
+        'Not applicable',
+        'Enhancement',
+      ],
       default: 'Low',
     },
     comments: {

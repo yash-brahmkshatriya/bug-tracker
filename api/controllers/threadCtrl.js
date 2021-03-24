@@ -50,9 +50,9 @@ exports.postComment = (req, res) => {
   Thread.findById(threadId)
     .populate('projectId')
     .then((thread) => {
-      if (thread.projectId.developers.includes(userId)) {
+      if (thread.projectId.developers.includes(author)) {
         role = 'Developer';
-      } else if (thread.projectId.projectManager == userId) {
+      } else if (thread.projectId.projectManager == author) {
         role = 'Project Manager';
       }
       Thread.findByIdAndUpdate(
