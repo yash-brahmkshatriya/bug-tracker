@@ -1,8 +1,8 @@
-const Project = require('../models/Project');
-const User = require('../models/User');
-const universalCtrl = require('./universalCtrl');
-const auth = require('./auth');
-const Thread = require('../models/Thread');
+const Project = require("../models/Project");
+const User = require("../models/User");
+const universalCtrl = require("./universalCtrl");
+const auth = require("./auth");
+const Thread = require("../models/Thread");
 
 exports.createProject = (req, res) => {
   let { name, description } = req.body;
@@ -17,7 +17,7 @@ exports.createProject = (req, res) => {
 exports.getProject = (req, res) => {
   let projectId = req.params.projectId;
   Project.findById(projectId)
-    .populate('developers projectManager')
+    .populate("developers projectManager")
     .then((data) => res.status(200).json(data))
     .catch((err) => universalCtrl.serverDbError(err)(req, res));
 };
@@ -32,7 +32,7 @@ exports.updateProject = (req, res) => {
     },
     { new: true }
   )
-    .then((data) => res.status(200).json(data))
+    .then((data) => res.status(200).json({ success: true }))
     .catch((err) => universalCtrl.serverDbError(err)(req, res));
 };
 
@@ -45,9 +45,9 @@ exports.deleteProject = (req, res) => {
 
 exports.manageDevelopers = (req, res) => {
   const operation = req.query.operation;
-  if (operation === 'add') this.addDeveloper(req, res);
-  else if (operation === 'delete') this.deleteDeveloper(req, res);
-  else universalCtrl.unauthorizedError('Invalid Operation')(req, res);
+  if (operation === "add") this.addDeveloper(req, res);
+  else if (operation === "delete") this.deleteDeveloper(req, res);
+  else universalCtrl.unauthorizedError("Invalid Operation")(req, res);
 };
 
 exports.addDeveloper = (req, res) => {
@@ -63,10 +63,11 @@ exports.addDeveloper = (req, res) => {
           },
           { new: true }
         )
-          .then((data) => res.status(200).json(data))
+          .populate("developers")
+          .then((data) => res.status(200).json(data.developers))
           .catch((err) => universalCtrl.serverDbError(err)(req, res));
       } else {
-        res.status(404).end('User with given email ID not found');
+        res.status(404).end("User with given email ID not found");
       }
     })
     .catch((err) => universalCtrl.serverDbError(err)(req, res));
@@ -83,9 +84,10 @@ exports.deleteDeveloper = (req, res) => {
           { $pull: { developers: user._id } },
           { new: true }
         )
-          .then((data) => res.status(200).json(data))
+          .populate("developers")
+          .then((data) => res.status(200).json(data.developers))
           .catch((err) => universalCtrl.serverDbError(err)(req, res));
-      } else res.status(404).end('User not found');
+      } else res.status(404).end("User not found");
     })
     .catch((err) => universalCtrl.serverDbError(err)(req, res));
 };
@@ -106,12 +108,12 @@ exports.getAllProjects = (req, res) => {
                 { developers: { $in: userId } },
               ],
             })
-              .populate('projectManager developers')
+              .populate("projectManager developers")
               .then((projects) => res.status(200).json(projects))
               .catch((err) => universalCtrl.serverDbError(err)(req, res));
           })
           .catch((err) => universalCtrl.serverDbError(err)(req, res));
-      } else universalCtrl.unauthorizedError('User not found')(req, res);
+      } else universalCtrl.unauthorizedError("User not found")(req, res);
     })
     .catch((err) => universalCtrl.serverDbError(err)(req, res));
 };
