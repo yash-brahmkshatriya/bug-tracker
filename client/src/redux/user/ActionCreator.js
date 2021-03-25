@@ -1,4 +1,4 @@
-import * as ActionTypes from './ActionTypes';
+import * as ActionTypes from "./ActionTypes";
 
 const signInUserReq = () => {
   return {
@@ -20,7 +20,7 @@ const signInUserFailure = (error) => {
   };
 };
 
-const signOutUser = () => {
+export const signOutUser = () => {
   return {
     type: ActionTypes.USER_SIGNOUT,
   };
