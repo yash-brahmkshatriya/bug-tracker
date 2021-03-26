@@ -67,5 +67,7 @@ export const threadReducer = (state = initialstate, action) => {
       return { ...state, loading: false, err: null, thread: action.payload };
     case ActionTypes.UPDATE_THREAD_FAIL:
       return { ...state, loading: false, err: action.payload };
+    default:
+      return state;
   }
 };
