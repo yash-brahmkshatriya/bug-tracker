@@ -1,4 +1,4 @@
-import * as ActionTypes from "./ActionTypes";
+import * as ActionTypes from './ActionTypes';
 
 const initialstate = {
   loading: true,
@@ -58,5 +58,7 @@ export const projectReducer = (state = initialstate, action) => {
       };
     case ActionTypes.MANAGE_DEVELOPER_FAIL:
       return { ...state, loading: false, err: action.payload };
+    default:
+      return state;
   }
 };
