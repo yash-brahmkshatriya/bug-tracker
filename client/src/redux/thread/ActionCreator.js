@@ -1,5 +1,5 @@
-import * as ActionTypes from "./ActionTypes";
-import Axios from "../apiCalls";
+import * as ActionTypes from './ActionTypes';
+import Axios from '../apiCalls';
 const createThreadReq = () => {
   return {
     type: ActionTypes.CREATE_THREAD_REQ,
@@ -59,10 +59,10 @@ const postCommentReq = () => {
     type: ActionTypes.POST_COMMENT_REQ,
   };
 };
-const postCommentSuc = (thread) => {
+const postCommentSuc = (comments) => {
   return {
     type: ActionTypes.POST_COMMENT_SUC,
-    payload: thread,
+    payload: comments,
   };
 };
 const postCommentFail = (err) => {
@@ -95,10 +95,10 @@ const updateCommentReq = () => {
     type: ActionTypes.UPDATE_COMMENT_REQ,
   };
 };
-const updateCommentSuc = (thread) => {
+const updateCommentSuc = (commentId, comment) => {
   return {
     type: ActionTypes.UPDATE_COMMENT_SUC,
-    payload: thread,
+    payload: { commentId, comment },
   };
 };
 const updateCommentFail = (err) => {
@@ -188,7 +188,7 @@ const updateComment = (projectId, threadId, comment, commentId) => (
     `/api/project/${projectId}/threads/${threadId}/comments/${commentId}`,
     { comment }
   )
-    .then((data) => dispatch(updateCommentSuc(data)))
+    .then((data) => dispatch(updateCommentSuc(commentId, comment)))
     .catch((err) => dispatch(updateCommentFail(err)));
 };
 

@@ -63,7 +63,7 @@ exports.postComment = (req, res) => {
         { new: true }
       )
         .populate('comments.author')
-        .then((data) => res.status(200).json(data))
+        .then((data) => res.status(200).json(data.comments))
         .catch((err) => universalCtrl.serverDbError(err)(req, res));
     })
     .catch((err) => universalCtrl.serverDbError(err)(req, res));
@@ -86,7 +86,7 @@ exports.updateComment = (req, res) => {
     { $set: { 'comments.$[element].comment': comment } },
     { arrayFilters: [{ 'element._id': commentId }], new: true }
   )
-    .then((data) => res.status(200).json(data))
+    .then((data) => res.status(200).json({ success: true }))
     .catch((err) => universalCtrl.serverDbError(err)(req, res));
 };
 

@@ -1,4 +1,4 @@
-import * as ActionTypes from "./ActionTypes";
+import * as ActionTypes from './ActionTypes';
 
 const initialstate = {
   loading: true,
@@ -8,7 +8,7 @@ const initialstate = {
 };
 
 export const threadReducer = (state = initialstate, action) => {
-  let project, comment;
+  let project, comments;
   switch (action.type) {
     case ActionTypes.CREATE_THREAD_REQ:
       return { ...state, loading: true };
@@ -34,7 +34,7 @@ export const threadReducer = (state = initialstate, action) => {
       return {
         ...state,
         loading: false,
-        thread: action.payload,
+        thread: { ...state.thread, comments: action.payload },
         err: null,
       };
     case ActionTypes.POST_COMMENT_FAIL:
@@ -48,14 +48,24 @@ export const threadReducer = (state = initialstate, action) => {
     case ActionTypes.UPDATE_COMMENT_REQ:
       return { ...state, loading: true };
     case ActionTypes.UPDATE_COMMENT_SUC:
-      return { ...state, loading: false, err: null, thread: action.payload };
+      comments = state.thread.comments;
+      let idx = comments.findIndex(
+        (comment) => comment._id == action.payload.commentId
+      );
+      comments[idx].comment = action.payload.comment;
+      return {
+        ...state,
+        loading: false,
+        err: null,
+        thread: { ...state.thread, comments: comments },
+      };
     case ActionTypes.UPDATE_COMMENT_FAIL:
-      return { ...state, loading: false, err: action.payload, thread: {} };
+      return { ...state, loading: false, err: action.payload };
     case ActionTypes.UPDATE_THREAD_REQ:
       return { ...state, loading: true };
     case ActionTypes.UPDATE_THREAD_SUC:
       return { ...state, loading: false, err: null, thread: action.payload };
     case ActionTypes.UPDATE_THREAD_FAIL:
-      return { ...state, loading: false, err: action.payload, thread: {} };
+      return { ...state, loading: false, err: action.payload };
   }
 };

@@ -10,6 +10,13 @@ projectRouter
   .post(auth.verifyUser, projectCtrl.createProject);
 
 projectRouter
+  .route('/explore')
+  .get(projectCtrl.exploreProjects)
+  .post(universalCtrl.requestNotAccepted)
+  .put(universalCtrl.requestNotAccepted)
+  .delete(universalCtrl.requestNotAccepted);
+
+projectRouter
   .route('/:projectId')
   .get(auth.verifyUser, projectCtrl.getProject)
   .put(auth.verifyUser, auth.verifyProjectOwner, projectCtrl.updateProject)
