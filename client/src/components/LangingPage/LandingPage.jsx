@@ -1,22 +1,22 @@
-import React from "react";
+import React from 'react';
 import {
   Typography,
   Grid,
   useTheme,
   useMediaQuery,
   Box,
-} from "@material-ui/core";
-import { useStyles } from "./styles";
-import Footer from "../Footer/Footer";
-import { appDescription } from "../../shared/appDescription";
+} from '@material-ui/core';
+import { useStyles } from './styles';
+import Footer from '../Footer/Footer';
+import { appDescription } from '../../shared/appDescription';
 
 const LandingPage = (props) => {
   const classes = useStyles();
   const theme = useTheme();
-  const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
+  const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
-    <Box display="flex" flexDirection="column" flex={1}>
+    <Box display="flex" flexDirection="column" flex={1} marginTop={5}>
       {appDescription.map((item, idx) => (
         <Grid
           container
@@ -40,16 +40,16 @@ const LandingPage = (props) => {
               display="flex"
               flexDirection="column"
               justifyContent="center"
-              style={{ height: "100%" }}
+              style={{ height: '100%' }}
             >
               <Typography
-                variant={isSmall ? "h5" : "h3"}
+                variant={isSmall ? 'h5' : 'h3'}
                 className={classes.heading}
                 color="secondary"
               >
                 {item.heading}
               </Typography>
-              <Typography variant={isSmall ? "p" : "h6"} align="justify">
+              <Typography variant={isSmall ? 'p' : 'h6'} align="justify">
                 {item.text}
               </Typography>
             </Box>

@@ -1,5 +1,5 @@
-import * as ActionTypes from "./ActionTypes";
-import Axios from "../apiCalls";
+import * as ActionTypes from './ActionTypes';
+import Axios from '../apiCalls';
 const getAllProjectsReq = () => {
   return {
     type: ActionTypes.GET_ALL_PROJECTS_REQ,
@@ -107,9 +107,27 @@ const manageDeveloperFail = (err) => {
   };
 };
 
+const exploreProjectsReq = () => {
+  return {
+    type: ActionTypes.EXPLORE_PROJECTS_REQ,
+  };
+};
+const exploreProjectsSuc = (projects) => {
+  return {
+    type: ActionTypes.EXPLORE_PROJECTS_SUC,
+    payload: projects,
+  };
+};
+const exploreProjectsFail = (err) => {
+  return {
+    type: ActionTypes.EXPLORE_PROJECTS_FAIL,
+    payload: err,
+  };
+};
+
 const getAllProjects = () => (dispatch) => {
   dispatch(getAllProjectsReq());
-  Axios.get("/api/project/")
+  Axios.get('/api/project/')
     .then((data) => dispatch(getAllProjectsSuc(data)))
     .catch((err) => dispatch(getAllProjectsFail(err)));
 };
@@ -123,7 +141,7 @@ const getProject = (projectId) => (dispatch) => {
 
 const createProject = (name, description) => (dispatch) => {
   dispatch(createProjectReq());
-  Axios.post("/api/project/", { name, description })
+  Axios.post('/api/project/', { name, description })
     .then((data) => dispatch(createProjectSuc(data)))
     .catch((err) => dispatch(createProjectFail(err)));
 };
@@ -153,6 +171,16 @@ const manageDev = (projectId, email, operation) => (dispatch) => {
     .catch((err) => dispatch(manageDeveloperFail(err)));
 };
 
+const exploreProjects = (searchString) => (dispatch) => {
+  dispatch(exploreProjectsReq());
+  Axios.get(`/api/project/explore`, { params: { searchString } })
+    .then((data) => data.data)
+    .then((data) => dispatch(exploreProjectsSuc(data)))
+    .catch((err) =>
+      dispatch(exploreProjectsFail(err?.request?.body || err.message))
+    );
+};
+
 export {
   getAllProjects,
   getProject,
@@ -160,4 +188,5 @@ export {
   updateProject,
   deleteProject,
   manageDev,
+  exploreProjects,
 };

@@ -58,6 +58,12 @@ export const projectReducer = (state = initialstate, action) => {
       };
     case ActionTypes.MANAGE_DEVELOPER_FAIL:
       return { ...state, loading: false, err: action.payload };
+    case ActionTypes.EXPLORE_PROJECTS_REQ:
+      return { ...state, loading: true };
+    case ActionTypes.EXPLORE_PROJECTS_SUC:
+      return { ...state, loading: false, projects: action.payload };
+    case ActionTypes.EXPLORE_PROJECTS_FAIL:
+      return { ...state, loading: false, err: action.payload, projects: [] };
     default:
       return state;
   }

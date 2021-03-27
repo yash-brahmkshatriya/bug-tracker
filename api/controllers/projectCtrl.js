@@ -119,9 +119,10 @@ exports.getAllProjects = (req, res) => {
 };
 
 exports.exploreProjects = (req, res) => {
-  let { searchString } = req.body;
-  searchString = searchString.toLowerCase();
-  if (searchString.length >= 3) {
+  let { searchString } = req.query;
+  console.log(req);
+  if (searchString && searchString.length >= 3) {
+    searchString = searchString.toLowerCase();
     const searchRegex = new RegExp(`^.*${searchString}.*`, 'i');
     Project.find(
       {

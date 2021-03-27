@@ -7,6 +7,7 @@ import Project from './Project/Project';
 import Footer from './Footer/Footer';
 import { Switch, withRouter, Route, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import PrivateRoute from './Utils/PrivateRouter';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,21 +15,6 @@ const useStyles = makeStyles((theme) => ({
     minHeight: '100vh',
   },
 }));
-
-const PrivateRoute = ({ children, auth, ...rest }) => {
-  return (
-    <Route
-      {...rest}
-      render={({ location }) =>
-        auth != null ? (
-          children
-        ) : (
-          <Redirect to={{ pathname: '/home', state: { from: location } }} />
-        )
-      }
-    />
-  );
-};
 
 function MainComponent(props) {
   const classes = useStyles();
@@ -44,14 +30,14 @@ function MainComponent(props) {
         <Navbar />
       </Box>
 
-      <Box m={5} marginTop={15}>
+      <Box m={5} marginTop={10} flex={1}>
         <Switch location={props.location}>
           <PrivateRoute path="/" exact>
             <Dashboard />
           </PrivateRoute>
-          <PrivateRoute auth={user.user} path="/projects">
+          <Route auth={user.user} path="/projects">
             <Project />
-          </PrivateRoute>
+          </Route>
           <Route path="/home" component={LandingPage} />
         </Switch>
       </Box>
