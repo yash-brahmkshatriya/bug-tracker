@@ -1,20 +1,17 @@
-// import React from 'react';
-
-// function Dashboard() {
-//   return <h1>Dashboard</h1>;
-// }
-
-// export default Dashboard;
-
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import SwipeableViews from "react-swipeable-views";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
+import {
+  CircularProgress,
+  AppBar,
+  Tabs,
+  Tab,
+  Typography,
+  Box,
+} from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllProjects } from "../../redux/actions";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -26,6 +23,7 @@ function TabPanel(props) {
       id={`full-width-tabpanel-${index}`}
       aria-labelledby={`full-width-tab-${index}`}
       {...other}
+      style={{ overflow: "scroll" }}
     >
       {value === index && (
         <Box p={3}>
@@ -52,7 +50,8 @@ function a11yProps(index) {
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
-    width: 500,
+    width: "100%",
+    minHeight: "100vh",
   },
 }));
 
@@ -60,14 +59,38 @@ function Dashboard() {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
+  const user = useSelector((state) => state.user); // assumed user._id
+  const project = useSelector((state) => state.project);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllProjects());
+  }, [dispatch]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
   const handleChangeIndex = (index) => {
     setValue(index);
   };
+
+  let displayProjectManager = <p>all projects</p>;
+  let displayDeveloper = <p>all projects</p>;
+  let displayContributor = <p>all projects</p>;
+  if (project.loading) {
+    displayProjectManager = <CircularProgress />;
+    displayDeveloper = <CircularProgress />;
+    displayContributor = <CircularProgress />;
+  } else if (project.err) {
+    displayProjectManager = <p>{project.err.message}</p>;
+    displayDeveloper = <p>{project.err.message}</p>;
+    displayContributor = <p>{project.err.message}</p>;
+  } else {
+    // project.projects.map(project => {
+    //   // project.projectManager._id == user._id -> displayProjectManager <-
+    //   // project.developers.map
+    // })
+  }
 
   return (
     <div className={classes.root}>
@@ -80,24 +103,25 @@ function Dashboard() {
           variant="fullWidth"
           aria-label="full width tabs example"
         >
-          <Tab label="Item One" {...a11yProps(0)} />
-          <Tab label="Item Two" {...a11yProps(1)} />
-          <Tab label="Item Three" {...a11yProps(2)} />
+          <Tab label="Project Manager" {...a11yProps(0)} />
+          <Tab label="Developer" {...a11yProps(1)} />
+          <Tab label="Contributor" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
+
       <SwipeableViews
         axis={theme.direction === "rtl" ? "x-reverse" : "x"}
         index={value}
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          Item One
+          Project Manager
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          Item Two
+          Developer
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
-          Item Three
+          Contributor
         </TabPanel>
       </SwipeableViews>
     </div>
