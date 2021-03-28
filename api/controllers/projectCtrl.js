@@ -119,21 +119,28 @@ exports.getAllProjects = (req, res) => {
 };
 
 exports.exploreProjects = (req, res) => {
-  let { searchString } = req.query;
-  console.log(req);
+  let { searchString, options } = req.query;
+  if (!options) options = 'all';
   if (searchString && searchString.length >= 3) {
     searchString = searchString.toLowerCase();
     const searchRegex = new RegExp(`^.*${searchString}.*`, 'i');
+    const searchOptions = [];
+    if (options === 'all' || options === 'name') {
+      searchOptions.push({ name: searchRegex });
+    }
+    if (options === 'all') {
+      searchOptions.push({ description: searchRegex });
+    }
+    if (options === 'all' || options === 'tag') {
+      searchOptions.push({ tags: { $in: searchRegex } });
+    }
     Project.find(
       {
-        $or: [
-          { name: searchRegex },
-          { description: searchRegex },
-          { tags: { $in: searchRegex } },
-        ],
+        $or: searchOptions,
       },
-      '-developers -projectManager'
+      '-developers'
     )
+      .populate('projectManager')
       .then((data) => res.status(200).json(data))
       .catch((err) => universalCtrl.serverDbError(err)(req, res));
   } else

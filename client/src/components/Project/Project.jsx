@@ -12,7 +12,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    explore: (searchString) => dispatch(exploreProjects(searchString)),
+    explore: (searchString, options) =>
+      dispatch(exploreProjects(searchString, options)),
   };
 };
 

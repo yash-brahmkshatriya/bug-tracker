@@ -1,6 +1,9 @@
 import { makeStyles } from '@material-ui/core';
 
 export const useStyles = makeStyles((theme) => ({
+  results: {
+    maxWidth: theme.breakpoints.values.md,
+  },
   inpGrp: {
     display: 'flex',
     width: '100%',
@@ -32,5 +35,33 @@ export const useStyles = makeStyles((theme) => ({
   search: {
     marginRight: theme.spacing(2),
     color: theme.palette.grey[800],
+  },
+  link: {
+    textDecoration: 'none',
+    '&:focus, &:hover, &:visited, &:link, &:active': {
+      textDecoration: 'none',
+    },
+    color: theme.palette.secondary.main,
+  },
+  chipsBoxMobile: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    flexWrap: 'noWrap',
+    overflow: 'auto',
+  },
+  chipsBoxDesktop: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    flexWrap: 'wrap',
+  },
+  timeNameInfo: {
+    '& > *': {
+      marginRight: theme.spacing(1),
+      color: theme.palette.grey[800],
+    },
+  },
+  chip: {
+    marginBottom: theme.spacing(1),
+    marginLeft: theme.spacing(1),
   },
 }));

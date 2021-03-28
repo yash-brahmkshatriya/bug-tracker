@@ -171,9 +171,9 @@ const manageDev = (projectId, email, operation) => (dispatch) => {
     .catch((err) => dispatch(manageDeveloperFail(err)));
 };
 
-const exploreProjects = (searchString) => (dispatch) => {
+const exploreProjects = (searchString, options = 'all') => (dispatch) => {
   dispatch(exploreProjectsReq());
-  Axios.get(`/api/project/explore`, { params: { searchString } })
+  Axios.get(`/api/project/explore`, { params: { searchString, options } })
     .then((data) => data.data)
     .then((data) => dispatch(exploreProjectsSuc(data)))
     .catch((err) =>
