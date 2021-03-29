@@ -9,6 +9,7 @@ import {
   Tab,
   Typography,
   Box,
+  useMediaQuery,
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProjects } from "../../redux/actions";
@@ -23,7 +24,6 @@ function TabPanel(props) {
       id={`full-width-tabpanel-${index}`}
       aria-labelledby={`full-width-tab-${index}`}
       {...other}
-      style={{ overflow: "scroll" }}
     >
       {value === index && (
         <Box p={3}>
@@ -58,6 +58,8 @@ const useStyles = makeStyles((theme) => ({
 function Dashboard() {
   const classes = useStyles();
   const theme = useTheme();
+  const isextraSmall = useMediaQuery(theme.breakpoints.down("xs"));
+  const isTabSpan = useMediaQuery(theme.breakpoints.up("lmd"));
   const [value, setValue] = React.useState(0);
   const user = useSelector((state) => state.user); // assumed user._id
   const project = useSelector((state) => state.project);
@@ -91,21 +93,38 @@ function Dashboard() {
     //   // project.developers.map
     // })
   }
-
+  let spanTextSize = "14px";
+  if (isextraSmall) {
+    spanTextSize = "9px";
+  }
+  if (isTabSpan) {
+    spanTextSize = "17px";
+  }
   return (
     <div className={classes.root}>
       <AppBar position="static" color="default">
         <Tabs
           value={value}
           onChange={handleChange}
-          indicatorColor="primary"
-          textColor="primary"
+          indicatorColor="secondary"
+          textColor="secondary"
           variant="fullWidth"
           aria-label="full width tabs example"
         >
-          <Tab label="Project Manager" {...a11yProps(0)} />
-          <Tab label="Developer" {...a11yProps(1)} />
-          <Tab label="Contributor" {...a11yProps(2)} />
+          <Tab
+            label={
+              <span style={{ fontSize: spanTextSize }}>Project Manager</span>
+            }
+            {...a11yProps(0)}
+          />
+          <Tab
+            label={<span style={{ fontSize: spanTextSize }}>Developer</span>}
+            {...a11yProps(1)}
+          />
+          <Tab
+            label={<span style={{ fontSize: spanTextSize }}>Contributor</span>}
+            {...a11yProps(2)}
+          />
         </Tabs>
       </AppBar>
 
