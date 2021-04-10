@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import SwipeableViews from "react-swipeable-views";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { useParams } from "react-router-dom";
 import {
   CircularProgress,
   AppBar,
@@ -12,8 +13,7 @@ import {
   useMediaQuery,
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllProjects } from "../../redux/actions";
-import { Switch } from "react-router";
+import { getProject } from "../../../redux/project/ActionCreator";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -56,19 +56,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Dashboard() {
+function SpecificProject() {
   const classes = useStyles();
   const theme = useTheme();
   const isextraSmall = useMediaQuery(theme.breakpoints.down("xs"));
   const isTabSpan = useMediaQuery(theme.breakpoints.up("lmd"));
   const [value, setValue] = React.useState(0);
-  const user = useSelector((state) => state.user); // assumed user._id
-  const project = useSelector((state) => state.project);
+  const { projectId } = useParams();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAllProjects());
-  }, [dispatch]);
+    dispatch(getProject(projectId));
+  });
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -77,23 +76,6 @@ function Dashboard() {
     setValue(index);
   };
 
-  let displayProjectManager = <p>all projects</p>;
-  let displayDeveloper = <p>all projects</p>;
-  let displayContributor = <p>all projects</p>;
-  if (project.loading) {
-    displayProjectManager = <CircularProgress />;
-    displayDeveloper = <CircularProgress />;
-    displayContributor = <CircularProgress />;
-  } else if (project.err) {
-    displayProjectManager = <p>{project.err.message}</p>;
-    displayDeveloper = <p>{project.err.message}</p>;
-    displayContributor = <p>{project.err.message}</p>;
-  } else {
-    // project.projects.map(project => {
-    //   // project.projectManager._id == user._id -> displayProjectManager <-
-    //   // project.developers.map
-    // })
-  }
   let spanTextSize = "14px";
   if (isextraSmall) {
     spanTextSize = "9px";
@@ -114,17 +96,13 @@ function Dashboard() {
         >
           <Tab
             label={
-              <span style={{ fontSize: spanTextSize }}>Project Manager</span>
+              <span style={{ fontSize: spanTextSize }}>Project Details</span>
             }
             {...a11yProps(0)}
           />
           <Tab
-            label={<span style={{ fontSize: spanTextSize }}>Developer</span>}
+            label={<span style={{ fontSize: spanTextSize }}>Thread List</span>}
             {...a11yProps(1)}
-          />
-          <Tab
-            label={<span style={{ fontSize: spanTextSize }}>Contributor</span>}
-            {...a11yProps(2)}
           />
         </Tabs>
       </AppBar>
@@ -135,17 +113,14 @@ function Dashboard() {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          Project Manager
+          Project Details
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          Developer
-        </TabPanel>
-        <TabPanel value={value} index={2} dir={theme.direction}>
-          Contributor
+          Threads List
         </TabPanel>
       </SwipeableViews>
     </div>
   );
 }
 
-export default Dashboard;
+export default SpecificProject;
