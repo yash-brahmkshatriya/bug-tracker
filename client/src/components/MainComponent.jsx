@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 
 function MainComponent(props) {
   const classes = useStyles();
-  const user = useSelector((state) => state.user);
+  const isLoggedIn = useSelector((state) => state.user.user) !== null;
   return (
     <Box
       display="flex"
@@ -29,18 +29,17 @@ function MainComponent(props) {
       <Box>
         <Navbar />
       </Box>
-
       <Box m={5} marginTop={10} flex={1}>
         <Switch location={props.location}>
-          {/* <PrivateRoute path="/" exact> */}
-          <Route path="/" exact>
+          <PrivateRoute auth={isLoggedIn} path="/" exact>
             <Dashboard />
-          </Route>
-          {/* </PrivateRoute> */}
-          <Route auth={user.user} path="/projects">
+          </PrivateRoute>
+          <Route path="/projects">
             <Project />
           </Route>
-          <Route path="/home" component={LandingPage} />
+          <PrivateRoute auth={!isLoggedIn} path="/home" redirectRoute="/" exact>
+            <LandingPage />
+          </PrivateRoute>
         </Switch>
       </Box>
       <Box>

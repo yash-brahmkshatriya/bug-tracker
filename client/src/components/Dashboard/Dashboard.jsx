@@ -10,10 +10,14 @@ import {
   Typography,
   Box,
   useMediaQuery,
+  List,
+  Divider,
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
-import { getDashBoardDetails } from "../../redux/actions";
-import { Switch } from "react-router";
+import { getDashBoardDetails, exploreProjects } from "../../redux/actions";
+import SearchResultItem from "../Project/SearchResultItem";
+import Information from "../Utils/Information";
+import ThreadItem from "../Threads/ThreadItem";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -62,13 +66,15 @@ function Dashboard() {
   const isextraSmall = useMediaQuery(theme.breakpoints.down("xs"));
   const isTabSpan = useMediaQuery(theme.breakpoints.up("lmd"));
   const [value, setValue] = React.useState(0);
-  const user = useSelector((state) => state.user); // assumed user._id
-  const project = useSelector((state) => state.project);
+  const user = useSelector((state) => state.user.user); // assumed user._id
+  const dashBoard = useSelector((state) => state.project.dashBoard);
   const dispatch = useDispatch();
+  const explore = (searchString, by) =>
+    dispatch(exploreProjects(searchString, by));
 
   useEffect(() => {
     dispatch(getDashBoardDetails());
-  }, [dispatch]);
+  }, [user]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -77,23 +83,6 @@ function Dashboard() {
     setValue(index);
   };
 
-  let displayProjectManager = <p>all projects</p>;
-  let displayDeveloper = <p>all projects</p>;
-  let displayContributor = <p>all projects</p>;
-  if (project.loading) {
-    displayProjectManager = <CircularProgress />;
-    displayDeveloper = <CircularProgress />;
-    displayContributor = <CircularProgress />;
-  } else if (project.err) {
-    displayProjectManager = <p>{project.err.message}</p>;
-    displayDeveloper = <p>{project.err.message}</p>;
-    displayContributor = <p>{project.err.message}</p>;
-  } else {
-    // project.projects.map(project => {
-    //   // project.projectManager._id == user._id -> displayProjectManager <-
-    //   // project.developers.map
-    // })
-  }
   let spanTextSize = "14px";
   if (isextraSmall) {
     spanTextSize = "9px";
@@ -101,6 +90,7 @@ function Dashboard() {
   if (isTabSpan) {
     spanTextSize = "17px";
   }
+
   return (
     <div className={classes.root}>
       <AppBar position="static" color="default">
@@ -135,17 +125,70 @@ function Dashboard() {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          Project Manager
+          <ProjectList
+            projects={dashBoard.projects}
+            type="pm"
+            explore={explore}
+            userId={user._id}
+          />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          Developer
+          <ProjectList
+            projects={dashBoard.projects}
+            type="dv"
+            explore={explore}
+            userId={user._id}
+          />
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
-          Contributor
+          <ThreadList threads={dashBoard.threads} />
         </TabPanel>
       </SwipeableViews>
     </div>
   );
 }
+
+const ProjectList = ({ projects, type, explore, userId }) => {
+  let res;
+  if (projects) {
+    if (type === "pm") {
+      res = projects.filter((project) => project.projectManager._id === userId);
+    } else {
+      res = projects.filter(
+        (project) =>
+          project.developers.filter((developer) => developer._id === userId)
+            .length > 0
+      );
+    }
+  }
+
+  return res && res.length > 0 ? (
+    <List style={{ width: "100%" }}>
+      {res.map((project) => (
+        <>
+          <SearchResultItem explore={explore} project={project} />
+          <Divider />
+        </>
+      ))}
+    </List>
+  ) : (
+    <Information message="No items to show here...😕" />
+  );
+};
+
+const ThreadList = ({ threads }) => {
+  return threads.length === 0 ? (
+    <Information message="No items to show here...😕" />
+  ) : (
+    <List style={{ width: "100%" }}>
+      {threads.map((thread) => (
+        <>
+          <ThreadItem thread={thread} />
+          <Divider />
+        </>
+      ))}
+    </List>
+  );
+};
 
 export default Dashboard;

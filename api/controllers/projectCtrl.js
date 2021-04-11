@@ -123,7 +123,8 @@ exports.getDashBoardDetails = (req, res) => {
   User.findById(userId)
     .then((user) => {
       if (user) {
-        Thread.find({ contributor: userId })
+        Thread.find({ contributor: userId }, "-comments")
+          .populate("projectId contributor")
           .then((threads) => {
             Project.find({
               $or: [
