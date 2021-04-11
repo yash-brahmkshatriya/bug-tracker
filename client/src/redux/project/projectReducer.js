@@ -1,8 +1,9 @@
-import * as ActionTypes from './ActionTypes';
+import * as ActionTypes from "./ActionTypes";
 
 const initialstate = {
   loading: true,
   projects: [],
+  dashBoard: {},
   project: {},
   err: null,
 };
@@ -11,12 +12,12 @@ export const projectReducer = (state = initialstate, action) => {
   let project;
 
   switch (action.type) {
-    case ActionTypes.GET_ALL_PROJECTS_REQ:
+    case ActionTypes.GET_DASHBOARD_DETAILS_REQ:
       return { ...state, loading: true };
-    case ActionTypes.GET_ALL_PROJECTS_SUC:
-      return { ...state, loading: false, projects: action.payload, err: null };
-    case ActionTypes.GET_ALL_PROJECTS_FAIL:
-      return { ...state, loading: false, err: action.payload, projects: [] };
+    case ActionTypes.GET_DASHBOARD_DETAILS_SUC:
+      return { ...state, loading: false, dashBoard: action.payload, err: null };
+    case ActionTypes.GET_DASHBOARD_DETAILS_FAIL:
+      return { ...state, loading: false, err: action.payload, dashBoard: [] };
 
     case ActionTypes.GET_PROJECT_REQ:
       return { ...state, loading: true };

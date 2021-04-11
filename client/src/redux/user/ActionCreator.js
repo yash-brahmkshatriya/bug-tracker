@@ -1,4 +1,5 @@
-import * as ActionTypes from './ActionTypes';
+import Axios from "../apiCalls";
+import * as ActionTypes from "./ActionTypes";
 
 const signInUserReq = () => {
   return {
@@ -13,7 +14,7 @@ const signInUserSuccess = (user) => {
   };
 };
 
-const signInUserFailure = (error) => {
+const signInUserFail = (error) => {
   return {
     type: ActionTypes.USER_SIGNIN_FAILURE,
     payload: error,
@@ -24,4 +25,14 @@ export const signOutUser = () => {
   return {
     type: ActionTypes.USER_SIGNOUT,
   };
+};
+
+export const devLogin = (email) => (dispatch) => {
+  dispatch(signInUserReq());
+  Axios.post("/api/user/devTest", { email })
+    .then((data) => data.data)
+    .then((data) => dispatch(signInUserSuccess(data)))
+    .catch((err) =>
+      dispatch(signInUserFail(err?.request?.body || err.message))
+    );
 };

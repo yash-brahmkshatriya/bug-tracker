@@ -12,7 +12,7 @@ import {
   useMediaQuery,
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllProjects } from "../../redux/actions";
+import { getDashBoardDetails } from "../../redux/actions";
 import { Switch } from "react-router";
 
 function TabPanel(props) {
@@ -67,7 +67,7 @@ function Dashboard() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAllProjects());
+    dispatch(getDashBoardDetails());
   }, [dispatch]);
 
   const handleChange = (event, newValue) => {

@@ -1,19 +1,19 @@
-import * as ActionTypes from './ActionTypes';
-import Axios from '../apiCalls';
-const getAllProjectsReq = () => {
+import * as ActionTypes from "./ActionTypes";
+import Axios from "../apiCalls";
+const getDashBoardDetailsReq = () => {
   return {
-    type: ActionTypes.GET_ALL_PROJECTS_REQ,
+    type: ActionTypes.GET_DASHBOARD_DETAILS_REQ,
   };
 };
-const getAllProjectsSuc = (projects) => {
+const getDashBoardDetailsSuc = (projects) => {
   return {
-    type: ActionTypes.GET_ALL_PROJECTS_SUC,
+    type: ActionTypes.GET_DASHBOARD_DETAILS_SUC,
     payload: projects,
   };
 };
-const getAllProjectsFail = (err) => {
+const getDashBoardDetailsFail = (err) => {
   return {
-    type: ActionTypes.GET_ALL_PROJECTS_FAIL,
+    type: ActionTypes.GET_DASHBOARD_DETAILS_FAIL,
     payload: err,
   };
 };
@@ -125,23 +125,26 @@ const exploreProjectsFail = (err) => {
   };
 };
 
-const getAllProjects = () => (dispatch) => {
-  dispatch(getAllProjectsReq());
-  Axios.get('/api/project/')
-    .then((data) => dispatch(getAllProjectsSuc(data)))
-    .catch((err) => dispatch(getAllProjectsFail(err)));
+const getDashBoardDetails = () => (dispatch) => {
+  dispatch(getDashBoardDetailsReq());
+  Axios.get("/api/project/")
+    .then((data) => data.data)
+    .then((data) => dispatch(getDashBoardDetailsSuc(data)))
+    .catch((err) => dispatch(getDashBoardDetailsFail(err)));
 };
 
 const getProject = (projectId) => (dispatch) => {
   dispatch(getProjectReq());
   Axios.get(`/api/project/${projectId}`)
+    .then((data) => data.data)
     .then((data) => dispatch(getProjectSuc(data)))
     .catch((err) => dispatch(getProjectFail(err)));
 };
 
 const createProject = (name, description) => (dispatch) => {
   dispatch(createProjectReq());
-  Axios.post('/api/project/', { name, description })
+  Axios.post("/api/project/", { name, description })
+    .then((data) => data.data)
     .then((data) => dispatch(createProjectSuc(data)))
     .catch((err) => dispatch(createProjectFail(err)));
 };
@@ -149,6 +152,7 @@ const createProject = (name, description) => (dispatch) => {
 const updateProject = (projectId, name, description) => (dispatch) => {
   dispatch(updateProjectReq());
   Axios.put(`/api/project/${projectId}`, { name, description })
+    .then((data) => data.data)
     .then((data) => dispatch(updateProjectSuc(name, description)))
     .catch((err) => dispatch(updateProjectFail(err)));
 };
@@ -156,6 +160,7 @@ const updateProject = (projectId, name, description) => (dispatch) => {
 const deleteProject = (projectId) => (dispatch) => {
   dispatch(deleteProjectReq());
   Axios.delete(`/api/project/${projectId}`)
+    .then((data) => data.data)
     .then((data) => dispatch(deleteProjectSuc()))
     .catch((err) => dispatch(deleteProjectFail(err)));
 };
@@ -167,11 +172,12 @@ const manageDev = (projectId, email, operation) => (dispatch) => {
     { email },
     { params: { operation } }
   )
+    .then((data) => data.data)
     .then((data) => dispatch(manageDeveloperSuc(data)))
     .catch((err) => dispatch(manageDeveloperFail(err)));
 };
 
-const exploreProjects = (searchString, options = 'all') => (dispatch) => {
+const exploreProjects = (searchString, options = "all") => (dispatch) => {
   dispatch(exploreProjectsReq());
   Axios.get(`/api/project/explore`, { params: { searchString, options } })
     .then((data) => data.data)
@@ -182,7 +188,7 @@ const exploreProjects = (searchString, options = 'all') => (dispatch) => {
 };
 
 export {
-  getAllProjects,
+  getDashBoardDetails,
   getProject,
   createProject,
   updateProject,
