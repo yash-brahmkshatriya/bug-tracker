@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Box,
   ListItem,
@@ -8,17 +8,36 @@ import {
   Typography,
   useTheme,
   useMediaQuery,
-} from "@material-ui/core";
-import { useStyles } from "./threadStyles";
-import { Link as RouterLink, useHistory } from "react-router-dom";
-import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
-import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
-import HistoryOutlinedIcon from "@material-ui/icons/HistoryOutlined";
+} from '@material-ui/core';
+import { useStyles } from './threadStyles';
+import { Link as RouterLink } from 'react-router-dom';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+import HistoryOutlinedIcon from '@material-ui/icons/HistoryOutlined';
+import BugReportIcon from '@material-ui/icons/BugReport';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import {
+  bugPriorityColors,
+  bugTypeColors,
+  closedStatusColors,
+} from '../../shared/misc';
 
-const ThreadItem = ({ thread }) => {
+const StyledChip = React.forwardRef(({ bgcolor, ...props }, ref) =>
+  props.variant === 'outlined' ? (
+    <Chip
+      style={{ color: bgcolor, borderColor: bgcolor }}
+      ref={ref}
+      {...props}
+    />
+  ) : (
+    <Chip style={{ backgroundColor: bgcolor }} ref={ref} {...props} />
+  )
+);
+
+const ThreadItem = ({ thread, keepProjectNameHidden = false }) => {
   const css = useStyles();
   const theme = useTheme();
-  const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
+  const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <ListItem key={thread._id}>
@@ -27,16 +46,21 @@ const ThreadItem = ({ thread }) => {
           <RouterLink to={`/threads/${thread._id}`} className={css.link}>
             <ListItemText
               primary={thread.title}
-              primaryTypographyProps={{ variant: "h5" }}
+              primaryTypographyProps={{ variant: 'h5' }}
             />
           </RouterLink>
-          <RouterLink
-            to={`/projects/${thread.projectId._id}`}
-            className={css.link}
-          >
-            <ListItemText secondary={thread.projectId.name} />
-          </RouterLink>
-          <Box display="flex" alignItems="center" className={css.timeNameInfo}>
+          {keepProjectNameHidden ? null : (
+            <RouterLink
+              to={`/projects/${thread.projectId._id}`}
+              className={css.link}
+            >
+              <ListItemText
+                secondary={thread.projectId.name}
+                secondaryTypographyProps={{ variant: 'body1' }}
+              />
+            </RouterLink>
+          )}
+          <Box className={isSmall ? css.timeNameInfoMobile : css.timeNameInfo}>
             <Typography variant="inherit">{thread.contributor.name}</Typography>
             <FiberManualRecordIcon style={{ fontSize: 8 }} />
             <Typography variant="inherit">
@@ -44,29 +68,53 @@ const ThreadItem = ({ thread }) => {
             </Typography>
           </Box>
         </Grid>
-        <Grid item xs={12} sm={12} md={6} style={{ alignItems: "flex-end" }}>
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={6}
+          style={{ alignItems: 'flex-end', paddingLeft: 0, paddingRight: 0 }}
+        >
           <Box className={isSmall ? css.chipsBoxMobile : css.chipsBoxDesktop}>
-            <Chip
+            <StyledChip
               icon={
                 thread.isClosed ? <HistoryOutlinedIcon /> : <InfoOutlinedIcon />
               }
               color="secondary"
-              label={thread.isClosed ? "Closed" : "Open"}
-              key={0}
+              bgcolor={
+                thread.isClosed
+                  ? closedStatusColors.closed
+                  : closedStatusColors.open
+              }
+              label={thread.isClosed ? 'Closed' : 'Open'}
+              key="isClosed"
               size="small"
               className={css.chip}
             />
-            <Chip
+            <StyledChip
               color="secondary"
+              icon={
+                thread.bugType === 'Bug' ? (
+                  <BugReportIcon />
+                ) : (
+                  <HelpOutlineIcon />
+                )
+              }
+              bgcolor={
+                thread.bugType === 'Bug'
+                  ? bugTypeColors.bug
+                  : bugTypeColors.query
+              }
               label={thread.bugType}
-              key={1}
+              key="bugType"
               size="small"
               className={css.chip}
             />
-            <Chip
+            <StyledChip
               color="secondary"
+              bgcolor={bugPriorityColors[thread.bugPriority.toLowerCase()]}
               label={thread.bugPriority}
-              key={2}
+              key="bugPriority"
               size="small"
               className={css.chip}
             />
