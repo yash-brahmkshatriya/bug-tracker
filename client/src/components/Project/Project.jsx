@@ -1,8 +1,9 @@
-import React from 'react';
-import { Switch, Route, useRouteMatch, useParams } from 'react-router-dom';
-import { connect } from 'react-redux';
-import ExploreProjects from './ExploreProjects';
-import { exploreProjects } from '../../redux/actions';
+import React from "react";
+import { Switch, Route, useRouteMatch, useParams } from "react-router-dom";
+import { connect } from "react-redux";
+import ExploreProjects from "./ExploreProjects";
+import { exploreProjects } from "../../redux/actions";
+import SpecificProject from "./SpecificProject/SpecificProject";
 
 const mapStateToProps = (state) => {
   return {
@@ -30,10 +31,5 @@ function Project(props) {
     </Switch>
   );
 }
-
-const SpecificProject = () => {
-  let { projectId } = useParams();
-  return <h1>{projectId}</h1>;
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Project);
