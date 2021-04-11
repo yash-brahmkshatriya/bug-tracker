@@ -1,35 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Input,
-  Button,
-  List,
-  ListItem,
-  ListItemText,
-  Grid,
-  Chip,
-  Typography,
-  useTheme,
-  useMediaQuery,
-  Divider,
-} from '@material-ui/core';
+import { Box, Input, Button, List, Divider } from '@material-ui/core';
 import { useStyles } from './projectStyles';
 import { useFormik } from 'formik';
 import SearchIcon from '@material-ui/icons/Search';
 import { useSelector } from 'react-redux';
 import Information from '../Utils/Information';
 import Loading from '../Utils/Loading';
-import { Link as RouterLink } from 'react-router-dom';
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import { useHistory, useLocation } from 'react-router-dom';
+import SearchResultItem from './SearchResultItem';
 
-const ProjectLink = React.forwardRef((props, ref) => (
-  <a ref={ref} {...props}>
-    {props.children}
-  </a>
-));
+const useQuery = () => new URLSearchParams(useLocation().search);
 
 const ExploreProjects = (props) => {
-  const [hasSearched, setSearched] = useState(false);
+  const queryParams = useQuery();
+  const history = useHistory();
+  useEffect(() => {
+    if (queryParams.has('query')) {
+      props.explore(queryParams.get('query'), queryParams.get('by'));
+    } else history.replace('/projects');
+  }, []);
   return (
     <Box
       display="flex"
@@ -38,39 +27,43 @@ const ExploreProjects = (props) => {
       alignItems="center"
       // className={css.results}
     >
-      <SearchBox
-        explore={props.explore}
-        hasSearched={hasSearched}
-        setSearched={setSearched}
-      />
-      <SearchResults
-        explore={props.explore}
-        setSearched={setSearched}
-        hasSearched={hasSearched}
-      />
+      <SearchBox explore={props.explore} />
+      <SearchResults explore={props.explore} />
     </Box>
   );
 };
 
-const SearchBox = ({ explore, setSearched, hasSearched }) => {
+const SearchBox = ({ explore }) => {
   const css = useStyles();
   const project = useSelector((state) => state.project);
+  const history = useHistory();
+  const queryParams = useQuery();
   const exploreForm = useFormik({
     initialValues: {
       searchString: '',
     },
     onSubmit: (values) => {
-      setSearched(values.searchString);
       explore(values.searchString);
+      history.push(`/projects?query=${values.searchString}`);
     },
   });
 
   useEffect(() => {
     if (!project.loading) {
-      exploreForm.setFieldValue('searchString', hasSearched);
+      if (queryParams.has('by')) {
+        exploreForm.setFieldValue(
+          'searchString',
+          `${queryParams.get('by')} : ${queryParams.get('query')}`
+        );
+      } else {
+        exploreForm.setFieldValue(
+          'searchString',
+          `${queryParams.get('query')}`
+        );
+      }
       exploreForm.setSubmitting(false);
     }
-  }, [project]);
+  }, [project, history.location]);
 
   return (
     <form onSubmit={exploreForm.handleSubmit} className={css.formDiv}>
@@ -102,86 +95,31 @@ const SearchBox = ({ explore, setSearched, hasSearched }) => {
   );
 };
 
-const SearchResults = ({ hasSearched, explore, setSearched }) => {
+const SearchResults = ({ explore }) => {
   const project = useSelector((state) => state.project);
-  if (hasSearched && project.projects.length > 0) {
+  const queryParams = useQuery();
+  var emptySearch = false;
+  if (!queryParams.has('query')) emptySearch = true;
+
+  if (!emptySearch && project.projects.length > 0) {
     return (
       <List style={{ width: '100%' }}>
         {project.projects.map((project) => (
           <>
-            <SearchResultItem
-              setSearched={setSearched}
-              explore={explore}
-              project={project}
-            />
+            <SearchResultItem explore={explore} project={project} />
             <Divider />
           </>
         ))}
       </List>
     );
-  } else if (hasSearched && project.loading) return <Loading />;
-  else if (!hasSearched)
+  } else if (!emptySearch && project.loading) return <Loading />;
+  else if (emptySearch)
     return <Information message="Search to see Results..." />;
-  else if (hasSearched && project.err)
+  else if (!emptySearch && project.err)
     return <Information message="Error connecting..." />;
+  else if (!emptySearch && project.projects.length === 0)
+    return <Information message="No such projects found..." />;
+  else return <Information message="Unknown Error Occurred 😕" />;
 };
-
-const SearchResultItem = ({ project, explore, setSearched }) => {
-  const css = useStyles();
-  const theme = useTheme();
-  const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
-  const handleChipClick = (tag) => () => {
-    if (tag) {
-      setSearched(`tag : ${tag}`);
-    }
-    explore(tag, 'tag');
-  };
-  return (
-    <ListItem key={project._id}>
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={12} md={6}>
-          <RouterLink
-            to={`/projects/${project._id}`}
-            className={css.link}
-            component={ProjectLink}
-          >
-            <ListItemText
-              primary={project.name}
-              primaryTypographyProps={{ variant: 'h5' }}
-            />
-          </RouterLink>
-          <ListItemText secondary={project.description} />
-          <Box display="flex" alignItems="center" className={css.timeNameInfo}>
-            <Typography variant="p">{project.projectManager.name}</Typography>
-            <FiberManualRecordIcon style={{ fontSize: 8 }} />
-            <Typography variant="p">
-              {getDateTimeString(project.createdAt)}
-            </Typography>
-          </Box>
-        </Grid>
-        <Grid item xs={12} sm={12} md={6} style={{ alignItems: 'flex-end' }}>
-          <Box className={isSmall ? css.chipsBoxMobile : css.chipsBoxDesktop}>
-            {project.tags.map((tag, idx) => (
-              <Chip
-                color="secondary"
-                label={tag}
-                key={idx}
-                size="small"
-                clickable
-                className={css.chip}
-                onClick={handleChipClick(tag)}
-              />
-            ))}
-          </Box>
-        </Grid>
-      </Grid>
-    </ListItem>
-  );
-};
-
-function getDateTimeString(ISOString) {
-  let date = new Date(ISOString);
-  return `${date.toDateString()}`;
-}
 
 export default ExploreProjects;

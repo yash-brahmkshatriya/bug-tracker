@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
-import PropTypes from "prop-types";
-import SwipeableViews from "react-swipeable-views";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import { useParams } from "react-router-dom";
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
+import SwipeableViews from 'react-swipeable-views';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useParams } from 'react-router-dom';
 import {
   CircularProgress,
   AppBar,
@@ -11,9 +11,9 @@ import {
   Typography,
   Box,
   useMediaQuery,
-} from "@material-ui/core";
-import { useDispatch, useSelector } from "react-redux";
-import { getProject } from "../../../redux/project/ActionCreator";
+} from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProject } from '../../../redux/project/ActionCreator';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -44,30 +44,30 @@ TabPanel.propTypes = {
 function a11yProps(index) {
   return {
     id: `full-width-tab-${index}`,
-    "aria-controls": `full-width-tabpanel-${index}`,
+    'aria-controls': `full-width-tabpanel-${index}`,
   };
 }
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
-    width: "100%",
-    minHeight: "100vh",
+    width: '100%',
+    minHeight: '100vh',
   },
 }));
 
 function SpecificProject() {
   const classes = useStyles();
   const theme = useTheme();
-  const isextraSmall = useMediaQuery(theme.breakpoints.down("xs"));
-  const isTabSpan = useMediaQuery(theme.breakpoints.up("lmd"));
+  const isextraSmall = useMediaQuery(theme.breakpoints.down('xs'));
+  const isTabSpan = useMediaQuery(theme.breakpoints.up('lmd'));
   const [value, setValue] = React.useState(0);
   const { projectId } = useParams();
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getProject(projectId));
-  });
+  }, []);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -76,12 +76,12 @@ function SpecificProject() {
     setValue(index);
   };
 
-  let spanTextSize = "14px";
+  let spanTextSize = '14px';
   if (isextraSmall) {
-    spanTextSize = "9px";
+    spanTextSize = '9px';
   }
   if (isTabSpan) {
-    spanTextSize = "17px";
+    spanTextSize = '17px';
   }
   return (
     <div className={classes.root}>
@@ -108,7 +108,7 @@ function SpecificProject() {
       </AppBar>
 
       <SwipeableViews
-        axis={theme.direction === "rtl" ? "x-reverse" : "x"}
+        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
         index={value}
         onChangeIndex={handleChangeIndex}
       >
