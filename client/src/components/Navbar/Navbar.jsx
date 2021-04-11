@@ -1,5 +1,7 @@
-import React from 'react';
-import { useStyles } from './styles';
+import React from "react";
+import { useDispatch } from "react-redux";
+import { useStyles } from "./styles";
+import { devLogin } from "../../redux/actions";
 import {
   AppBar,
   Typography,
@@ -7,13 +9,20 @@ import {
   Button,
   useTheme,
   useMediaQuery,
-} from '@material-ui/core';
+} from "@material-ui/core";
 
 const Navbar = (props) => {
   const theme = useTheme();
-  const isSmall = useMediaQuery(theme.breakpoints.down('xs'));
+  const isSmall = useMediaQuery(theme.breakpoints.down("xs"));
   const classes = useStyles();
   const user = false;
+  const dispatch = useDispatch();
+  const devTestLogin = () => {
+    const email = prompt("enter test email");
+    if (email && email.endsWith("@test.com")) {
+      dispatch(devLogin(email));
+    }
+  };
 
   return (
     <div className={classes.root}>
@@ -22,10 +31,10 @@ const Navbar = (props) => {
           className={classes.image}
           src="/assets/images/buglogo.png"
           alt="icon"
-          style={isSmall ? { transform: 'scale(0.6)', marginLeft: '0px' } : {}}
+          style={isSmall ? { transform: "scale(0.6)", marginLeft: "0px" } : {}}
         />
         <Typography
-          variant={isSmall ? 'h5' : 'h3'}
+          variant={isSmall ? "h5" : "h3"}
           className={classes.title}
           fontWeight="fontWeightBold"
         >
@@ -38,6 +47,9 @@ const Navbar = (props) => {
           ) : (
             <Button className={classes.button}>Login</Button>
           )}
+          <Button className={classes.button} onClick={devTestLogin}>
+            DevLogin
+          </Button>
         </Toolbar>
       </AppBar>
     </div>

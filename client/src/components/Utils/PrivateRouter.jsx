@@ -1,14 +1,15 @@
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect } from "react-router-dom";
 
-const PrivateRoute = ({ children, auth, ...rest }) => {
+const PrivateRoute = ({ children, auth, redirectRoute, ...rest }) => {
+  const pathname = redirectRoute || "/home";
   return (
     <Route
       {...rest}
       render={({ location }) =>
-        auth != null ? (
+        auth === true ? (
           children
         ) : (
-          <Redirect to={{ pathname: '/home', state: { from: location } }} />
+          <Redirect to={{ pathname: pathname, state: { from: location } }} />
         )
       }
     />

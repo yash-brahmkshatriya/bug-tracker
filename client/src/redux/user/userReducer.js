@@ -1,4 +1,5 @@
-import * as ActionTypes from './ActionTypes';
+import * as ActionTypes from "./ActionTypes";
+import localStorageService from "../../shared/localStorageService";
 
 const initialUserState = {
   loading: true,
@@ -12,10 +13,11 @@ export const userReducer = (state = initialUserState, action) => {
       return { ...state, loading: true };
 
     case ActionTypes.USER_SIGNIN_SUCCESS:
+      localStorageService.setToken(action.payload.auth_token);
       return {
         ...state,
         loading: false,
-        user: action.payload,
+        user: action.payload.user,
         error: null,
       };
 
