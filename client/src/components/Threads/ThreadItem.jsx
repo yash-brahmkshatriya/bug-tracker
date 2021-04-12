@@ -10,7 +10,7 @@ import {
   useMediaQuery,
 } from '@material-ui/core';
 import { useStyles } from './threadStyles';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useParams } from 'react-router-dom';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import HistoryOutlinedIcon from '@material-ui/icons/HistoryOutlined';
@@ -21,29 +21,22 @@ import {
   bugTypeColors,
   closedStatusColors,
 } from '../../shared/misc';
-
-const StyledChip = React.forwardRef(({ bgcolor, ...props }, ref) =>
-  props.variant === 'outlined' ? (
-    <Chip
-      style={{ color: bgcolor, borderColor: bgcolor }}
-      ref={ref}
-      {...props}
-    />
-  ) : (
-    <Chip style={{ backgroundColor: bgcolor }} ref={ref} {...props} />
-  )
-);
+import StyledChip from '../Utils/StyledChip';
 
 const ThreadItem = ({ thread, keepProjectNameHidden = false }) => {
   const css = useStyles();
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
+  const { projectId } = useParams();
 
   return (
     <ListItem key={thread._id}>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={12} md={6}>
-          <RouterLink to={`/threads/${thread._id}`} className={css.link}>
+          <RouterLink
+            to={`/projects/${projectId}/threads/${thread._id}`}
+            className={css.link}
+          >
             <ListItemText
               primary={thread.title}
               primaryTypographyProps={{ variant: 'h5' }}

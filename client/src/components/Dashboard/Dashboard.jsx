@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import SwipeableViews from 'react-swipeable-views';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
-  CircularProgress,
   AppBar,
   Tabs,
   Tab,
@@ -16,8 +15,8 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { getDashBoardDetails, exploreProjects } from '../../redux/actions';
 import SearchResultItem from '../Project/SearchResultItem';
+import ThreadList from '../Threads/ThreadList';
 import Information from '../Utils/Information';
-import ThreadItem from '../Threads/ThreadItem';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -176,21 +175,6 @@ const ProjectList = ({ projects, type, explore, userId }) => {
     </List>
   ) : (
     <Information message="No items to show here...😕" />
-  );
-};
-
-const ThreadList = ({ threads }) => {
-  return threads.length === 0 ? (
-    <Information message="No items to show here...😕" />
-  ) : (
-    <List style={{ width: '100%' }}>
-      {threads.map((thread) => (
-        <>
-          <ThreadItem thread={thread} />
-          <Divider />
-        </>
-      ))}
-    </List>
   );
 };
 

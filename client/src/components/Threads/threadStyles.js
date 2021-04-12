@@ -60,4 +60,8 @@ export const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
     marginLeft: theme.spacing(1),
   },
+  chipMR: {
+    marginBottom: theme.spacing(1),
+    marginRight: theme.spacing(1),
+  },
 }));

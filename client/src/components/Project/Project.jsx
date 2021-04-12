@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import ExploreProjects from './ExploreProjects';
 import { exploreProjects } from '../../redux/actions';
 import SpecificProject from './SpecificProject';
+import Threads from '../Threads/Threads';
 
 const mapStateToProps = (state) => {
   return {
@@ -24,6 +25,9 @@ function Project(props) {
     <Switch>
       <Route exact path={path}>
         <ExploreProjects explore={props.explore} />
+      </Route>
+      <Route path={`${path}/:projectId/threads`}>
+        <Threads />
       </Route>
       <Route path={`${path}/:projectId`}>
         <SpecificProject />
