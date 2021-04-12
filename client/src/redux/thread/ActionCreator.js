@@ -146,6 +146,7 @@ const createThread = (
     isClosed,
     seen,
   })
+    .then((data) => data.data)
     .then((data) => dispatch(createThreadSuc(data)))
     .catch((err) => dispatch(createThreadFail(err)));
 };
@@ -153,6 +154,7 @@ const createThread = (
 const getThread = (projectId, threadId) => (dispatch) => {
   dispatch(getThreadReq());
   Axios.get(`/api/project/${projectId}/threads/${threadId}`)
+    .then((data) => data.data)
     .then((data) => dispatch(getThreadSuc(data)))
     .catch((err) => dispatch(getThreadFail(err)));
 };
@@ -160,6 +162,7 @@ const getThread = (projectId, threadId) => (dispatch) => {
 const getAllThreads = (projectId) => (dispatch) => {
   dispatch(getAllThreadsReq());
   Axios.get(`/api/project/${projectId}/threads`)
+    .then((data) => data.data)
     .then((data) => dispatch(getAllThreadsSuc(data)))
     .catch((err) => dispatch(getAllThreadsFail(err)));
 };
@@ -169,6 +172,7 @@ const postComment = (projectId, threadId, comment) => (dispatch) => {
   Axios.get(`/api/project/${projectId}/threads/${threadId}/comments`, {
     comment,
   })
+    .then((data) => data.data)
     .then((data) => dispatch(postCommentSuc(data)))
     .catch((err) => dispatch(postCommentFail(err)));
 };
@@ -176,6 +180,7 @@ const postComment = (projectId, threadId, comment) => (dispatch) => {
 const getComments = (projectId, threadId) => (dispatch) => {
   dispatch(getCommentsReq());
   Axios.get(`/api/project/${projectId}/threads/${threadId}/comments`)
+    .then((data) => data.data)
     .then((data) => dispatch(getCommentsSuc(data)))
     .catch((err) => dispatch(getCommentsFail(err)));
 };
@@ -188,6 +193,7 @@ const updateComment = (projectId, threadId, comment, commentId) => (
     `/api/project/${projectId}/threads/${threadId}/comments/${commentId}`,
     { comment }
   )
+    .then((data) => data.data)
     .then((data) => dispatch(updateCommentSuc(commentId, comment)))
     .catch((err) => dispatch(updateCommentFail(err)));
 };
@@ -207,6 +213,7 @@ const updateThread = (
     title,
     description,
   })
+    .then((data) => data.data)
     .then((data) => dispatch(updateThreadSuc(data)))
     .catch((err) => dispatch(updateThreadFail(err)));
 };

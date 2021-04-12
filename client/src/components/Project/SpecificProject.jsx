@@ -4,7 +4,6 @@ import SwipeableViews from 'react-swipeable-views';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { useParams } from 'react-router-dom';
 import {
-  CircularProgress,
   AppBar,
   Tabs,
   Tab,
@@ -13,7 +12,9 @@ import {
   useMediaQuery,
 } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProject } from '../../../redux/project/ActionCreator';
+import { getProject, getAllThreads } from '../../redux/actions';
+import ProjectDetails from './ProjectDetails';
+import ThreadList from '../Threads/ThreadList';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -64,9 +65,12 @@ function SpecificProject() {
   const [value, setValue] = React.useState(0);
   const { projectId } = useParams();
   const dispatch = useDispatch();
+  const project = useSelector((state) => state.project.project);
+  const threads = useSelector((state) => state.thread.threads);
 
   useEffect(() => {
     dispatch(getProject(projectId));
+    dispatch(getAllThreads(projectId));
   }, []);
 
   const handleChange = (event, newValue) => {
@@ -95,13 +99,15 @@ function SpecificProject() {
           aria-label="full width tabs example"
         >
           <Tab
+            style={{ textTransform: 'none' }}
             label={
               <span style={{ fontSize: spanTextSize }}>Project Details</span>
             }
             {...a11yProps(0)}
           />
           <Tab
-            label={<span style={{ fontSize: spanTextSize }}>Thread List</span>}
+            style={{ textTransform: 'none' }}
+            label={<span style={{ fontSize: spanTextSize }}>Threads</span>}
             {...a11yProps(1)}
           />
         </Tabs>
@@ -113,10 +119,10 @@ function SpecificProject() {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          Project Details
+          <ProjectDetails project={project} />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          Threads List
+          <ThreadList threads={threads} keepProjectNameHidden={true} />
         </TabPanel>
       </SwipeableViews>
     </div>
