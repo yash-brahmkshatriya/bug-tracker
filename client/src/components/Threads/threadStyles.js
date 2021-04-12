@@ -6,10 +6,25 @@ export const useStyles = makeStyles((theme) => ({
   },
   link: {
     textDecoration: 'none',
-    '&:focus, &:hover, &:visited, &:link, &:active': {
+    '&:focus, &:visited, &:link, &:active': {
       textDecoration: 'none',
     },
+    '&:hover': {
+      textDecoration: 'underline',
+      textDecorationColor: 'inherit',
+    },
     color: theme.palette.secondary.main,
+  },
+  projectLink: {
+    textDecoration: 'none',
+    '&:focus, &:visited, &:link, &:active': {
+      textDecoration: 'none',
+    },
+    '&:hover': {
+      textDecoration: 'underline',
+      textDecorationColor: 'inherit',
+    },
+    color: theme.palette.grey[500],
   },
   chipsBoxMobile: {
     display: 'flex',

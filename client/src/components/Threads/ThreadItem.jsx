@@ -52,7 +52,7 @@ const ThreadItem = ({ thread, keepProjectNameHidden = false }) => {
           {keepProjectNameHidden ? null : (
             <RouterLink
               to={`/projects/${thread.projectId._id}`}
-              className={css.link}
+              className={css.projectLink}
             >
               <ListItemText
                 secondary={thread.projectId.name}

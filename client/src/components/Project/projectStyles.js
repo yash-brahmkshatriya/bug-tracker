@@ -38,8 +38,11 @@ export const useStyles = makeStyles((theme) => ({
   },
   link: {
     textDecoration: 'none',
-    '&:focus, &:hover, &:visited, &:link, &:active': {
+    '&:focus, &:visited, &:link, &:active': {
       textDecoration: 'none',
+    },
+    '&:hover': {
+      textDecoration: 'underline',
     },
     color: theme.palette.secondary.main,
   },
