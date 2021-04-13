@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Box,
   ListItem,
@@ -8,38 +8,37 @@ import {
   Typography,
   useTheme,
   useMediaQuery,
-} from '@material-ui/core';
-import { useStyles } from './threadStyles';
-import { Link as RouterLink, useParams } from 'react-router-dom';
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
-import HistoryOutlinedIcon from '@material-ui/icons/HistoryOutlined';
-import BugReportIcon from '@material-ui/icons/BugReport';
-import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+} from "@material-ui/core";
+import { useStyles } from "./threadStyles";
+import { Link as RouterLink, useParams } from "react-router-dom";
+import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
+import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
+import HistoryOutlinedIcon from "@material-ui/icons/HistoryOutlined";
+import BugReportIcon from "@material-ui/icons/BugReport";
+import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 import {
   bugPriorityColors,
   bugTypeColors,
   closedStatusColors,
-} from '../../shared/misc';
-import StyledChip from '../Utils/StyledChip';
+} from "../../shared/misc";
+import StyledChip from "../Utils/StyledChip";
 
 const ThreadItem = ({ thread, keepProjectNameHidden = false }) => {
   const css = useStyles();
   const theme = useTheme();
-  const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
-  const { projectId } = useParams();
+  const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <ListItem key={thread._id}>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={12} md={6}>
           <RouterLink
-            to={`/projects/${projectId}/threads/${thread._id}`}
+            to={`/projects/${thread.projectId._id}/threads/${thread._id}`}
             className={css.link}
           >
             <ListItemText
               primary={thread.title}
-              primaryTypographyProps={{ variant: 'h5' }}
+              primaryTypographyProps={{ variant: "h5" }}
             />
           </RouterLink>
           {keepProjectNameHidden ? null : (
@@ -49,7 +48,7 @@ const ThreadItem = ({ thread, keepProjectNameHidden = false }) => {
             >
               <ListItemText
                 secondary={thread.projectId.name}
-                secondaryTypographyProps={{ variant: 'body1' }}
+                secondaryTypographyProps={{ variant: "body1" }}
               />
             </RouterLink>
           )}
@@ -66,7 +65,7 @@ const ThreadItem = ({ thread, keepProjectNameHidden = false }) => {
           xs={12}
           sm={12}
           md={6}
-          style={{ alignItems: 'flex-end', paddingLeft: 0, paddingRight: 0 }}
+          style={{ alignItems: "flex-end", paddingLeft: 0, paddingRight: 0 }}
         >
           <Box className={isSmall ? css.chipsBoxMobile : css.chipsBoxDesktop}>
             <StyledChip
@@ -79,7 +78,7 @@ const ThreadItem = ({ thread, keepProjectNameHidden = false }) => {
                   ? closedStatusColors.closed
                   : closedStatusColors.open
               }
-              label={thread.isClosed ? 'Closed' : 'Open'}
+              label={thread.isClosed ? "Closed" : "Open"}
               key="isClosed"
               size="small"
               className={css.chip}
@@ -87,14 +86,14 @@ const ThreadItem = ({ thread, keepProjectNameHidden = false }) => {
             <StyledChip
               color="secondary"
               icon={
-                thread.bugType === 'Bug' ? (
+                thread.bugType === "Bug" ? (
                   <BugReportIcon />
                 ) : (
                   <HelpOutlineIcon />
                 )
               }
               bgcolor={
-                thread.bugType === 'Bug'
+                thread.bugType === "Bug"
                   ? bugTypeColors.bug
                   : bugTypeColors.query
               }
