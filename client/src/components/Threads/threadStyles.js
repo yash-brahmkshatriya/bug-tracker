@@ -39,6 +39,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   timeNameInfo: {
     display: "flex",
+    // flexWrap: "wrap",
     alignItems: "center",
     "& > *": {
       marginRight: theme.spacing(1),
@@ -49,7 +50,7 @@ export const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
-    "& :nth-child(even)": {
+    "& > nth-child(even)": {
       display: "none",
     },
     "& > *": {
@@ -65,7 +66,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   divider: {
     marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(1),
   },
   paperSection: {
     marginBottom: theme.spacing(3),
@@ -77,13 +78,16 @@ export const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "space-between",
     backgroundColor: theme.palette.primary.light,
-    padding: "8px",
-    borderTopRightRadius: "20px",
+    padding: theme.spacing(1),
+    borderTopRightRadius: theme.spacing(3),
   },
   customBorderRadius: {
-    borderTopRightRadius: "20px",
-    borderBottomLeftRadius: "20px",
-    borderBottomRightRadius: "20px",
-    marginBottom: "8px",
+    borderTopRightRadius: theme.spacing(3),
+    borderBottomLeftRadius: theme.spacing(3),
+    borderBottomRightRadius: theme.spacing(3),
+    marginBottom: theme.spacing(2),
+  },
+  noBorder: {
+    border: "none",
   },
 }));

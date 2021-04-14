@@ -7,11 +7,11 @@ function ThreadComments({ comments }) {
   return (
     <>
       {comments.length > 0 ? (
-        <Paper style={{ padding: "16px" }}>
+        <>
           {comments.map((comment) => (
             <ThreadComment comment={comment} />
           ))}
-        </Paper>
+        </>
       ) : (
         <Information message="Be the first one to add a comment!😊" />
       )}

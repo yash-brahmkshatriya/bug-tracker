@@ -1,5 +1,5 @@
-import * as ActionTypes from './ActionTypes';
-import Axios from '../apiCalls';
+import * as ActionTypes from "./ActionTypes";
+import Axios from "../apiCalls";
 const createThreadReq = () => {
   return {
     type: ActionTypes.CREATE_THREAD_REQ,
@@ -169,7 +169,7 @@ const getAllThreads = (projectId) => (dispatch) => {
 
 const postComment = (projectId, threadId, comment) => (dispatch) => {
   dispatch(postCommentReq());
-  Axios.get(`/api/project/${projectId}/threads/${threadId}/comments`, {
+  Axios.post(`/api/project/${projectId}/threads/${threadId}/comments`, {
     comment,
   })
     .then((data) => data.data)

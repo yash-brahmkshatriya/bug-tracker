@@ -15,6 +15,7 @@ import ThreadTitle from "./Thread/ThreadTitle";
 import ThreadDescription from "./Thread/ThreadDescription";
 import ThreadComments from "./Thread/ThreadComments";
 import Information from "../Utils/Information";
+import NewComment from "./Thread/NewComment";
 const Threads = () => {
   const { path } = useRouteMatch();
   const { projectId } = useParams();
@@ -45,6 +46,11 @@ const Thread = () => {
       <ThreadTitle thread={thread.thread} />
       <ThreadDescription thread={thread.thread} />
       <ThreadComments comments={thread.thread.comments} />
+      <NewComment
+        isClosed={thread.thread?.isClosed}
+        projectId={projectId}
+        threadId={threadId}
+      />
     </>
   );
 };

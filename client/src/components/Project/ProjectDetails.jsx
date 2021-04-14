@@ -1,6 +1,6 @@
-import React from 'react';
-import { useTheme } from '@material-ui/core/styles';
-import { useHistory } from 'react-router-dom';
+import React from "react";
+import { useTheme } from "@material-ui/core/styles";
+import { useHistory } from "react-router-dom";
 import {
   Chip,
   Typography,
@@ -13,23 +13,26 @@ import {
   ListItem,
   Avatar,
   ListItemAvatar,
-} from '@material-ui/core';
-import { useDispatch } from 'react-redux';
-import { exploreProjects } from '../../redux/actions';
-import { useStyles as projDetStyles, getRandomColor } from './projDetStyles';
-import LoadingComponent from '../Utils/Loading';
+} from "@material-ui/core";
+import { useDispatch } from "react-redux";
+import { exploreProjects } from "../../redux/actions";
+import { useStyles as projDetStyles, getRandomColor } from "./projDetStyles";
+import LoadingComponent from "../Utils/Loading";
+import DescriptionOutlinedIcon from "@material-ui/icons/DescriptionOutlined";
+import PersonIcon from "@material-ui/icons/Person";
+import CodeIcon from "@material-ui/icons/Code";
 
 const ProjectDetails = ({ project }) => {
   const css = projDetStyles();
   const theme = useTheme();
-  const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
+  const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
   const history = useHistory();
   const dispatch = useDispatch();
   const handleChipClick = (tag) => () => {
     if (tag) {
       history.push(`/projects?query=${tag}&by=tag`);
     }
-    dispatch(exploreProjects(tag, 'tag'));
+    dispatch(exploreProjects(tag, "tag"));
   };
   return Object.keys(project).length > 0 ? (
     <Box>
@@ -39,19 +42,31 @@ const ProjectDetails = ({ project }) => {
       <Divider className={css.divider} />
       <Grid container justify="space-between">
         <Grid item sm={12} md={6}>
-          <ListItemText
+          {/* <ListItemText
             primary="Description"
-            style={{ maxWidth: '48ch', overflowWrap: 'break-word' }}
+            style={{ maxWidth: "48ch", overflowWrap: "break-word" }}
             secondary={project.description}
             primaryTypographyProps={{
-              variant: 'h6',
+              variant: "h6",
             }}
           />
           <ListItemText
             primary="Date of Creation"
             secondary={getDateTimeString(project.createdAt)}
-            primaryTypographyProps={{ variant: 'h6' }}
-          />
+            primaryTypographyProps={{ variant: "h6" }}
+          /> */}
+          <Box display="flex" alignItems="center">
+            <DescriptionOutlinedIcon />
+            <Typography variant="h5" style={{ marginLeft: "8px" }}>
+              Description
+            </Typography>
+          </Box>
+          {/* <Divider className={css.divider} /> */}
+          <Box className={css.timeNameInfo} style={{ paddingLeft: "4px" }}>
+            <Typography variant="body1" style={{ marginTop: "8px" }}>
+              {project.description}
+            </Typography>
+          </Box>
           <br />
           {isSmall ? null : (
             <Box className={css.chipsBoxDesktop}>
@@ -88,11 +103,22 @@ const ProjectDetails = ({ project }) => {
           </Grid>
         ) : null}
         <Grid item sm={12} md={5}>
-          <Typography variant="h6">Project Manager</Typography>
+          <Box display="flex" alignItems="center">
+            <PersonIcon />
+            <Typography variant="h5" style={{ marginLeft: "8px" }}>
+              Project Manager
+            </Typography>
+          </Box>
           <List>
             <PersonItem person={project.projectManager} />
           </List>
-          <Typography variant="h6">Developers</Typography>
+          <Divider className={css.divider} />
+          <Box display="flex" alignItems="center">
+            <CodeIcon />
+            <Typography variant="h5" style={{ marginLeft: "8px" }}>
+              Developers
+            </Typography>
+          </Box>
           <List>
             {project.developers.map((developer) => (
               <>
@@ -109,15 +135,10 @@ const ProjectDetails = ({ project }) => {
   );
 };
 
-function getDateTimeString(ISOString) {
-  let date = new Date(ISOString);
-  return `${date.toDateString()}`;
-}
-
 const PersonItem = ({ person }) => {
   const theme = useTheme();
 
-  let names = person.name.split(' ');
+  let names = person.name.split(" ");
   let initials = names[0].charAt(0).toUpperCase();
   if (names.length > 1)
     initials += names[names.length - 1].charAt(0).toUpperCase();

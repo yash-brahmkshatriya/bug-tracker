@@ -9,6 +9,7 @@ import {
   Divider,
   Avatar,
   useTheme,
+  useMediaQuery,
 } from "@material-ui/core";
 import { getRandomColor } from "../../Project/projDetStyles";
 import StyledChip from "./../../Utils/StyledChip";
@@ -19,17 +20,21 @@ import { userTypeColor } from "./../../../shared/misc";
 function ThreadComment({ comment }) {
   const css = useStyles();
   return (
-    <Paper square={false} className={css.customBorderRadius}>
+    <Paper elevation={4} className={css.customBorderRadius} key={comment._id}>
       <Box
         display="flex"
         flexDirection="column"
         justifyContent="flex-start"
         className={css.customBorderRadiusBox}
-        // padding="8px"
       >
         <PersonDetails comment={comment} />
 
-        <Box flex={1} padding="8px">
+        <Box
+          flex={1}
+          p={2}
+          textAlign="justify"
+          style={{ whiteSpace: "pre-line" }}
+        >
           {comment.comment}
         </Box>
       </Box>
@@ -41,6 +46,7 @@ const PersonDetails = ({ comment }) => {
   const css = useStyles();
   const person = comment.author;
   const theme = useTheme();
+  const isXSmall = useMediaQuery(theme.breakpoints.down("xs"));
   let names = person.name.split(" ");
   let initials = names[0].charAt(0).toUpperCase();
   if (names.length > 1)
@@ -49,47 +55,60 @@ const PersonDetails = ({ comment }) => {
   const avatarStyles = {
     color: theme.palette.getContrastText(getRandomColor()),
     backgroundColor: getRandomColor(),
+    transform: "scale(0.8)",
   };
-  let icon = <PersonAddIcon />;
   let bgcolor = userTypeColor.cont;
+  let icon = isXSmall ? (
+    <PersonAddIcon htmlColor={bgcolor} />
+  ) : (
+    <PersonAddIcon />
+  );
+
   if (comment.role === "Developer") {
-    icon = <CodeIcon />;
     bgcolor = userTypeColor.dev;
+    icon = isXSmall ? <CodeIcon htmlColor={bgcolor} /> : <CodeIcon />;
   }
-  if (comment.role === "ProjectManager") {
-    icon = <PersonIcon />;
+  if (comment.role === "Project Manager") {
     bgcolor = userTypeColor.pm;
+    icon = isXSmall ? <PersonIcon htmlColor={bgcolor} /> : <PersonIcon />;
   }
 
   return (
     <Box className={css.commentPersonDetails}>
-      <Box display="flex" justifyContent="flex-start" alignItems="center">
+      <Box
+        display="flex"
+        flexWrap="wrap"
+        justifyContent="flex-start"
+        alignItems="center"
+      >
         <Avatar style={avatarStyles}>{initials}</Avatar>
         <Typography variant="body1" style={{ marginLeft: "8px" }}>
-          <b> {person.name} </b>
+          {person.name}
         </Typography>
-        <Typography variant="body1" style={{ marginLeft: "8px" }}>
-          commented {moment(comment.createdAt).fromNow()}
-        </Typography>
+
+        <Box className={css.timeNameInfo}>
+          <Typography variant="body2" style={{ marginLeft: "8px" }}>
+            commented {moment(comment.createdAt).fromNow()}
+          </Typography>
+        </Box>
       </Box>
       <Box display="flex" alignItems="center">
-        <StyledChip
-          icon={icon}
-          color="secondary"
-          bgcolor={bgcolor}
-          label={comment.role}
-          key="isClosed"
-          size="small"
-          //  style={{ marginBottom: "0px", marginLeft: "0px" }}
-          className={css.chipComment}
-        />
+        {isXSmall ? (
+          icon
+        ) : (
+          <StyledChip
+            icon={icon}
+            color="secondary"
+            bgcolor={bgcolor}
+            label={comment.role}
+            key="isClosed"
+            size="small"
+            className={css.chipComment}
+          />
+        )}
       </Box>
     </Box>
   );
 };
 
-function getDateTimeString(ISOString) {
-  let date = new Date(ISOString);
-  return `${date.toDateString()}`;
-}
 export default ThreadComment;

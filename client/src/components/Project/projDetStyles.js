@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core';
+import { makeStyles } from "@material-ui/core";
 import {
   blue,
   blueGrey,
@@ -9,7 +9,7 @@ import {
   purple,
   red,
   teal,
-} from '@material-ui/core/colors';
+} from "@material-ui/core/colors";
 
 const colors = [
   blueGrey,
@@ -30,26 +30,26 @@ export const getRandomColor = () => {
 
 export const useStyles = makeStyles((theme) => ({
   link: {
-    textDecoration: 'none',
-    '&:focus, &:hover, &:visited, &:link, &:active': {
-      textDecoration: 'none',
+    textDecoration: "none",
+    "&:focus, &:hover, &:visited, &:link, &:active": {
+      textDecoration: "none",
     },
     color: theme.palette.secondary.main,
   },
   chipsBoxMobile: {
-    display: 'flex',
-    justifyContent: 'flex-start',
-    flexWrap: 'noWrap',
-    overflow: 'auto',
+    display: "flex",
+    justifyContent: "flex-start",
+    flexWrap: "noWrap",
+    overflow: "auto",
   },
   chipsBoxDesktop: {
-    display: 'flex',
-    justifyContent: 'flex-start',
-    flexWrap: 'wrap',
+    display: "flex",
+    justifyContent: "flex-start",
+    flexWrap: "wrap",
     padding: 0,
   },
   timeNameInfo: {
-    '& > *': {
+    "& > *": {
       marginRight: theme.spacing(1),
       color: theme.palette.grey[800],
     },
@@ -60,7 +60,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   divider: {
     marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(2),
   },
   avatar: {
     color: theme.palette.getContrastText(getRandomColor()),
