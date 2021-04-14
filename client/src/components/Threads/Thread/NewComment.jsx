@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useFormik } from "formik";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useFormik } from 'formik';
 import {
   Box,
   Typography,
@@ -10,12 +10,12 @@ import {
   useMediaQuery,
   Button,
   Input,
-} from "@material-ui/core";
-import { useStyles } from "../threadStyles";
-import { postComment } from "../../../redux/actions";
-import { getRandomColor } from "../../Project/projDetStyles";
-import Information from "../../Utils/Information";
-import AnnouncementOutlinedIcon from "@material-ui/icons/AnnouncementOutlined";
+} from '@material-ui/core';
+import { useStyles } from '../threadStyles';
+import { postComment } from '../../../redux/actions';
+import { getRandomColor } from '../../Project/projDetStyles';
+import Information from '../../Utils/Information';
+import AnnouncementOutlinedIcon from '@material-ui/icons/AnnouncementOutlined';
 
 const NewComment = ({ isClosed, projectId, threadId }) => {
   const css = useStyles();
@@ -24,8 +24,10 @@ const NewComment = ({ isClosed, projectId, threadId }) => {
   if (isClosed)
     message = (
       <Information
-        icon={<AnnouncementOutlinedIcon />}
+        Icon={AnnouncementOutlinedIcon}
         message="Sorry, Thread is Closed"
+        flexDirection="row"
+        fontSize={36}
       />
     );
   return (
@@ -48,8 +50,8 @@ const PersonDetails = ({ person }) => {
   //   name: "Deep Chaklasiya",
   // };
   const theme = useTheme();
-  const isXSmall = useMediaQuery(theme.breakpoints.down("xs"));
-  let names = person.name.split(" ");
+  const isXSmall = useMediaQuery(theme.breakpoints.down('xs'));
+  let names = person.name.split(' ');
   let initials = names[0].charAt(0).toUpperCase();
   if (names.length > 1)
     initials += names[names.length - 1].charAt(0).toUpperCase();
@@ -57,7 +59,7 @@ const PersonDetails = ({ person }) => {
   const avatarStyles = {
     color: theme.palette.getContrastText(getRandomColor()),
     backgroundColor: getRandomColor(),
-    transform: "scale(0.8)",
+    transform: 'scale(0.8)',
   };
 
   return (
@@ -69,7 +71,7 @@ const PersonDetails = ({ person }) => {
         alignItems="center"
       >
         <Avatar style={avatarStyles}>{initials}</Avatar>
-        <Typography variant="body1" style={{ marginLeft: "8px" }}>
+        <Typography variant="body1" style={{ marginLeft: '8px' }}>
           {person.name}
         </Typography>
       </Box>
@@ -83,13 +85,13 @@ const CommentForm = ({ projectId, threadId }) => {
   const css = useStyles();
   const commentForm = useFormik({
     initialValues: {
-      comment: "",
+      comment: '',
     },
     validate: (values) => {
       const errors = {};
       let { comment } = values;
       comment = comment.trim();
-      if (!comment) errors.comment = "Comment is Required";
+      if (!comment) errors.comment = 'Comment is Required';
       return errors;
     },
     onSubmit: (values) => {
@@ -103,7 +105,7 @@ const CommentForm = ({ projectId, threadId }) => {
   }, [isLoading]);
   return (
     <form
-      style={{ padding: "8px 16px 16px 16px" }}
+      style={{ padding: '8px 16px 16px 16px' }}
       onSubmit={commentForm.handleSubmit}
     >
       <Input
@@ -124,7 +126,7 @@ const CommentForm = ({ projectId, threadId }) => {
           type="submit"
           color="secondary"
           onClick={commentForm.handleSubmit}
-          style={{ borderRadius: "24px" }}
+          style={{ borderRadius: '24px' }}
           disabled={!commentForm.dirty || commentForm.isSubmitting}
         >
           Post Comment
