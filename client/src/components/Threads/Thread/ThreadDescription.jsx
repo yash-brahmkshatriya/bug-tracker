@@ -32,6 +32,7 @@ function ThreadDescription({ projectId, threadId, thread }) {
           {user && user._id === thread.contributor._id && !editing ? (
             <IconButton
               className={css.editIcon}
+              style={{ margin: '0px' }}
               onClick={() => setEditing(true)}
             >
               <EditIcon />

@@ -21,6 +21,8 @@ import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import WorkOutlineIcon from '@material-ui/icons/WorkOutline';
 import EditIcon from '@material-ui/icons/Edit';
 import { updateThread } from '../../../redux/actions';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+
 import {
   bugPriorityColors,
   bugTypeColors,
@@ -30,6 +32,7 @@ import { useStyles } from '../threadStyles';
 import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
 import { set } from 'mongoose';
+import UpdateChip from './updateChip';
 
 const ThreadTitle = ({ projectId, threadId, thread }) => {
   const css = useStyles();
@@ -60,6 +63,7 @@ const ThreadTitle = ({ projectId, threadId, thread }) => {
               {user && user._id === thread.contributor._id ? (
                 <IconButton
                   className={css.editIcon}
+                  style={{ margin: '0px' }}
                   onClick={() => setEditing(true)}
                 >
                   <EditIcon />
@@ -89,42 +93,62 @@ const ThreadTitle = ({ projectId, threadId, thread }) => {
           </Box>
         </Box>
         <Divider className={css.divider} />
-        <StyledChip
-          icon={
-            thread.isClosed ? <HistoryOutlinedIcon /> : <InfoOutlinedIcon />
-          }
-          color="secondary"
-          bgcolor={
-            thread.isClosed
-              ? closedStatusColors.closed
-              : closedStatusColors.open
-          }
-          label={thread.isClosed ? 'Closed' : 'Open'}
-          key="isClosed"
-          size="small"
-          className={css.chipMR}
-        />
-        <StyledChip
-          color="secondary"
-          icon={
-            thread.bugType === 'Bug' ? <BugReportIcon /> : <HelpOutlineIcon />
-          }
-          bgcolor={
-            thread.bugType === 'Bug' ? bugTypeColors.bug : bugTypeColors.query
-          }
-          label={thread.bugType}
-          key="bugType"
-          size="small"
-          className={css.chipMR}
-        />
-        <StyledChip
-          color="secondary"
-          bgcolor={bugPriorityColors[thread.bugPriority.toLowerCase()]}
-          label={thread.bugPriority}
-          key="bugPriority"
-          size="small"
-          className={css.chipMR}
-        />
+        {user && user._id === thread.projectId.projectManager ? (
+          <UpdateChip
+            initialValues={[
+              thread.isClosed ? 'Closed' : 'Open',
+              thread.bugType,
+              thread.bugPriority,
+            ]}
+          />
+        ) : (
+          <Box>
+            <StyledChip
+              icon={
+                thread.isClosed ? <HistoryOutlinedIcon /> : <InfoOutlinedIcon />
+              }
+              color="secondary"
+              bgcolor={
+                thread.isClosed
+                  ? closedStatusColors.closed
+                  : closedStatusColors.open
+              }
+              label={thread.isClosed ? 'Closed' : 'Open'}
+              key="isClosed"
+              size="small"
+              className={css.chipMR}
+            />
+
+            <StyledChip
+              color="secondary"
+              icon={
+                thread.bugType === 'Bug' ? (
+                  <BugReportIcon />
+                ) : (
+                  <HelpOutlineIcon />
+                )
+              }
+              bgcolor={
+                thread.bugType === 'Bug'
+                  ? bugTypeColors.bug
+                  : bugTypeColors.query
+              }
+              label={thread.bugType}
+              key="bugType"
+              size="small"
+              className={css.chipMR}
+            />
+            <StyledChip
+              color="secondary"
+              icon={<ArrowUpwardIcon />}
+              bgcolor={bugPriorityColors[thread.bugPriority.toLowerCase()]}
+              label={thread.bugPriority}
+              key="bugPriority"
+              size="small"
+              className={css.chipMR}
+            />
+          </Box>
+        )}
       </Box>
     </Paper>
   );
@@ -158,11 +182,7 @@ const TitleForm = ({ projectId, threadId, thread, setEditing }) => {
     titleForm.setSubmitting(false);
   }, [isLoading]);
   return (
-    <form
-      // style={{ padding: '8px 16px 16px 16px' }}
-      onSubmit={titleForm.handleSubmit}
-      style={{ width: '100%' }}
-    >
+    <form onSubmit={titleForm.handleSubmit} style={{ width: '100%' }}>
       <Box display="flex" justifyContent="space-between">
         <Input
           id="title"

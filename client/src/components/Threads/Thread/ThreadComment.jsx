@@ -115,7 +115,7 @@ const PersonDetails = ({ comment, editBtn, setEditing }) => {
             <IconButton
               className={css.editIcon}
               onClick={() => setEditing(true)}
-              style={{ transform: 'scale(0.8)' }}
+              style={{ transform: 'scale(0.8)', margin: '0px' }}
             >
               <EditIcon />
             </IconButton>
