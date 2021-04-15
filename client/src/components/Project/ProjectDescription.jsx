@@ -19,6 +19,8 @@ function ProjectDescription({ mode, editForm, description }) {
           <TextField
             type="text"
             fullWidth
+            multiline
+            rowsMax={5}
             id="description"
             value={editForm.values.description}
             onChange={editForm.handleChange}
