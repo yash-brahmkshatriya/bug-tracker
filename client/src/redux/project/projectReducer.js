@@ -1,4 +1,4 @@
-import * as ActionTypes from "./ActionTypes";
+import * as ActionTypes from './ActionTypes';
 
 const initialstate = {
   loading: true,
@@ -33,6 +33,7 @@ export const projectReducer = (state = initialstate, action) => {
         ...state.project,
         name: action.payload.name,
         description: action.payload.description,
+        tags: action.payload.tags,
       };
       return { ...state, loading: false, project, err: null };
     case ActionTypes.UPDATE_PROJECT_FAIL:
