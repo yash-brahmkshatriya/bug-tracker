@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Box,
   ListItem,
@@ -8,10 +8,10 @@ import {
   Typography,
   useTheme,
   useMediaQuery,
-} from "@material-ui/core";
-import { useStyles } from "./projectStyles";
-import { Link as RouterLink, useHistory } from "react-router-dom";
-import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
+} from '@material-ui/core';
+import { useStyles } from './projectStyles';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 
 const ProjectLink = React.forwardRef((props, ref) => (
   <a ref={ref} {...props}>
@@ -22,26 +22,22 @@ const ProjectLink = React.forwardRef((props, ref) => (
 const SearchResultItem = ({ project, explore }) => {
   const css = useStyles();
   const theme = useTheme();
-  const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
+  const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
   const history = useHistory();
   const handleChipClick = (tag) => () => {
     if (tag) {
       history.push(`/projects?query=${tag}&by=tag`);
     }
-    explore(tag, "tag");
+    explore(tag, 'tag');
   };
   return (
     <ListItem key={project._id}>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={12} md={6}>
-          <RouterLink
-            to={`/projects/${project._id}`}
-            className={css.link}
-            // component={ProjectLink}
-          >
+          <RouterLink to={`/projects/${project._id}`} className={css.link}>
             <ListItemText
               primary={project.name}
-              primaryTypographyProps={{ variant: "h5" }}
+              primaryTypographyProps={{ variant: 'h5' }}
             />
           </RouterLink>
           <ListItemText secondary={project.description} />
@@ -53,7 +49,7 @@ const SearchResultItem = ({ project, explore }) => {
             </Typography>
           </Box>
         </Grid>
-        <Grid item xs={12} sm={12} md={6} style={{ alignItems: "flex-end" }}>
+        <Grid item xs={12} sm={12} md={6} style={{ alignItems: 'flex-end' }}>
           <Box className={isSmall ? css.chipsBoxMobile : css.chipsBoxDesktop}>
             {project.tags.map((tag, idx) => (
               <Chip

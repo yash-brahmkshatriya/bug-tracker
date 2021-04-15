@@ -1,59 +1,56 @@
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from '@material-ui/core';
 
 export const useStyles = makeStyles((theme) => ({
   results: {
     maxWidth: theme.breakpoints.values.md,
   },
   link: {
-    textDecoration: "none",
-    "&:focus, &:visited, &:link, &:active": {
-      textDecoration: "none",
+    textDecoration: 'none',
+    '&:focus, &:visited, &:link, &:active': {
+      textDecoration: 'none',
     },
-    "&:hover": {
-      textDecoration: "underline",
-      textDecorationColor: "inherit",
+    '&:hover': {
+      textDecoration: 'underline',
+      textDecorationColor: 'inherit',
     },
+  },
+  linkSecondary: {
     color: theme.palette.secondary.main,
   },
   projectLink: {
-    textDecoration: "none",
-    "&:focus, &:visited, &:link, &:active": {
-      textDecoration: "none",
-    },
-    "&:hover": {
-      textDecoration: "underline",
-      textDecorationColor: "inherit",
-    },
     color: theme.palette.grey[500],
   },
+  projectLinkDark: {
+    color: theme.palette.grey[600],
+  },
   chipsBoxMobile: {
-    display: "flex",
-    justifyContent: "flex-start",
+    display: 'flex',
+    justifyContent: 'flex-start',
     // alignItems: "center",
   },
   chipsBoxDesktop: {
-    display: "flex",
-    justifyContent: "space-between",
-    flexDirection: "column",
-    alignItems: "flex-end",
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'column',
+    alignItems: 'flex-end',
   },
   timeNameInfo: {
-    display: "flex",
+    display: 'flex',
     // flexWrap: "wrap",
-    alignItems: "center",
-    "& > *": {
+    alignItems: 'center',
+    '& > *': {
       marginRight: theme.spacing(1),
       color: theme.palette.grey[600],
     },
   },
   timeNameInfoMobile: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    "& > nth-child(even)": {
-      display: "none",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    '& > nth-child(even)': {
+      display: 'none',
     },
-    "& > *": {
+    '& > *': {
       color: theme.palette.grey[600],
     },
   },
@@ -75,8 +72,8 @@ export const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(0),
   },
   commentPersonDetails: {
-    display: "flex",
-    justifyContent: "space-between",
+    display: 'flex',
+    justifyContent: 'space-between',
     backgroundColor: theme.palette.primary.light,
     padding: theme.spacing(1),
     borderTopRightRadius: theme.spacing(3),
@@ -88,6 +85,6 @@ export const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
   noBorder: {
-    border: "none",
+    border: 'none',
   },
 }));

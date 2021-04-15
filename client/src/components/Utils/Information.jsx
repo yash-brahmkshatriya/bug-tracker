@@ -1,15 +1,14 @@
-import React from "react";
-import { Box, Typography, useTheme } from "@material-ui/core";
-import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
+import React from 'react';
+import { Box, Typography, useTheme } from '@material-ui/core';
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 
 function Information({
-  message,
-  icon = (
-    <InfoOutlinedIcon
-      style={{ fontSize: 40 }}
-      // htmlColor={theme.palette.grey[700]}
-    />
-  ),
+  message = "How you doin'...",
+  Icon = InfoOutlinedIcon,
+  fontSize = 40,
+  color = '#455A64',
+  flexDirection = 'column',
+  typographyVariant = 'h5',
 }) {
   const theme = useTheme();
   return (
@@ -17,17 +16,22 @@ function Information({
       display="flex"
       flex={5}
       justifyContent="center"
-      style={{ width: "100%" }}
+      style={{ width: '100%' }}
     >
-      <Box display="flex" flexDirection="column" justifyContent="center">
-        <Box display="flex" justifyContent="center">
-          {icon}
+      <Box
+        display="flex"
+        flexDirection={flexDirection}
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Box display="flex" justifyContent="center" m={1}>
+          <Icon style={{ fontSize, color }} />
         </Box>
-        <Box display="flex" justifyContent="center">
+        <Box display="flex" justifyContent="center" m={1}>
           <Typography
-            variant="h5"
+            variant={typographyVariant}
             component="h2"
-            style={{ color: theme.palette.grey[700] }}
+            style={{ color }}
           >
             {message}
           </Typography>

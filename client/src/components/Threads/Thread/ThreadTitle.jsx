@@ -6,30 +6,32 @@ import {
   Divider,
   useTheme,
   useMediaQuery,
-} from "@material-ui/core";
-import React from "react";
-import StyledChip from "../../Utils/StyledChip";
-import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
-import HistoryOutlinedIcon from "@material-ui/icons/HistoryOutlined";
-import BugReportIcon from "@material-ui/icons/BugReport";
-import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
-import WorkOutlineIcon from "@material-ui/icons/WorkOutline";
+} from '@material-ui/core';
+import React from 'react';
+import StyledChip from '../../Utils/StyledChip';
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+import HistoryOutlinedIcon from '@material-ui/icons/HistoryOutlined';
+import BugReportIcon from '@material-ui/icons/BugReport';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import WorkOutlineIcon from '@material-ui/icons/WorkOutline';
 import {
   bugPriorityColors,
   bugTypeColors,
   closedStatusColors,
-} from "../../../shared/misc";
-import { useStyles } from "../threadStyles";
+} from '../../../shared/misc';
+import { useStyles } from '../threadStyles';
+import { Link as RouterLink } from 'react-router-dom';
+import clsx from 'clsx';
 
 const ThreadTitle = ({ thread }) => {
   const css = useStyles();
   const theme = useTheme();
-  const isXSmall = useMediaQuery(theme.breakpoints.down("xs"));
+  const isXSmall = useMediaQuery(theme.breakpoints.down('xs'));
   return (
     <Paper
       elevation={4}
       className={css.paperSection}
-      style={{ marginTop: "8px" }}
+      style={{ marginTop: '8px' }}
     >
       <Box p={2}>
         <Typography variant="h5">{thread.title}</Typography>
@@ -43,7 +45,14 @@ const ThreadTitle = ({ thread }) => {
             className={css.timeNameInfo}
           >
             <WorkOutlineIcon fontSize="small" />
-            <Typography variant="body2">{thread.projectId.name}</Typography>
+            <Typography variant="body2">
+              <RouterLink
+                to={`/projects/${thread.projectId._id}`}
+                className={clsx(css.link, css.projectLinkDark)}
+              >
+                {thread.projectId.name}
+              </RouterLink>
+            </Typography>
           </Box>
         </Box>
         <Divider className={css.divider} />
@@ -57,7 +66,7 @@ const ThreadTitle = ({ thread }) => {
               ? closedStatusColors.closed
               : closedStatusColors.open
           }
-          label={thread.isClosed ? "Closed" : "Open"}
+          label={thread.isClosed ? 'Closed' : 'Open'}
           key="isClosed"
           size="small"
           className={css.chipMR}
@@ -65,10 +74,10 @@ const ThreadTitle = ({ thread }) => {
         <StyledChip
           color="secondary"
           icon={
-            thread.bugType === "Bug" ? <BugReportIcon /> : <HelpOutlineIcon />
+            thread.bugType === 'Bug' ? <BugReportIcon /> : <HelpOutlineIcon />
           }
           bgcolor={
-            thread.bugType === "Bug" ? bugTypeColors.bug : bugTypeColors.query
+            thread.bugType === 'Bug' ? bugTypeColors.bug : bugTypeColors.query
           }
           label={thread.bugType}
           key="bugType"
