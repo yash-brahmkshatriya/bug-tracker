@@ -22,18 +22,17 @@ import { manageDev } from '../../redux/actions';
 import ConfirmDialog from '../Utils/ConfirmDialog';
 import { useFormik } from 'formik';
 
-function Developers({ developers, projectId }) {
+function Developers({ developers, projectId, isProjectManager }) {
   const dispatch = useDispatch();
   const [devEmail, setDevEmail] = useState(false);
 
   const openDialog = (devEmail) => setDevEmail(devEmail);
   const closeDialog = () => setDevEmail(false);
 
-  // const deleteDev = () => {
-  //   dispatch(manageDev(projectId, devEmail, 'delete'));
-  // };
-
-  const deleteDev = () => console.log('deleted', devEmail);
+  const deleteDev = () => {
+    dispatch(manageDev(projectId, devEmail, 'delete'));
+    closeDialog();
+  };
 
   return (
     <>
@@ -44,16 +43,18 @@ function Developers({ developers, projectId }) {
             Developers
           </Typography>
         </Box>
-        <Box display="flex" justifyContent="flex-end" alignItems="center">
-          <AddDev />
-        </Box>
+        {isProjectManager ? (
+          <Box display="flex" justifyContent="flex-end" alignItems="center">
+            <AddDev dispatch={dispatch} projectId={projectId} />
+          </Box>
+        ) : null}
       </Box>
       <List>
         {developers.map((developer, idx) => (
           <>
             <PersonItem
               person={developer}
-              deletable={true}
+              deletable={isProjectManager}
               key={idx}
               openDialog={openDialog}
             />
@@ -71,10 +72,11 @@ function Developers({ developers, projectId }) {
   );
 }
 
-const AddDev = () => {
+const AddDev = ({ dispatch, projectId }) => {
   const [addDevDialog, setAddDevDialog] = useState(false);
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
+
   const addDevForm = useFormik({
     initialValues: {
       email: '',
@@ -91,9 +93,10 @@ const AddDev = () => {
       return errors;
     },
     onSubmit: (values) => {
-      console.log(values);
+      dispatch(manageDev(projectId, values.email, 'add'));
     },
   });
+
   return (
     <>
       <IconButton onClick={() => setAddDevDialog(true)}>
@@ -120,7 +123,11 @@ const AddDev = () => {
         <DialogActions>
           <Button
             autoFocus
-            onClick={addDevForm.handleSubmit}
+            onClick={() => {
+              addDevForm.handleSubmit();
+              addDevForm.setSubmitting(false);
+              setAddDevDialog(false);
+            }}
             disabled={!addDevForm.dirty || addDevForm.isSubmitting}
           >
             Add

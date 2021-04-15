@@ -29,7 +29,10 @@ function ProjectDescription({ mode, editForm, description }) {
             InputProps={{ disableUnderline: true }}
           />
         ) : (
-          <Typography variant="body1" style={{ marginTop: '8px' }}>
+          <Typography
+            variant="body1"
+            style={{ marginTop: '8px', whiteSpace: 'pre-line' }}
+          >
             {description}
           </Typography>
         )}

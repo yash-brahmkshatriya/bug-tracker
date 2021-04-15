@@ -10,7 +10,7 @@ import {
   List,
 } from '@material-ui/core';
 import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { exploreProjects } from '../../redux/actions';
 import { useStyles as projDetStyles, getRandomColor } from './projDetStyles';
 import LoadingComponent from '../Utils/Loading';
@@ -25,6 +25,10 @@ import Developers from './Developers';
 const ProjectDetails = ({ project }) => {
   const [mode, setMode] = useState('view');
   const [tags, setTags] = useState([]);
+  const projectState = useSelector((state) => state.project);
+  const isProjectManager =
+    useSelector((state) => state.user.user?._id || undefined) ===
+    (projectState.project?.projectManager?._id || undefined);
   const css = projDetStyles();
   const editForm = useFormik({
     initialValues: {
@@ -32,7 +36,6 @@ const ProjectDetails = ({ project }) => {
       description: project.description,
       tags: project.tags,
     },
-    onSubmit: (values) => {},
   });
   useEffect(() => {
     editForm.setFieldValue('name', project.name);
@@ -67,6 +70,8 @@ const ProjectDetails = ({ project }) => {
         setMode={setMode}
         projectName={project.name}
         editForm={editForm}
+        projectId={project._id}
+        isProjectManager={isProjectManager}
       />
       <Divider className={css.divider} />
       <Grid container justify="space-between">
@@ -120,7 +125,11 @@ const ProjectDetails = ({ project }) => {
             <PersonItem person={project.projectManager} key="ProjectManager" />
           </List>
           <Divider className={css.divider} />
-          <Developers developers={project.developers} />
+          <Developers
+            developers={project.developers}
+            isProjectManager={isProjectManager}
+            projectId={project._id}
+          />
         </Grid>
       </Grid>
     </Box>
