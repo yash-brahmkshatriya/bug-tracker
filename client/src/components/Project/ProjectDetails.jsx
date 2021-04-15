@@ -1,6 +1,6 @@
-import React from "react";
-import { useTheme } from "@material-ui/core/styles";
-import { useHistory } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useTheme } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 import {
   Chip,
   Typography,
@@ -13,71 +13,69 @@ import {
   ListItem,
   Avatar,
   ListItemAvatar,
-} from "@material-ui/core";
-import { useDispatch } from "react-redux";
-import { exploreProjects } from "../../redux/actions";
-import { useStyles as projDetStyles, getRandomColor } from "./projDetStyles";
-import LoadingComponent from "../Utils/Loading";
-import DescriptionOutlinedIcon from "@material-ui/icons/DescriptionOutlined";
-import PersonIcon from "@material-ui/icons/Person";
-import CodeIcon from "@material-ui/icons/Code";
-
+} from '@material-ui/core';
+import { useFormik } from 'formik';
+import { useDispatch } from 'react-redux';
+import { exploreProjects } from '../../redux/actions';
+import { useStyles as projDetStyles, getRandomColor } from './projDetStyles';
+import LoadingComponent from '../Utils/Loading';
+import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
+import PersonIcon from '@material-ui/icons/Person';
+import CodeIcon from '@material-ui/icons/Code';
+import ProjectTitle from './ProjectTitle';
+import ProjectDescription from './ProjectDescription';
+import EditableChip from './EditableChip';
 const ProjectDetails = ({ project }) => {
+  const [mode, setMode] = useState('view');
   const css = projDetStyles();
+  const editForm = useFormik({
+    initialValues: {
+      name: project.name,
+      description: project.description,
+      tags: project.tags,
+    },
+    onSubmit: (values) => {},
+  });
+  useEffect(() => {
+    editForm.setFieldValue('name', project.name);
+    editForm.setFieldValue('description', project.description);
+    editForm.setFieldValue('tags', project.tags);
+  }, [mode]);
   const theme = useTheme();
-  const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
+  const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
   const history = useHistory();
   const dispatch = useDispatch();
   const handleChipClick = (tag) => () => {
     if (tag) {
       history.push(`/projects?query=${tag}&by=tag`);
     }
-    dispatch(exploreProjects(tag, "tag"));
+    dispatch(exploreProjects(tag, 'tag'));
   };
   return Object.keys(project).length > 0 ? (
     <Box>
-      <Typography variant="h4" className={css.projectTitle}>
-        {project.name}
-      </Typography>
+      <ProjectTitle
+        mode={mode}
+        setMode={setMode}
+        projectName={project.name}
+        editForm={editForm}
+      />
       <Divider className={css.divider} />
       <Grid container justify="space-between">
         <Grid item sm={12} md={6}>
-          {/* <ListItemText
-            primary="Description"
-            style={{ maxWidth: "48ch", overflowWrap: "break-word" }}
-            secondary={project.description}
-            primaryTypographyProps={{
-              variant: "h6",
-            }}
+          <ProjectDescription
+            mode={mode}
+            description={project.description}
+            editForm={editForm}
           />
-          <ListItemText
-            primary="Date of Creation"
-            secondary={getDateTimeString(project.createdAt)}
-            primaryTypographyProps={{ variant: "h6" }}
-          /> */}
-          <Box display="flex" alignItems="center">
-            <DescriptionOutlinedIcon />
-            <Typography variant="h5" style={{ marginLeft: "8px" }}>
-              Description
-            </Typography>
-          </Box>
-          {/* <Divider className={css.divider} /> */}
-          <Box className={css.timeNameInfo} style={{ paddingLeft: "4px" }}>
-            <Typography variant="body1" style={{ marginTop: "8px" }}>
-              {project.description}
-            </Typography>
-          </Box>
           <br />
           {isSmall ? null : (
             <Box className={css.chipsBoxDesktop}>
               {project.tags.map((tag, idx) => (
-                <Chip
-                  color="secondary"
-                  label={tag}
-                  key={idx}
-                  size="small"
-                  clickable
-                  className={css.chip}
+                <EditableChip
+                  idx={idx}
+                  tag={tag}
+                  editForm={editForm}
+                  mode={mode}
                   onClick={handleChipClick(tag)}
                 />
               ))}
@@ -88,13 +86,11 @@ const ProjectDetails = ({ project }) => {
           <Grid item xs={12} sm={12}>
             <Box className={css.chipsBoxMobile}>
               {project.tags.map((tag, idx) => (
-                <Chip
-                  color="secondary"
-                  label={tag}
-                  key={idx}
-                  size="small"
-                  clickable
-                  className={css.chip}
+                <EditableChip
+                  idx={idx}
+                  tag={tag}
+                  editForm={editForm}
+                  mode={mode}
                   onClick={handleChipClick(tag)}
                 />
               ))}
@@ -105,7 +101,7 @@ const ProjectDetails = ({ project }) => {
         <Grid item sm={12} md={5}>
           <Box display="flex" alignItems="center">
             <PersonIcon />
-            <Typography variant="h5" style={{ marginLeft: "8px" }}>
+            <Typography variant="h5" style={{ marginLeft: '8px' }}>
               Project Manager
             </Typography>
           </Box>
@@ -115,7 +111,7 @@ const ProjectDetails = ({ project }) => {
           <Divider className={css.divider} />
           <Box display="flex" alignItems="center">
             <CodeIcon />
-            <Typography variant="h5" style={{ marginLeft: "8px" }}>
+            <Typography variant="h5" style={{ marginLeft: '8px' }}>
               Developers
             </Typography>
           </Box>
@@ -138,7 +134,7 @@ const ProjectDetails = ({ project }) => {
 const PersonItem = ({ person }) => {
   const theme = useTheme();
 
-  let names = person.name.split(" ");
+  let names = person.name.split(' ');
   let initials = names[0].charAt(0).toUpperCase();
   if (names.length > 1)
     initials += names[names.length - 1].charAt(0).toUpperCase();
