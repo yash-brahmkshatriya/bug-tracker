@@ -1,6 +1,6 @@
-const Thread = require("../models/Thread");
-const universalCtrl = require("./universalCtrl");
-const auth = require("./auth");
+const Thread = require('../models/Thread');
+const universalCtrl = require('./universalCtrl');
+const auth = require('./auth');
 
 exports.createThread = (req, res) => {
   let projectId = req.params.projectId;
@@ -19,7 +19,7 @@ exports.getSpecificThread = (req, res) => {
   const threadId = req.params.threadId;
   let userId = auth.getUserIdFromToken(req);
   Thread.findById(threadId)
-    .populate("contributor comments.author projectId")
+    .populate('contributor comments.author projectId')
     .then((thread) => {
       if (thread.projectId.projectManager == userId) {
         Thread.findByIdAndUpdate(
@@ -27,7 +27,7 @@ exports.getSpecificThread = (req, res) => {
           { $set: { seen: true } },
           { new: true }
         )
-          .populate("contributor comments.author projectId")
+          .populate('contributor comments.author projectId')
           .then((data) => res.status(200).json(data))
           .catch((err) => universalCtrl.serverDbError(err)(req, res));
       } else res.status(200).json(thread);
@@ -38,7 +38,7 @@ exports.getSpecificThread = (req, res) => {
 exports.getAllThreadsOfProject = (req, res) => {
   const projectId = req.params.projectId;
   Thread.find({ projectId })
-    .populate("contributor projectId")
+    .populate('contributor projectId')
     .then((data) => res.status(200).json(data))
     .catch((err) => universalCtrl.serverDbError(err)(req, res));
 };
@@ -46,7 +46,7 @@ exports.getAllThreadsOfProject = (req, res) => {
 exports.getAllThreadsForContributor = (req, res) => {
   let userId = auth.getUserIdFromToken(req);
   Thread.find({ contributor: userId })
-    .populate("contributor")
+    .populate('contributor')
     .then((data) => res.status(200).json(data))
     .catch((err) => universalCtrl.serverDbError(err)(req, res));
 };
@@ -56,15 +56,15 @@ exports.postComment = (req, res) => {
   let { comment } = req.body;
   console.log(comment);
 
-  let role = "Contributor";
+  let role = 'Contributor';
   let author = auth.getUserIdFromToken(req);
   Thread.findById(threadId)
-    .populate("projectId")
+    .populate('projectId')
     .then((thread) => {
       if (thread.projectId.developers.includes(author)) {
-        role = "Developer";
+        role = 'Developer';
       } else if (thread.projectId.projectManager == author) {
-        role = "Project Manager";
+        role = 'Project Manager';
       }
       Thread.findByIdAndUpdate(
         threadId,
@@ -73,7 +73,7 @@ exports.postComment = (req, res) => {
         },
         { new: true }
       )
-        .populate("comments.author")
+        .populate('comments.author')
         .then((data) => res.status(200).json(data.comments))
         .catch((err) => universalCtrl.serverDbError(err)(req, res));
     })
@@ -82,8 +82,8 @@ exports.postComment = (req, res) => {
 
 exports.getComments = (req, res) => {
   const threadId = req.params.threadId;
-  Thread.findById(threadId, "comments")
-    .populate("comments.author")
+  Thread.findById(threadId, 'comments')
+    .populate('comments.author')
     .then((data) => res.status(200).json(data))
     .catch((err) => universalCtrl.serverDbError(err)(req, res));
 };
@@ -94,8 +94,8 @@ exports.updateComment = (req, res) => {
   let { comment } = req.body;
   Thread.updateOne(
     { _id: threadId },
-    { $set: { "comments.$[element].comment": comment } },
-    { arrayFilters: [{ "element._id": commentId }], new: true }
+    { $set: { 'comments.$[element].comment': comment } },
+    { arrayFilters: [{ 'element._id': commentId }], new: true }
   )
     .then((data) => res.status(200).json({ success: true }))
     .catch((err) => universalCtrl.serverDbError(err)(req, res));
@@ -106,7 +106,7 @@ exports.updateThread = (req, res) => {
   let userId = auth.getUserIdFromToken(req);
   let { bugPriority, isClosed, title, description } = req.body;
   Thread.findById(threadId)
-    .populate("projectId")
+    .populate('projectId')
     .then((thread) => {
       if (
         thread.projectId.projectManager == userId &&
@@ -117,7 +117,7 @@ exports.updateThread = (req, res) => {
           .catch((err) => universalCtrl.serverDbError(err)(req, res));
       } else if (thread.projectId.projectManager == userId) {
         if (title || description) {
-          universalCtrl.unauthorizedError("Unauthorized")(req, res);
+          universalCtrl.unauthorizedError('Unauthorized')(req, res);
         } else {
           Thread.findByIdAndUpdate(threadId, { $set: req.body }, { new: true })
             .then((data) => res.status(200).json(data))
@@ -125,9 +125,16 @@ exports.updateThread = (req, res) => {
         }
       } else {
         if (bugPriority || isClosed) {
-          universalCtrl.unauthorizedError("Unauthorized")(req, res);
+          universalCtrl.unauthorizedError('Unauthorized')(req, res);
         } else {
-          Thread.findByIdAndUpdate(threadId, { $set: req.body }, { new: true })
+          let updateThread = thread;
+          updateThread.title = title;
+          updateThread.description = description;
+          Thread.findByIdAndUpdate(
+            threadId,
+            { $set: updateThread },
+            { new: true }
+          )
             .then((data) => res.status(200).json(data))
             .catch((err) => universalCtrl.serverDbError(err)(req, res));
         }

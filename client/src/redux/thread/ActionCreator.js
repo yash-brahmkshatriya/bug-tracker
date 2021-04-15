@@ -1,5 +1,5 @@
-import * as ActionTypes from "./ActionTypes";
-import Axios from "../apiCalls";
+import * as ActionTypes from './ActionTypes';
+import Axios from '../apiCalls';
 const createThreadReq = () => {
   return {
     type: ActionTypes.CREATE_THREAD_REQ,
