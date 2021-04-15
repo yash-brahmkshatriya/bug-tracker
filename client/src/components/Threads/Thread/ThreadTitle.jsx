@@ -8,6 +8,7 @@ import {
   Button,
   Input,
   useMediaQuery,
+  IconButton,
 } from '@material-ui/core';
 import { useFormik } from 'formik';
 import React, { useState, useEffect } from 'react';
@@ -43,7 +44,7 @@ const ThreadTitle = ({ projectId, threadId, thread }) => {
       style={{ marginTop: '8px' }}
     >
       <Box p={2}>
-        <Box display="flex" alignItems="center">
+        <Box display="flex" justifyContent="space-between" alignItems="center">
           {editing ? (
             <>
               <TitleForm
@@ -56,14 +57,13 @@ const ThreadTitle = ({ projectId, threadId, thread }) => {
           ) : (
             <>
               <Typography variant="h5">{thread.title}</Typography>
-              {/* {user._id === thread.contributor._id ? (
-            <EditIcon style={{ margin: '8px' }} />
-          ) : null} */}
-              {true ? (
-                <EditIcon
+              {user && user._id === thread.contributor._id ? (
+                <IconButton
                   className={css.editIcon}
                   onClick={() => setEditing(true)}
-                />
+                >
+                  <EditIcon />
+                </IconButton>
               ) : null}
             </>
           )}
@@ -161,8 +161,9 @@ const TitleForm = ({ projectId, threadId, thread, setEditing }) => {
     <form
       // style={{ padding: '8px 16px 16px 16px' }}
       onSubmit={titleForm.handleSubmit}
+      style={{ width: '100%' }}
     >
-      <Box display="flex">
+      <Box display="flex" justifyContent="space-between">
         <Input
           id="title"
           placeholder="Title"
@@ -171,15 +172,15 @@ const TitleForm = ({ projectId, threadId, thread, setEditing }) => {
           onChange={titleForm.handleChange}
           onBlur={titleForm.handleBlur}
           disableUnderline
+          style={{ width: '90%' }}
         />
-
         <Button
           variant="outlined"
           type="submit"
           color="secondary"
           onClick={titleForm.handleSubmit}
           style={{ borderRadius: '24px' }}
-          disabled={!titleForm.dirty || titleForm.isSubmitting}
+          disabled={titleForm.isSubmitting}
         >
           Save
         </Button>

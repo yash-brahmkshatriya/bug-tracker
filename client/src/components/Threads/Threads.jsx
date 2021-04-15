@@ -48,8 +48,16 @@ const Thread = () => {
         projectId={projectId}
         threadId={threadId}
       />
-      <ThreadDescription thread={thread.thread} />
-      <ThreadComments comments={thread.thread.comments} />
+      <ThreadDescription
+        thread={thread.thread}
+        projectId={projectId}
+        threadId={threadId}
+      />
+      <ThreadComments
+        projectId={projectId}
+        threadId={threadId}
+        comments={thread.thread.comments}
+      />
       <NewComment
         isClosed={thread.thread?.isClosed}
         projectId={projectId}

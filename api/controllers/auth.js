@@ -124,6 +124,7 @@ exports.verifyProjectOwner = (req, res, next) => {
 
 exports.verifyCommentOwner = (req, res, next) => {
   const { threadId, commentId } = req.params;
+
   const userId = this.getUserIdFromToken(req);
   Thread.findById(threadId)
     // .populate('comments.author')

@@ -54,7 +54,6 @@ exports.getAllThreadsForContributor = (req, res) => {
 exports.postComment = (req, res) => {
   const threadId = req.params.threadId;
   let { comment } = req.body;
-  console.log(comment);
 
   let role = 'Contributor';
   let author = auth.getUserIdFromToken(req);
@@ -97,6 +96,7 @@ exports.updateComment = (req, res) => {
     { $set: { 'comments.$[element].comment': comment } },
     { arrayFilters: [{ 'element._id': commentId }], new: true }
   )
+    .populate('comments.author')
     .then((data) => res.status(200).json({ success: true }))
     .catch((err) => universalCtrl.serverDbError(err)(req, res));
 };
@@ -135,6 +135,7 @@ exports.updateThread = (req, res) => {
             { $set: updateThread },
             { new: true }
           )
+            .populate('contributor comments.author projectId')
             .then((data) => res.status(200).json(data))
             .catch((err) => universalCtrl.serverDbError(err)(req, res));
         }
