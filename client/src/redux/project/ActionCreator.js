@@ -1,5 +1,5 @@
-import * as ActionTypes from "./ActionTypes";
-import Axios from "../apiCalls";
+import * as ActionTypes from './ActionTypes';
+import Axios from '../apiCalls';
 const getDashBoardDetailsReq = () => {
   return {
     type: ActionTypes.GET_DASHBOARD_DETAILS_REQ,
@@ -59,10 +59,10 @@ const updateProjectReq = () => {
     type: ActionTypes.UPDATE_PROJECT_REQ,
   };
 };
-const updateProjectSuc = (name, description) => {
+const updateProjectSuc = (projDetails) => {
   return {
     type: ActionTypes.UPDATE_PROJECT_SUC,
-    payload: { name, description },
+    payload: projDetails,
   };
 };
 const updateProjectFail = (err) => {
@@ -127,7 +127,7 @@ const exploreProjectsFail = (err) => {
 
 const getDashBoardDetails = () => (dispatch) => {
   dispatch(getDashBoardDetailsReq());
-  Axios.get("/api/project/")
+  Axios.get('/api/project/')
     .then((data) => data.data)
     .then((data) => dispatch(getDashBoardDetailsSuc(data)))
     .catch((err) => dispatch(getDashBoardDetailsFail(err)));
@@ -143,17 +143,17 @@ const getProject = (projectId) => (dispatch) => {
 
 const createProject = (name, description) => (dispatch) => {
   dispatch(createProjectReq());
-  Axios.post("/api/project/", { name, description })
+  Axios.post('/api/project/', { name, description })
     .then((data) => data.data)
     .then((data) => dispatch(createProjectSuc(data)))
     .catch((err) => dispatch(createProjectFail(err)));
 };
 
-const updateProject = (projectId, name, description) => (dispatch) => {
+const updateProject = (projectId, projDetails) => (dispatch) => {
   dispatch(updateProjectReq());
-  Axios.put(`/api/project/${projectId}`, { name, description })
+  Axios.put(`/api/project/${projectId}`, projDetails)
     .then((data) => data.data)
-    .then((data) => dispatch(updateProjectSuc(name, description)))
+    .then((data) => dispatch(updateProjectSuc(projDetails)))
     .catch((err) => dispatch(updateProjectFail(err)));
 };
 
@@ -177,7 +177,7 @@ const manageDev = (projectId, email, operation) => (dispatch) => {
     .catch((err) => dispatch(manageDeveloperFail(err)));
 };
 
-const exploreProjects = (searchString, options = "all") => (dispatch) => {
+const exploreProjects = (searchString, options = 'all') => (dispatch) => {
   dispatch(exploreProjectsReq());
   Axios.get(`/api/project/explore`, { params: { searchString, options } })
     .then((data) => data.data)
