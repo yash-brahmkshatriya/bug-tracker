@@ -1,15 +1,19 @@
-import { Typography, Paper } from "@material-ui/core";
-import React from "react";
-import Information from "../../Utils/Information";
-import ThreadComment from "./ThreadComment";
+import { Typography, Paper } from '@material-ui/core';
+import React from 'react';
+import Information from '../../Utils/Information';
+import ThreadComment from './ThreadComment';
 
-function ThreadComments({ comments }) {
+function ThreadComments({ projectId, threadId, comments }) {
   return (
     <>
       {comments.length > 0 ? (
         <>
           {comments.map((comment) => (
-            <ThreadComment comment={comment} />
+            <ThreadComment
+              projectId={projectId}
+              threadId={threadId}
+              comment={comment}
+            />
           ))}
         </>
       ) : (

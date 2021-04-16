@@ -1,21 +1,21 @@
-import { Box, Grid, Typography, Paper, Divider } from "@material-ui/core";
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { Box, Grid, Typography, Paper, Divider } from '@material-ui/core';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Redirect,
   useRouteMatch,
   useParams,
   Switch,
   Route,
-} from "react-router";
-import { getThread } from "../../redux/actions";
-import Loading from "../Utils/Loading";
-import { useStyles } from "./threadStyles";
-import ThreadTitle from "./Thread/ThreadTitle";
-import ThreadDescription from "./Thread/ThreadDescription";
-import ThreadComments from "./Thread/ThreadComments";
-import Information from "../Utils/Information";
-import NewComment from "./Thread/NewComment";
+} from 'react-router';
+import { getThread } from '../../redux/actions';
+import Loading from '../Utils/Loading';
+import { useStyles } from './threadStyles';
+import ThreadTitle from './Thread/ThreadTitle';
+import ThreadDescription from './Thread/ThreadDescription';
+import ThreadComments from './Thread/ThreadComments';
+import Information from '../Utils/Information';
+import NewComment from './Thread/NewComment';
 const Threads = () => {
   const { path } = useRouteMatch();
   const { projectId } = useParams();
@@ -43,9 +43,21 @@ const Thread = () => {
     <Loading />
   ) : (
     <>
-      <ThreadTitle thread={thread.thread} />
-      <ThreadDescription thread={thread.thread} />
-      <ThreadComments comments={thread.thread.comments} />
+      <ThreadTitle
+        thread={thread.thread}
+        projectId={projectId}
+        threadId={threadId}
+      />
+      <ThreadDescription
+        thread={thread.thread}
+        projectId={projectId}
+        threadId={threadId}
+      />
+      <ThreadComments
+        projectId={projectId}
+        threadId={threadId}
+        comments={thread.thread.comments}
+      />
       <NewComment
         isClosed={thread.thread?.isClosed}
         projectId={projectId}

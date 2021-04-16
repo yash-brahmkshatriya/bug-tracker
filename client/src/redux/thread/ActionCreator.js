@@ -1,5 +1,5 @@
-import * as ActionTypes from "./ActionTypes";
-import Axios from "../apiCalls";
+import * as ActionTypes from './ActionTypes';
+import Axios from '../apiCalls';
 const createThreadReq = () => {
   return {
     type: ActionTypes.CREATE_THREAD_REQ,
@@ -206,13 +206,13 @@ const updateThread = (
   description,
   threadId
 ) => (dispatch) => {
+  const args = {};
+  if (bugPriority !== null) args.bugPriority = bugPriority;
+  if (isClosed !== null) args.isClosed = isClosed;
+  if (title !== null) args.title = title;
+  if (description !== null) args.description = description;
   dispatch(updateThreadReq());
-  Axios.put(`/api/project/${projectId}/threads/${threadId}`, {
-    bugPriority,
-    isClosed,
-    title,
-    description,
-  })
+  Axios.put(`/api/project/${projectId}/threads/${threadId}`, args)
     .then((data) => data.data)
     .then((data) => dispatch(updateThreadSuc(data)))
     .catch((err) => dispatch(updateThreadFail(err)));

@@ -100,6 +100,7 @@ exports.verifyUser = (req, res, next) => {
 exports.verifyThreadOwner = (req, res, next) => {
   const { threadId } = req.params;
   const userId = this.getUserIdFromToken(req);
+
   Thread.findById(threadId)
     .populate('projectId')
     .then((thread) => {
@@ -123,6 +124,7 @@ exports.verifyProjectOwner = (req, res, next) => {
 
 exports.verifyCommentOwner = (req, res, next) => {
   const { threadId, commentId } = req.params;
+
   const userId = this.getUserIdFromToken(req);
   Thread.findById(threadId)
     // .populate('comments.author')

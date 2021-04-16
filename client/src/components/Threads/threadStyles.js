@@ -87,4 +87,11 @@ export const useStyles = makeStyles((theme) => ({
   noBorder: {
     border: 'none',
   },
+  editIcon: {
+    color: theme.palette.grey[500],
+    margin: theme.spacing(1),
+    '&:hover': {
+      color: 'black',
+    },
+  },
 }));
