@@ -95,6 +95,8 @@ const ThreadTitle = ({ projectId, threadId, thread }) => {
         <Divider className={css.divider} />
         {user && user._id === thread.projectId.projectManager ? (
           <UpdateChip
+            projectId={projectId}
+            threadId={threadId}
             initialValues={[
               thread.isClosed ? 'Closed' : 'Open',
               thread.bugType,

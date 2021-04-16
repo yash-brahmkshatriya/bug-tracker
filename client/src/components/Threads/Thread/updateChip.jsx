@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -12,6 +13,7 @@ import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import StyledChip from '../../Utils/StyledChip';
 import { Box } from '@material-ui/core';
+import { updateThread } from '../../../redux/actions';
 const useStyles = makeStyles((theme) => ({
   formControl: {
     marginRight: theme.spacing(1),
@@ -50,10 +52,9 @@ function getProps(value, items) {
   return items.find((item) => item.value === value);
 }
 
-const ChipSelect = ({ items, initialValue }) => {
+const ChipSelect = ({ items, item, setItem }) => {
   const classes = useStyles();
   const theme = useTheme();
-  const [item, setItem] = React.useState(initialValue);
 
   const handleChange = (event) => {
     setItem(event.target.value);
@@ -68,12 +69,9 @@ const ChipSelect = ({ items, initialValue }) => {
           value={item}
           onChange={handleChange}
           disableUnderline
-          input={<Input id="select-multiple-chip" />}
-          style={{ padding: '0px' }}
+          // input={<Input id="select-multiple-chip" />}
           classes={{
-            outlined: classes.outlined,
             root: classes.root,
-            'MuiInputBase-input': classes.MuiInputBase,
           }}
           renderValue={(value) => {
             const { _, icon, bgcolor } = getProps(value, items);
@@ -106,18 +104,13 @@ const ChipSelect = ({ items, initialValue }) => {
   );
 };
 
-const UpdateChip = ({ initialValues }) => {
+const UpdateChip = ({ projectId, threadId, initialValues }) => {
+  const [itemClosed, setItemClosed] = useState(initialValues[0]);
+  const [itemBugType, setItemBugType] = useState(initialValues[1]);
+  const [itemPriority, setItemPriority] = useState(initialValues[2]);
   const isClosed = [
-    {
-      value: 'Closed',
-      icon: <HistoryOutlinedIcon />,
-      bgcolor: '#f44336',
-    },
-    {
-      value: 'Open',
-      icon: <InfoOutlinedIcon />,
-      bgcolor: '#4caf50',
-    },
+    { value: 'Closed', icon: <HistoryOutlinedIcon />, bgcolor: '#f44336' },
+    { value: 'Open', icon: <InfoOutlinedIcon />, bgcolor: '#4caf50' },
   ];
   const priority = [
     { value: 'Critical', icon: <ArrowUpwardIcon />, bgcolor: '#795548' },
@@ -128,22 +121,26 @@ const UpdateChip = ({ initialValues }) => {
     { value: 'Enhancement', icon: <ArrowUpwardIcon />, bgcolor: '#009688' },
   ];
   const bugType = [
-    {
-      value: 'Bug',
-      icon: <BugReportIcon />,
-      bgcolor: '#D32F2F',
-    },
-    {
-      value: 'Query',
-      icon: <HelpOutlineIcon />,
-      bgcolor: '#03A9F4',
-    },
+    { value: 'Bug', icon: <BugReportIcon />, bgcolor: '#D32F2F' },
+    { value: 'Query', icon: <HelpOutlineIcon />, bgcolor: '#03A9F4' },
   ];
+  console.log(itemClosed, itemBugType, itemPriority);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    console.log('updated');
+    dispatch(
+      updateThread(projectId, itemPriority, itemClosed, null, null, threadId)
+    );
+  }, []);
   return (
     <Box display="flex">
-      <ChipSelect items={isClosed} initialValue={initialValues[0]} />
-      <ChipSelect items={bugType} initialValue={initialValues[1]} />
-      <ChipSelect items={priority} initialValue={initialValues[2]} />
+      <ChipSelect items={isClosed} item={itemClosed} setItem={setItemClosed} />
+      <ChipSelect items={bugType} item={itemBugType} setItem={setItemBugType} />
+      <ChipSelect
+        items={priority}
+        item={itemPriority}
+        setItem={setItemPriority}
+      />
     </Box>
   );
 };
