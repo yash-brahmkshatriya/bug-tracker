@@ -124,13 +124,14 @@ const UpdateChip = ({ projectId, threadId, initialValues }) => {
     { value: 'Bug', icon: <BugReportIcon />, bgcolor: '#D32F2F' },
     { value: 'Query', icon: <HelpOutlineIcon />, bgcolor: '#03A9F4' },
   ];
-  console.log(itemClosed, itemBugType, itemPriority);
   const dispatch = useDispatch();
+  console.log(itemClosed, itemBugType, itemPriority);
   useEffect(() => {
-    console.log('updated');
-    dispatch(
-      updateThread(projectId, itemPriority, itemClosed, null, null, threadId)
-    );
+    return () => {
+      dispatch(
+        updateThread(projectId, itemPriority, itemClosed, null, null, threadId)
+      );
+    };
   }, []);
   return (
     <Box display="flex">

@@ -113,13 +113,17 @@ exports.updateThread = (req, res) => {
         thread.contributor == userId
       ) {
         Thread.findByIdAndUpdate(threadId, { $set: req.body }, { new: true })
+          .populate('contributor comments.author projectId')
           .then((data) => res.status(200).json(data))
           .catch((err) => universalCtrl.serverDbError(err)(req, res));
       } else if (thread.projectId.projectManager == userId) {
         if (title || description) {
           universalCtrl.unauthorizedError('Unauthorized')(req, res);
         } else {
+          console.log(req.body);
+
           Thread.findByIdAndUpdate(threadId, { $set: req.body }, { new: true })
+            .populate('contributor comments.author projectId')
             .then((data) => res.status(200).json(data))
             .catch((err) => universalCtrl.serverDbError(err)(req, res));
         }
@@ -127,14 +131,7 @@ exports.updateThread = (req, res) => {
         if (bugPriority || isClosed) {
           universalCtrl.unauthorizedError('Unauthorized')(req, res);
         } else {
-          let updateThread = thread;
-          updateThread.title = title;
-          updateThread.description = description;
-          Thread.findByIdAndUpdate(
-            threadId,
-            { $set: updateThread },
-            { new: true }
-          )
+          Thread.findByIdAndUpdate(threadId, { $set: req.body }, { new: true })
             .populate('contributor comments.author projectId')
             .then((data) => res.status(200).json(data))
             .catch((err) => universalCtrl.serverDbError(err)(req, res));
