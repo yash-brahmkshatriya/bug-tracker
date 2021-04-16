@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -12,7 +12,9 @@ import BugReportIcon from '@material-ui/icons/BugReport';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import StyledChip from '../../Utils/StyledChip';
-import { Box } from '@material-ui/core';
+import { Box, Button } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
+import SaveIcon from '@material-ui/icons/Save';
 import { updateThread } from '../../../redux/actions';
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -51,7 +53,7 @@ function getStyles(theme) {
 function getProps(value, items) {
   return items.find((item) => item.value === value);
 }
-
+let selectPriority, selectBugtype, selectClosed;
 const ChipSelect = ({ items, item, setItem }) => {
   const classes = useStyles();
   const theme = useTheme();
@@ -69,7 +71,6 @@ const ChipSelect = ({ items, item, setItem }) => {
           value={item}
           onChange={handleChange}
           disableUnderline
-          // input={<Input id="select-multiple-chip" />}
           classes={{
             root: classes.root,
           }}
@@ -104,7 +105,7 @@ const ChipSelect = ({ items, item, setItem }) => {
   );
 };
 
-const UpdateChip = ({ projectId, threadId, initialValues }) => {
+const UpdateChip = ({ projectId, threadId, initialValues, setEditingPm }) => {
   const [itemClosed, setItemClosed] = useState(initialValues[0]);
   const [itemBugType, setItemBugType] = useState(initialValues[1]);
   const [itemPriority, setItemPriority] = useState(initialValues[2]);
@@ -125,33 +126,57 @@ const UpdateChip = ({ projectId, threadId, initialValues }) => {
     { value: 'Query', icon: <HelpOutlineIcon />, bgcolor: '#03A9F4' },
   ];
   const dispatch = useDispatch();
-  console.log(itemClosed, itemBugType, itemPriority);
-  useEffect(() => {
-    return () => {
-      console.log('Callling.....');
-      dispatch(
-        updateThread(
-          projectId,
-          itemPriority,
-          itemClosed === 'Closed',
-          null,
-          null,
-          threadId
-        )
-      );
-    };
-  }, []);
+  const handleOnClick = () => {
+    dispatch(
+      updateThread(
+        projectId,
+        itemPriority,
+        itemClosed === 'Closed',
+        null,
+        null,
+        itemBugType,
+        threadId
+      )
+    );
+  };
   return (
-    <Box display="flex">
-      <ChipSelect items={isClosed} item={itemClosed} setItem={setItemClosed} />
-      <ChipSelect items={bugType} item={itemBugType} setItem={setItemBugType} />
-      <ChipSelect
-        items={priority}
-        item={itemPriority}
-        setItem={setItemPriority}
-      />
-    </Box>
+    <>
+      <Box display="flex" justifyContent="flex-start" alignItems="center">
+        <ChipSelect
+          items={isClosed}
+          item={itemClosed}
+          setItem={setItemClosed}
+        />
+        <ChipSelect
+          items={bugType}
+          item={itemBugType}
+          setItem={setItemBugType}
+        />
+        <ChipSelect
+          items={priority}
+          item={itemPriority}
+          setItem={setItemPriority}
+        />
+      </Box>
+      <Box display="flex" justifyContent="space-between">
+        <Button
+          variant="outlined"
+          type="submit"
+          onClick={() => setEditingPm(false)}
+          style={{ borderRadius: '24px', marginRight: '6px' }}
+        >
+          <CloseIcon />
+        </Button>
+        <Button
+          variant="outlined"
+          type="submit"
+          onClick={handleOnClick}
+          style={{ borderRadius: '24px' }}
+        >
+          <SaveIcon />
+        </Button>
+      </Box>
+    </>
   );
 };
-
 export default UpdateChip;

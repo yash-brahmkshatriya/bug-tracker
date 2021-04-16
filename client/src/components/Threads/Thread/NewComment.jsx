@@ -46,9 +46,6 @@ const NewComment = ({ isClosed, projectId, threadId }) => {
 
 const PersonDetails = ({ person }) => {
   const css = useStyles();
-  // const person = {
-  //   name: "Deep Chaklasiya",
-  // };
   const theme = useTheme();
   const isXSmall = useMediaQuery(theme.breakpoints.down('xs'));
   let names = person.name.split(' ');

@@ -204,6 +204,7 @@ const updateThread = (
   isClosed,
   title,
   description,
+  bugType,
   threadId
 ) => (dispatch) => {
   const args = {};
@@ -211,6 +212,7 @@ const updateThread = (
   if (isClosed !== null) args.isClosed = isClosed;
   if (title !== null) args.title = title;
   if (description !== null) args.description = description;
+  if (bugType !== null) args.bugType = bugType;
   dispatch(updateThreadReq());
   Axios.put(`/api/project/${projectId}/threads/${threadId}`, args)
     .then((data) => data.data)

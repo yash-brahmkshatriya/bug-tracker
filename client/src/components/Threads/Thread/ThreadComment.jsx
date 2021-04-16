@@ -12,6 +12,8 @@ import {
   Button,
   IconButton,
 } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
+import SaveIcon from '@material-ui/icons/Save';
 import { getRandomColor } from '../../Project/projDetStyles';
 import StyledChip from './../../Utils/StyledChip';
 import PersonIcon from '@material-ui/icons/Person';
@@ -184,12 +186,20 @@ const CommentForm = ({ projectId, threadId, oldComment, setEditing }) => {
         <Button
           variant="outlined"
           type="submit"
-          color="secondary"
+          onClick={() => setEditing(false)}
+          style={{ borderRadius: '24px', marginRight: '6px' }}
+          disabled={commentForm.isSubmitting}
+        >
+          <CloseIcon />
+        </Button>
+        <Button
+          variant="outlined"
+          type="submit"
           onClick={commentForm.handleSubmit}
           style={{ borderRadius: '24px' }}
           disabled={commentForm.isSubmitting}
         >
-          Save
+          <SaveIcon />
         </Button>
       </Box>
     </form>
