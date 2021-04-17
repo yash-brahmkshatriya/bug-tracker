@@ -201,7 +201,7 @@ const TitleForm = ({ projectId, threadId, thread, setEditing }) => {
           null,
           str,
           thread.description,
-          thread.bugType,
+          null,
           threadId
         )
       );

@@ -80,15 +80,7 @@ const DescriptionForm = ({ projectId, threadId, thread, setEditing }) => {
     onSubmit: (values) => {
       const str = values.description.trim();
       dispatch(
-        updateThread(
-          projectId,
-          null,
-          null,
-          thread.title,
-          str,
-          thread.bugType,
-          threadId
-        )
+        updateThread(projectId, null, null, thread.title, str, null, threadId)
       );
       setEditing(false);
     },
