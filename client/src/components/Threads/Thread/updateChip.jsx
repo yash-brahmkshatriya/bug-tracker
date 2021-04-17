@@ -139,6 +139,20 @@ const UpdateChip = ({ projectId, threadId, initialValues, setEditingPm }) => {
       )
     );
   };
+  useEffect(() => {
+    return () => {
+      dispatch(
+        updateThread(
+          projectId,
+          itemPriority,
+          itemClosed === 'Closed',
+          null,
+          null,
+          threadId
+        )
+      );
+    };
+  }, []);
   return (
     <>
       <Box display="flex" justifyContent="flex-start" alignItems="center">
