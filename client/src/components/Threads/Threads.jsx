@@ -41,7 +41,7 @@ const Thread = () => {
   }, []);
   return thread.loading ? (
     <Loading />
-  ) : (
+  ) : Object.keys(thread.thread).length > 0 ? (
     <>
       <ThreadTitle
         thread={thread.thread}
@@ -64,6 +64,8 @@ const Thread = () => {
         threadId={threadId}
       />
     </>
+  ) : (
+    <Information message={thread.err} />
   );
 };
 
