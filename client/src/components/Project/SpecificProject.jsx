@@ -100,7 +100,8 @@ function SpecificProject() {
   if (isTabSpan) {
     spanTextSize = '17px';
   }
-  return !projectState.loading && projectState.err === null ? (
+  return !projectState.loading &&
+    Object.keys(projectState.project).length > 0 ? (
     <>
       <ProjectDetails project={project} />
       <div className={classes.root}>

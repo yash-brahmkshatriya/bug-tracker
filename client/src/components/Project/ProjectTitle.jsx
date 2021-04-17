@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Typography,
   Box,
@@ -15,7 +15,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import SaveIcon from '@material-ui/icons/Save';
 import { useStyles as projDetStyles } from './projDetStyles';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateProject } from '../../redux/actions';
 import { useStyles as threadStyles } from '../Threads/threadStyles';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import EditableChip, { AddTagChip } from './EditableChip';
@@ -39,7 +38,12 @@ function ProjectTitle({
   const theme = useTheme();
   const isXSmall = useMediaQuery(theme.breakpoints.down('xs'));
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
-
+  useEffect(() => {
+    if (!isLoading && !hasError) {
+      setMode('view');
+    }
+    if (!isLoading) editForm.setSubmitting(false);
+  }, [isLoading, hasError]);
   return (
     <Paper
       elevation={4}
@@ -68,12 +72,21 @@ function ProjectTitle({
                 <CircularProgress size={25} />
               ) : (
                 <IconButton
+                  // onClick={() => {
+                  //   if (!isLoading && !hasError) {
+                  //     setMode('view');
+                  //   }
+
+                  // dispatch(updateProject(project._id, editForm.values));
+                  //}}
                   onClick={() => {
-                    if (!isLoading && !hasError) {
-                      setMode('view');
-                    }
-                    dispatch(updateProject(project._id, editForm.values));
+                    editForm.handleSubmit();
                   }}
+                  disabled={
+                    !editForm.dirty ||
+                    editForm.isSubmitting ||
+                    Object.keys(editForm.errors).length > 0
+                  }
                 >
                   <SaveIcon />
                 </IconButton>
