@@ -105,7 +105,7 @@ const DescriptionForm = ({ projectId, threadId, thread, setEditing }) => {
       />
       <Box display="flex" justifyContent="flex-end">
         <Button
-          variant="outlined"
+          // variant="outlined"
           type="submit"
           onClick={() => setEditing(false)}
           style={{ borderRadius: '24px', marginRight: '6px' }}
@@ -114,7 +114,7 @@ const DescriptionForm = ({ projectId, threadId, thread, setEditing }) => {
           <CloseIcon />
         </Button>
         <Button
-          variant="outlined"
+          // variant="outlined"
           type="submit"
           onClick={discriptionForm.handleSubmit}
           style={{ borderRadius: '24px' }}

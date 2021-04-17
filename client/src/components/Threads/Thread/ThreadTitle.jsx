@@ -227,7 +227,6 @@ const TitleForm = ({ projectId, threadId, thread, setEditing }) => {
         />
         <Box display="flex" justifyContent="space-between">
           <Button
-            variant="outlined"
             type="submit"
             onClick={() => setEditing(false)}
             style={{ borderRadius: '24px', marginRight: '6px' }}
@@ -236,7 +235,6 @@ const TitleForm = ({ projectId, threadId, thread, setEditing }) => {
             <CloseIcon />
           </Button>
           <Button
-            variant="outlined"
             type="submit"
             onClick={titleForm.handleSubmit}
             style={{ borderRadius: '24px' }}

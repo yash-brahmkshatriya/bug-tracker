@@ -160,7 +160,7 @@ const UpdateChip = ({ projectId, threadId, initialValues, setEditingPm }) => {
       </Box>
       <Box display="flex" justifyContent="space-between">
         <Button
-          variant="outlined"
+          //variant="outlined"
           type="submit"
           onClick={() => setEditingPm(false)}
           style={{ borderRadius: '24px', marginRight: '6px' }}
@@ -168,7 +168,7 @@ const UpdateChip = ({ projectId, threadId, initialValues, setEditingPm }) => {
           <CloseIcon />
         </Button>
         <Button
-          variant="outlined"
+          //variant="outlined"
           type="submit"
           onClick={handleOnClick}
           style={{ borderRadius: '24px' }}
