@@ -8,12 +8,20 @@ const initialstate = {
 };
 
 export const threadReducer = (state = initialstate, action) => {
-  let project, comments;
+  let newThreads, comments;
   switch (action.type) {
     case ActionTypes.CREATE_THREAD_REQ:
       return { ...state, loading: true };
     case ActionTypes.CREATE_THREAD_SUC:
-      return { ...state, loading: false, thread: action.payload, err: null };
+      newThreads = [...state.threads];
+      newThreads.unshift(action.payload);
+      return {
+        ...state,
+        threads: newThreads,
+        thread: action.payload,
+        loading: false,
+        err: null,
+      };
     case ActionTypes.CREATE_THREAD_FAIL:
       return { ...state, loading: false, err: action.payload, thread: {} };
     case ActionTypes.GET_THREAD_REQ:

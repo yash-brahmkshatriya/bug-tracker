@@ -12,7 +12,7 @@ import BugReportIcon from '@material-ui/icons/BugReport';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import StyledChip from '../../Utils/StyledChip';
-import { Box, Button } from '@material-ui/core';
+import { Box, Button, IconButton } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import SaveIcon from '@material-ui/icons/Save';
 import { updateThread } from '../../../redux/actions';
@@ -139,20 +139,6 @@ const UpdateChip = ({ projectId, threadId, initialValues, setEditingPm }) => {
       )
     );
   };
-  useEffect(() => {
-    return () => {
-      dispatch(
-        updateThread(
-          projectId,
-          itemPriority,
-          itemClosed === 'Closed',
-          null,
-          null,
-          threadId
-        )
-      );
-    };
-  }, []);
   return (
     <>
       <Box display="flex" justifyContent="flex-start" alignItems="center">
@@ -173,22 +159,22 @@ const UpdateChip = ({ projectId, threadId, initialValues, setEditingPm }) => {
         />
       </Box>
       <Box display="flex" justifyContent="space-between">
-        <Button
+        <IconButton
           //variant="outlined"
           type="submit"
           onClick={() => setEditingPm(false)}
           style={{ borderRadius: '24px', marginRight: '6px' }}
         >
           <CloseIcon />
-        </Button>
-        <Button
+        </IconButton>
+        <IconButton
           //variant="outlined"
           type="submit"
           onClick={handleOnClick}
           style={{ borderRadius: '24px' }}
         >
           <SaveIcon />
-        </Button>
+        </IconButton>
       </Box>
     </>
   );
