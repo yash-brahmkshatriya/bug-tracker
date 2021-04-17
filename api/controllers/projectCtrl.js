@@ -124,6 +124,7 @@ exports.getDashBoardDetails = (req, res) => {
       if (user) {
         Thread.find({ contributor: userId }, '-comments')
           .populate('projectId contributor')
+          .sort({ createdAt: -1 })
           .then((threads) => {
             Project.find({
               $or: [
@@ -132,6 +133,7 @@ exports.getDashBoardDetails = (req, res) => {
               ],
             })
               .populate('projectManager developers')
+              .sort({ createdAt: -1 })
               .then((projects) => res.status(200).json({ projects, threads }))
               .catch((err) => universalCtrl.serverDbError(err)(req, res));
           })

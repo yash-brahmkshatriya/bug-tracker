@@ -9,8 +9,10 @@ exports.createThread = (req, res) => {
     projectId,
     contributor: auth.getUserIdFromToken(req),
   });
+
   thread
     .save()
+    .then((doc) => Thread.populate(thread, { path: 'contributor projectId' }))
     .then((doc) => res.status(200).json(doc))
     .catch((err) => universalCtrl.serverDbError(err)(req, res));
 };
@@ -38,6 +40,7 @@ exports.getSpecificThread = (req, res) => {
 exports.getAllThreadsOfProject = (req, res) => {
   const projectId = req.params.projectId;
   Thread.find({ projectId })
+    .sort({ createdAt: -1 })
     .populate('contributor projectId')
     .then((data) => res.status(200).json(data))
     .catch((err) => universalCtrl.serverDbError(err)(req, res));
