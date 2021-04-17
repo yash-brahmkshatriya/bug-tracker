@@ -7,7 +7,7 @@ import { useStyles as projDetStyles } from './projDetStyles';
 import LoadingComponent from '../Utils/Loading';
 import ProjectDescription from './ProjectDescription';
 import ProjectTitle from './ProjectTitle';
-
+import { updateProject } from '../../redux/actions';
 const ProjectDetails = ({ project }) => {
   const [mode, setMode] = useState('view');
   const [tags, setTags] = useState([]);
@@ -21,6 +21,18 @@ const ProjectDetails = ({ project }) => {
       name: project.name,
       description: project.description,
       tags: project.tags,
+    },
+    validate: (values) => {
+      let errors = {};
+      let { name, description } = values;
+      name = name.trim();
+      description = description.trim();
+      if (!name) errors.name = 'Empty Value Found';
+      if (!description) errors.description = 'Empty Value Found';
+      return errors;
+    },
+    onSubmit: (values) => {
+      dispatch(updateProject(project._id, values));
     },
   });
   useEffect(() => {
