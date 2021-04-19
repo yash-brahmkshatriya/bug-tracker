@@ -17,6 +17,7 @@ import { getDashBoardDetails, exploreProjects } from '../../redux/actions';
 import SearchResultItem from '../Project/SearchResultItem';
 import ThreadList from '../Threads/ThreadList';
 import Information from '../Utils/Information';
+import MenuBar from '../Utils/MenuBar';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -127,23 +128,32 @@ function Dashboard() {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <ProjectList
-            projects={dashBoard.projects}
-            type="pm"
-            explore={explore}
-            userId={user._id}
-          />
+          <>
+            <MenuBar />
+            <ProjectList
+              projects={dashBoard.projects}
+              type="pm"
+              explore={explore}
+              userId={user._id}
+            />
+          </>
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          <ProjectList
-            projects={dashBoard.projects}
-            type="dv"
-            explore={explore}
-            userId={user._id}
-          />
+          <>
+            <MenuBar />
+            <ProjectList
+              projects={dashBoard.projects}
+              type="dv"
+              explore={explore}
+              userId={user._id}
+            />
+          </>
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
-          <ThreadList threads={dashBoard.threads} />
+          <>
+            <MenuBar />
+            <ThreadList threads={dashBoard.threads} />
+          </>
         </TabPanel>
       </SwipeableViews>
     </div>
