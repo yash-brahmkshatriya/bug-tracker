@@ -9,6 +9,8 @@ import {
   IconButton,
 } from '@material-ui/core';
 import { useStyles } from '../threadStyles';
+import CloseIcon from '@material-ui/icons/Close';
+import SaveIcon from '@material-ui/icons/Save';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
@@ -78,7 +80,7 @@ const DescriptionForm = ({ projectId, threadId, thread, setEditing }) => {
     onSubmit: (values) => {
       const str = values.description.trim();
       dispatch(
-        updateThread(projectId, null, null, thread.title, str, threadId)
+        updateThread(projectId, null, null, thread.title, str, null, threadId)
       );
       setEditing(false);
     },
@@ -103,14 +105,22 @@ const DescriptionForm = ({ projectId, threadId, thread, setEditing }) => {
       />
       <Box display="flex" justifyContent="flex-end">
         <Button
-          variant="outlined"
+          // variant="outlined"
           type="submit"
-          color="secondary"
+          onClick={() => setEditing(false)}
+          style={{ borderRadius: '24px', marginRight: '6px' }}
+          disabled={discriptionForm.isSubmitting}
+        >
+          <CloseIcon />
+        </Button>
+        <Button
+          // variant="outlined"
+          type="submit"
           onClick={discriptionForm.handleSubmit}
           style={{ borderRadius: '24px' }}
           disabled={discriptionForm.isSubmitting}
         >
-          Save
+          <SaveIcon />
         </Button>
       </Box>
     </form>

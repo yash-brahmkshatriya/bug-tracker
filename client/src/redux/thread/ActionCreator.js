@@ -126,26 +126,9 @@ const updateThreadFail = (err) => {
   };
 };
 
-const createThread = (
-  projectId,
-  bugType,
-  title,
-  description,
-  bugPriority,
-  comments,
-  isClosed,
-  seen
-) => (dispatch) => {
+const createThread = (projectId, thread) => (dispatch) => {
   dispatch(createThreadReq());
-  Axios.post(`/api/project/${projectId}/threads`, {
-    bugType,
-    title,
-    description,
-    bugPriority,
-    comments,
-    isClosed,
-    seen,
-  })
+  Axios.post(`/api/project/${projectId}/threads`, thread)
     .then((data) => data.data)
     .then((data) => dispatch(createThreadSuc(data)))
     .catch((err) => dispatch(createThreadFail(err)));
@@ -204,6 +187,7 @@ const updateThread = (
   isClosed,
   title,
   description,
+  bugType,
   threadId
 ) => (dispatch) => {
   const args = {};
@@ -211,6 +195,7 @@ const updateThread = (
   if (isClosed !== null) args.isClosed = isClosed;
   if (title !== null) args.title = title;
   if (description !== null) args.description = description;
+  if (bugType !== null) args.bugType = bugType;
   dispatch(updateThreadReq());
   Axios.put(`/api/project/${projectId}/threads/${threadId}`, args)
     .then((data) => data.data)

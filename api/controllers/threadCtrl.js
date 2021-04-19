@@ -9,8 +9,10 @@ exports.createThread = (req, res) => {
     projectId,
     contributor: auth.getUserIdFromToken(req),
   });
+
   thread
     .save()
+    .then((doc) => Thread.populate(thread, { path: 'contributor projectId' }))
     .then((doc) => res.status(200).json(doc))
     .catch((err) => universalCtrl.serverDbError(err)(req, res));
 };
@@ -38,6 +40,7 @@ exports.getSpecificThread = (req, res) => {
 exports.getAllThreadsOfProject = (req, res) => {
   const projectId = req.params.projectId;
   Thread.find({ projectId })
+    .sort({ createdAt: -1 })
     .populate('contributor projectId')
     .then((data) => res.status(200).json(data))
     .catch((err) => universalCtrl.serverDbError(err)(req, res));
@@ -104,7 +107,7 @@ exports.updateComment = (req, res) => {
 exports.updateThread = (req, res) => {
   const threadId = req.params.threadId;
   let userId = auth.getUserIdFromToken(req);
-  let { bugPriority, isClosed, title, description } = req.body;
+  let { bugPriority, isClosed, title, description, bugType } = req.body;
   Thread.findById(threadId)
     .populate('projectId')
     .then((thread) => {
@@ -120,15 +123,21 @@ exports.updateThread = (req, res) => {
         if (title || description) {
           universalCtrl.unauthorizedError('Unauthorized')(req, res);
         } else {
-          console.log(req.body);
-
-          Thread.findByIdAndUpdate(threadId, { $set: req.body }, { new: true })
+          const updatedThread = thread;
+          updatedThread.bugPriority = bugPriority;
+          updatedThread.isClosed = isClosed;
+          updatedThread.bugType = bugType;
+          Thread.findByIdAndUpdate(
+            threadId,
+            { $set: updatedThread },
+            { new: true }
+          )
             .populate('contributor comments.author projectId')
             .then((data) => res.status(200).json(data))
             .catch((err) => universalCtrl.serverDbError(err)(req, res));
         }
       } else {
-        if (bugPriority || isClosed) {
+        if (bugPriority || isClosed || bugType) {
           universalCtrl.unauthorizedError('Unauthorized')(req, res);
         } else {
           Thread.findByIdAndUpdate(threadId, { $set: req.body }, { new: true })
