@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppBar, Box, InputBase, IconButton } from '@material-ui/core';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import SortIcon from '@material-ui/icons/Sort';
+import { useDebounce } from './utilFuncs';
 
 const menuBarStyles = makeStyles((theme) => ({
   search: {
@@ -46,6 +47,12 @@ const menuBarStyles = makeStyles((theme) => ({
 }));
 
 const SearchBar = ({ onChange }) => {
+  const [inpVal, setInpVal] = useState('');
+  const debouncedInpVal = useDebounce(inpVal, 500);
+  useEffect(() => {
+    onChange();
+  }, [debouncedInpVal]);
+
   const classes = menuBarStyles();
   return (
     <div className={classes.search}>
@@ -53,7 +60,7 @@ const SearchBar = ({ onChange }) => {
         <SearchIcon />
       </div>
       <InputBase
-        onChange={onChange}
+        onChange={(e) => setInpVal(e.target.value)}
         placeholder="Search…"
         classes={{
           root: classes.inputRoot,

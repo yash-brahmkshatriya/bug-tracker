@@ -1,16 +1,15 @@
-// export const getTimeAgo = (date) =>{
-//     // let msElapsed= Date.now()-date;
-//     return(
-//         date.fromNow();
-//     )
-// }
+import { useEffect, useState } from 'react';
 
-// export const debounce = (func, delay) => {
-//   let debounceTimer;
-//   return () => {
-//     const context = this;
-//     const args = arguments;
-//     clearTimeout(debounceTimer);
-//     debounceTimer = setTimeout(() => func.apply(context, args), delay);
-//   };
-// };
+export const useDebounce = (value, delay) => {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value]);
+  return debouncedValue;
+};
