@@ -26,6 +26,13 @@ export const projectReducer = (state = initialstate, action) => {
     case ActionTypes.GET_PROJECT_FAIL:
       return { ...state, loading: false, err: action.payload, project: {} };
 
+    case ActionTypes.CREATE_PROJECT_REQ:
+      return { ...state, loading: true };
+    case ActionTypes.CREATE_PROJECT_SUC:
+      return { ...state, loading: false, project: action.payload, err: null };
+    case ActionTypes.CREATE_PROJECT_FAIL:
+      return { ...state, loading: false, err: action.payload, project: {} };
+
     case ActionTypes.UPDATE_PROJECT_REQ:
       return { ...state, loading: true };
     case ActionTypes.UPDATE_PROJECT_SUC:

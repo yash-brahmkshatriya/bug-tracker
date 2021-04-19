@@ -182,7 +182,7 @@ function SpecificProject() {
           </TabPanel>
           <TabPanel value={value} index={1} dir={theme.direction}>
             <Box display="flex" justifyContent="flex-end">
-              <AddItem addThreadForm={addThreadForm} />
+              <AddItem addThreadForm={addThreadForm} type="thread" />
             </Box>
             <ThreadList
               threads={threadState.threads}
