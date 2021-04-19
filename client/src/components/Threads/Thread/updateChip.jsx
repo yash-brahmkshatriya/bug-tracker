@@ -125,7 +125,7 @@ const UpdateChip = ({ projectId, threadId, initialValues }) => {
     { value: 'Query', icon: <HelpOutlineIcon />, bgcolor: '#03A9F4' },
   ];
   const dispatch = useDispatch();
-  console.log(itemClosed, itemBugType, itemPriority, changed);
+  console.log(itemClosed, itemBugType, itemPriority);
   useEffect(() => {
     return () => {
       console.log('Callling.....');

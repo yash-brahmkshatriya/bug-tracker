@@ -23,13 +23,14 @@ import {
 } from '../../shared/misc';
 import StyledChip from '../Utils/StyledChip';
 import clsx from 'clsx';
+import LoadingComponent from '../Utils/Loading';
 
 const ThreadItem = ({ thread, keepProjectNameHidden = false }) => {
   const css = useStyles();
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
 
-  return (
+  return thread ? (
     <ListItem key={thread._id}>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={12} md={6}>
@@ -115,6 +116,8 @@ const ThreadItem = ({ thread, keepProjectNameHidden = false }) => {
         </Grid>
       </Grid>
     </ListItem>
+  ) : (
+    <LoadingComponent />
   );
 };
 
