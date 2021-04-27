@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import SwipeableViews from 'react-swipeable-views';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -69,10 +69,11 @@ function Dashboard() {
   const isextraSmall = useMediaQuery(theme.breakpoints.down('xs'));
   const isTabSpan = useMediaQuery(theme.breakpoints.up('lmd'));
   const [value, setValue] = React.useState(0);
-  const user = useSelector((state) => state.user.user); // assumed user._id
+  const user = useSelector((state) => state.user.user);
   const dashBoard = useSelector((state) => state.project.dashBoard);
   const dispatch = useDispatch();
   const projectState = useSelector((state) => state.project);
+
   const projectId =
     Object.keys(projectState.project).length > 0
       ? projectState.project._id
@@ -106,7 +107,6 @@ function Dashboard() {
       return errors;
     },
     onSubmit: (values) => {
-      console.log(values);
       dispatch(createProject(values.title, values.description));
     },
   });
@@ -120,7 +120,7 @@ function Dashboard() {
       addProjectForm.setSubmitting(false);
       history.push(`/projects/${projectId}`);
     }
-  }, [projectState, addProjectForm.isSubmitting]);
+  }, [projectState]);
   let spanTextSize = '14px';
   if (isextraSmall) {
     spanTextSize = '9px';
@@ -174,6 +174,7 @@ function Dashboard() {
             type="pm"
             explore={explore}
             userId={user._id}
+            isDeletable={true}
           />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
@@ -182,6 +183,7 @@ function Dashboard() {
             type="dv"
             explore={explore}
             userId={user._id}
+            isDeletable={false}
           />
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
@@ -192,7 +194,14 @@ function Dashboard() {
   );
 }
 
-const ProjectList = ({ projects, type, explore, userId }) => {
+const ProjectList = ({
+  projects,
+  type,
+  explore,
+  userId,
+  isDeletable,
+  setReRender,
+}) => {
   let res;
   if (projects) {
     if (type === 'pm') {
@@ -210,7 +219,11 @@ const ProjectList = ({ projects, type, explore, userId }) => {
     <List style={{ width: '100%' }}>
       {res.map((project) => (
         <>
-          <SearchResultItem explore={explore} project={project} />
+          <SearchResultItem
+            explore={explore}
+            project={project}
+            isDeletable={isDeletable}
+          />
           <Divider />
         </>
       ))}

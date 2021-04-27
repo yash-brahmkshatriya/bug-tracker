@@ -15,7 +15,13 @@ export const projectReducer = (state = initialstate, action) => {
     case ActionTypes.GET_DASHBOARD_DETAILS_REQ:
       return { ...state, loading: true };
     case ActionTypes.GET_DASHBOARD_DETAILS_SUC:
-      return { ...state, loading: false, dashBoard: action.payload, err: null };
+      return {
+        ...state,
+        loading: false,
+        dashBoard: action.payload,
+        project: {},
+        err: null,
+      };
     case ActionTypes.GET_DASHBOARD_DETAILS_FAIL:
       return { ...state, loading: false, err: action.payload, dashBoard: [] };
 
@@ -49,11 +55,8 @@ export const projectReducer = (state = initialstate, action) => {
     case ActionTypes.DELETE_PROJECT_REQ:
       return { ...state, loading: true };
     case ActionTypes.DELETE_PROJECT_SUC:
-      return { ...state, loading: false, project: {}, err: null };
+      return { ...state, loading: false, err: null };
     case ActionTypes.DELETE_PROJECT_FAIL:
-      return { ...state, loading: false, err: action.payload };
-
-    case ActionTypes.UPDATE_PROJECT_FAIL:
       return { ...state, loading: false, err: action.payload };
 
     case ActionTypes.MANAGE_DEVELOPER_REQ:
