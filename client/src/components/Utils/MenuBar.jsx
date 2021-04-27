@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { AppBar, Box, InputBase, IconButton } from '@material-ui/core';
+import { AppBar, Box, InputBase, IconButton, Select } from '@material-ui/core';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import SortIcon from '@material-ui/icons/Sort';
@@ -46,11 +46,13 @@ const menuBarStyles = makeStyles((theme) => ({
   },
 }));
 
-const SearchBar = ({ onChange }) => {
+const SearchBar = ({ onChange, searchOptions }) => {
+  // is searchoptions empty, do required
   const [inpVal, setInpVal] = useState('');
+  const [searchOption, setSearchOption] = useState(searchOptions[0].value);
   const debouncedInpVal = useDebounce(inpVal, 500);
   useEffect(() => {
-    onChange();
+    onChange(debouncedInpVal, searchOption);
   }, [debouncedInpVal]);
 
   const classes = menuBarStyles();
@@ -68,6 +70,18 @@ const SearchBar = ({ onChange }) => {
         }}
         inputProps={{ 'aria-label': 'search' }}
       />
+      <Select
+        labelId="search-by-menu"
+        id="search-by"
+        value={searchOption}
+        onChange={(e) => setSearchOption(e.target.value)}
+        native
+        disableUnderline
+      >
+        {searchOptions.map((opt) => (
+          <option value={opt.value}>{opt.name}</option>
+        ))}
+      </Select>
     </div>
   );
 };
@@ -76,22 +90,31 @@ const DefaultFunctionalities = [
   <IconButton>
     <SortIcon />
   </IconButton>,
-  <IconButton>
-    <SortIcon />
-  </IconButton>,
 ];
 
-const defaultOnChange = (e) => console.log(e.target.value);
+const defaultSearchOptions = [
+  {
+    name: 'Name',
+    value: 'name',
+  },
+  {
+    name: 'Tag',
+    value: 'tags',
+  },
+];
+
+const defaultOnChange = (e) => console.log(e?.target?.value);
 
 const MenuBar = ({
   onChangeSearch = defaultOnChange,
   Functionalities = DefaultFunctionalities,
+  searchOptions = defaultSearchOptions,
 }) => {
   return (
     <AppBar position="static" elevation={0} color="transparent">
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Box>
-          <SearchBar onChange={onChangeSearch} />
+          <SearchBar onChange={onChangeSearch} searchOptions={searchOptions} />
         </Box>
         <Box display="flex" justifyContent="flex-end" alignItems="center">
           {Functionalities.map((Func) => Func)}
