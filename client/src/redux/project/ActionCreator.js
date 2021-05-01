@@ -162,6 +162,7 @@ const deleteProject = (projectId) => (dispatch) => {
   Axios.delete(`/api/project/${projectId}`)
     .then((data) => data.data)
     .then((data) => dispatch(deleteProjectSuc()))
+    .then((data) => dispatch(getDashBoardDetails()))
     .catch((err) => dispatch(deleteProjectFail(err)));
 };
 

@@ -16,7 +16,7 @@ import {
 } from '@material-ui/core';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 
-const AddItem = ({ addThreadForm }) => {
+const AddItem = ({ addThreadForm, type }) => {
   const theme = useTheme();
   const [addDevDialog, setAddDevDialog] = useState(false);
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
@@ -31,7 +31,7 @@ const AddItem = ({ addThreadForm }) => {
         <PostAddIcon />
       </IconButton>
       <Dialog open={addDevDialog} fullScreen={isSmall} id="addThread">
-        <DialogTitle>Add Thread</DialogTitle>
+        <DialogTitle>Add {type}</DialogTitle>
         <DialogContent dividers={true}>
           <form onSubmit={addThreadForm.handleSubmit}>
             <TextField
@@ -40,7 +40,7 @@ const AddItem = ({ addThreadForm }) => {
               onChange={addThreadForm.handleChange}
               onBlur={addThreadForm.handleBlur}
               fullWidth
-              label="Thread Title"
+              label={`${type} Title`}
               helperText={
                 addThreadForm.errors.title && addThreadForm.touched.title
                   ? addThreadForm.errors.title
@@ -54,13 +54,14 @@ const AddItem = ({ addThreadForm }) => {
             />
             <TextField
               id="description"
+              style={{ marginTop: '16px' }}
               multiline
               rows={4}
               value={addThreadForm.values.description}
               onChange={addThreadForm.handleChange}
               onBlur={addThreadForm.handleBlur}
               fullWidth
-              label="Thread description"
+              label={`${type} Description`}
               helperText={
                 addThreadForm.errors.description &&
                 addThreadForm.touched.description
@@ -80,6 +81,8 @@ const AddItem = ({ addThreadForm }) => {
           <Button
             autoFocus
             onClick={() => {
+              console.log('clicked');
+              console.log(addThreadForm.values);
               addThreadForm.handleSubmit();
               //addThreadForm.setSubmitting(false);
               setAddDevDialog(false);

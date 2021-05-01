@@ -10,7 +10,8 @@ exports.createProject = (req, res) => {
   let project = new Project({ projectManager, name, description });
   project
     .save()
-    .then((data) => res.status(200).json(data))
+    .then((doc) => Project.populate(project, { path: 'projectManager' }))
+    .then((doc) => res.status(200).json(doc))
     .catch((err) => universalCtrl.serverDbError(err)(req, res));
 };
 // review this controller
