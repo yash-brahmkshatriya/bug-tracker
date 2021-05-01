@@ -54,7 +54,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   chipsBoxDesktop: {
     display: 'flex',
-    justifyContent: 'flex-start',
+    justifyContent: 'flex-end',
     flexWrap: 'wrap',
   },
   timeNameInfo: {

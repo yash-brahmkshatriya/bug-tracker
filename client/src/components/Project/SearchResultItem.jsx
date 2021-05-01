@@ -50,24 +50,18 @@ const SearchResultItem = ({ project, explore, isDeletable = false }) => {
   return (
     <ListItem key={project._id}>
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={12} md={12}>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between"
-          >
-            <RouterLink to={`/projects/${project._id}`} className={css.link}>
-              <ListItemText
-                primary={project.name}
-                primaryTypographyProps={{ variant: 'h5' }}
-              />
-            </RouterLink>
-            {isDeletable ? (
-              <IconButton edge="end" aria-label="delete" onClick={openDialog}>
-                <DeleteIcon />
-              </IconButton>
-            ) : null}
-          </Box>
+        <Grid item xs={12} sm={12} md={6}>
+          <RouterLink to={`/projects/${project._id}`} className={css.link}>
+            <ListItemText
+              primary={project.name}
+              primaryTypographyProps={{ variant: 'h5' }}
+            />
+          </RouterLink>
+          {/* {isDeletable ? (
+            <IconButton edge="end" aria-label="delete" onClick={openDialog}>
+              <DeleteIcon />
+            </IconButton>
+          ) : null} */}
           <ListItemText secondary={project.description} />
           <Box display="flex" alignItems="center" className={css.timeNameInfo}>
             <Typography variant="p">{project.projectManager.name}</Typography>
@@ -77,7 +71,7 @@ const SearchResultItem = ({ project, explore, isDeletable = false }) => {
             </Typography>
           </Box>
         </Grid>
-        <Grid item xs={12} sm={12} md={6}>
+        <Grid item xs={12} sm={12} md={6} style={{ alignItems: 'flex-end' }}>
           <Box className={isSmall ? css.chipsBoxMobile : css.chipsBoxDesktop}>
             {project.tags.map((tag, idx) => (
               <Chip
