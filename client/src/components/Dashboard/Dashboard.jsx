@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import SwipeableViews from 'react-swipeable-views';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -17,6 +17,8 @@ import { getDashBoardDetails, exploreProjects } from '../../redux/actions';
 import SearchResultItem from '../Project/SearchResultItem';
 import ThreadList from '../Threads/ThreadList';
 import Information from '../Utils/Information';
+import MenuBar from '../Utils/MenuBar';
+import { filterByProperty } from '../Utils/utilFuncs';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -67,6 +69,10 @@ function Dashboard() {
   const [value, setValue] = React.useState(0);
   const user = useSelector((state) => state.user.user); // assumed user._id
   const dashBoard = useSelector((state) => state.project.dashBoard);
+  const [filtered, setFiltered] = useState({
+    projects: dashBoard.projects,
+    threads: dashBoard.threads,
+  });
   const dispatch = useDispatch();
   const explore = (searchString, by) =>
     dispatch(exploreProjects(searchString, by));
@@ -74,6 +80,47 @@ function Dashboard() {
   useEffect(() => {
     dispatch(getDashBoardDetails());
   }, [user]);
+
+  useEffect(() => {
+    setFiltered({ projects: dashBoard.projects, threads: dashBoard.threads });
+  }, [dashBoard]);
+
+  const onSearch = {
+    projects: (searchString, property = 'name') =>
+      setFiltered((prevState) => {
+        if (searchString === '')
+          return {
+            projects: dashBoard.projects,
+            threads: dashBoard.threads,
+          };
+        else
+          return {
+            ...prevState,
+            projects: filterByProperty(
+              dashBoard.projects,
+              property,
+              searchString
+            ),
+          };
+      }),
+    threads: (searchString, property = 'title') =>
+      setFiltered((prevState) => {
+        if (searchString === '')
+          return {
+            projects: dashBoard.projects,
+            threads: dashBoard.threads,
+          };
+        else
+          return {
+            ...prevState,
+            threads: filterByProperty(
+              dashBoard.threads,
+              property,
+              searchString
+            ),
+          };
+      }),
+  };
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -127,23 +174,40 @@ function Dashboard() {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <ProjectList
-            projects={dashBoard.projects}
-            type="pm"
-            explore={explore}
-            userId={user._id}
-          />
+          <>
+            <MenuBar onChangeSearch={onSearch.projects} />
+            <ProjectList
+              projects={filtered.projects}
+              type="pm"
+              explore={explore}
+              userId={user._id}
+            />
+          </>
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          <ProjectList
-            projects={dashBoard.projects}
-            type="dv"
-            explore={explore}
-            userId={user._id}
-          />
+          <>
+            <MenuBar onChangeSearch={onSearch.projects} />
+            <ProjectList
+              projects={filtered.projects}
+              type="dv"
+              explore={explore}
+              userId={user._id}
+            />
+          </>
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
-          <ThreadList threads={dashBoard.threads} />
+          <>
+            <MenuBar
+              onChangeSearch={onSearch.threads}
+              searchOptions={[
+                {
+                  name: 'Title',
+                  value: 'title',
+                },
+              ]}
+            />
+            <ThreadList threads={filtered.threads} />
+          </>
         </TabPanel>
       </SwipeableViews>
     </div>
