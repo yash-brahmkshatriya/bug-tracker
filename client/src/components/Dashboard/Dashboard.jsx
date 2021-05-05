@@ -2,6 +2,11 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import SwipeableViews from 'react-swipeable-views';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 import { useParams, useHistory } from 'react-router-dom';
 import {
   AppBar,
@@ -15,7 +20,11 @@ import {
 } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
-import { getDashBoardDetails, exploreProjects } from '../../redux/actions';
+import {
+  getDashBoardDetails,
+  exploreProjects,
+  sortProjects,
+} from '../../redux/actions';
 import SearchResultItem from '../Project/SearchResultItem';
 import ThreadList from '../Threads/ThreadList';
 import Information from '../Utils/Information';
@@ -23,6 +32,7 @@ import { createProject } from '../../redux/project/ActionCreator';
 import AddItem from '../Utils/AddItem';
 import MenuBar from '../Utils/MenuBar';
 import { filterByProperty } from '../Utils/utilFuncs';
+import { SortOptions, SortDirection } from '../Utils/SortComponent';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -62,8 +72,11 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     minHeight: '100vh',
   },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
 }));
-
 function Dashboard() {
   const classes = useStyles();
   const theme = useTheme();
@@ -79,7 +92,6 @@ function Dashboard() {
   });
   const dispatch = useDispatch();
   const projectState = useSelector((state) => state.project);
-
   const projectId =
     Object.keys(projectState.project).length > 0
       ? projectState.project._id
@@ -94,7 +106,6 @@ function Dashboard() {
   useEffect(() => {
     setFiltered({ projects: dashBoard.projects, threads: dashBoard.threads });
   }, [dashBoard]);
-
   const onSearch = {
     projects: (searchString, property = 'name') =>
       setFiltered((prevState) => {
@@ -231,7 +242,19 @@ function Dashboard() {
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
           <>
-            <MenuBar onChangeSearch={onSearch.projects} />
+            <MenuBar
+              onChangeSearch={onSearch.projects}
+              Functionalities={[
+                <SortOptions
+                  options={[
+                    { value: 'name', name: 'Name' },
+                    { value: 'createdAt', name: 'CreatedAt' },
+                  ]}
+                  sortFunction={sortProjects}
+                />,
+                <SortDirection />,
+              ]}
+            />
             <ProjectList
               projects={filtered.projects}
               type="dv"
@@ -243,6 +266,16 @@ function Dashboard() {
         <TabPanel value={value} index={2} dir={theme.direction}>
           <>
             <MenuBar
+              Functionalities={[
+                <SortOptions
+                  options={[
+                    { value: 'title', name: 'Title' },
+                    { value: 'createdAt', name: 'CreatedAt' },
+                  ]}
+                  sortFunction={sortProjects}
+                />,
+                <SortDirection />,
+              ]}
               onChangeSearch={onSearch.threads}
               searchOptions={[
                 {

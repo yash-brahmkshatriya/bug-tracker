@@ -125,6 +125,13 @@ const exploreProjectsFail = (err) => {
   };
 };
 
+const sortProjectsFunction = (direction, byProperty) => {
+  return {
+    type: ActionTypes.SORT_PROJECT,
+    payload: { direction, byProperty },
+  };
+};
+
 const getDashBoardDetails = () => (dispatch) => {
   dispatch(getDashBoardDetailsReq());
   Axios.get('/api/project/')
@@ -188,6 +195,12 @@ const exploreProjects = (searchString, options = 'all') => (dispatch) => {
     );
 };
 
+const sortProjects = (direction = 'descending', byProperty = 'createdAt') => (
+  dispatch
+) => {
+  dispatch(sortProjectsFunction(direction, byProperty));
+};
+
 export {
   getDashBoardDetails,
   getProject,
@@ -196,4 +209,5 @@ export {
   deleteProject,
   manageDev,
   exploreProjects,
+  sortProjects,
 };
