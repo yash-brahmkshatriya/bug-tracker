@@ -1,5 +1,5 @@
 import * as ActionTypes from './ActionTypes';
-
+import { sortByProperty } from '../../components/Utils/utilFuncs';
 const initialstate = {
   loading: true,
   projects: [],
@@ -76,6 +76,18 @@ export const projectReducer = (state = initialstate, action) => {
       return { ...state, loading: false, projects: action.payload };
     case ActionTypes.EXPLORE_PROJECTS_FAIL:
       return { ...state, loading: false, err: action.payload, projects: [] };
+    case ActionTypes.SORT_PROJECT:
+      return {
+        ...state,
+        dashBoard: {
+          ...state.dashBoard,
+          projects: sortByProperty(
+            state.dashBoard.projects,
+            action.payload.byProperty,
+            action.payload.direction
+          ),
+        },
+      };
     default:
       return state;
   }
