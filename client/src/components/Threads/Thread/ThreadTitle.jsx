@@ -226,22 +226,22 @@ const TitleForm = ({ projectId, threadId, thread, setEditing }) => {
           style={{ width: '90%' }}
         />
         <Box display="flex" justifyContent="space-between">
-          <Button
+          <IconButton
             type="submit"
             onClick={() => setEditing(false)}
             style={{ borderRadius: '24px', marginRight: '6px' }}
             disabled={titleForm.isSubmitting}
           >
             <CloseIcon />
-          </Button>
-          <Button
+          </IconButton>
+          <IconButton
             type="submit"
             onClick={titleForm.handleSubmit}
             style={{ borderRadius: '24px' }}
             disabled={titleForm.isSubmitting}
           >
             <SaveIcon />
-          </Button>
+          </IconButton>
         </Box>
       </Box>
     </form>
