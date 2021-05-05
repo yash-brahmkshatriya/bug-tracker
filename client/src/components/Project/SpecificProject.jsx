@@ -27,6 +27,9 @@ import Developers from './Developers';
 
 import AddItem from '../Utils/AddItem';
 import { createThread } from '../../redux/actions';
+import MenuBar from '../Utils/MenuBar';
+import { filterByProperty } from '../Utils/utilFuncs';
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -81,13 +84,26 @@ function SpecificProject() {
   const projectState = useSelector((state) => state.project);
   const project = projectState.project;
   const threadState = useSelector((state) => state.thread);
+  const [filteredThreads, setFilteredThreads] = useState(threadState.threads);
   const isProjectManager =
     useSelector((state) => state.user.user?._id || undefined) ===
     (projectState.project?.projectManager?._id || undefined);
+
   useEffect(() => {
     dispatch(getProject(projectId));
     dispatch(getAllThreads(projectId));
   }, []);
+
+  useEffect(() => {
+    setFilteredThreads(threadState.threads);
+  }, [threadState]);
+
+  const onSearchThreads = (searchString, property = 'title') =>
+    setFilteredThreads((prevState) => {
+      if (searchString === '') return threadState.threads;
+      else return filterByProperty(threadState.threads, property, searchString);
+    });
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -181,11 +197,20 @@ function SpecificProject() {
             />
           </TabPanel>
           <TabPanel value={value} index={1} dir={theme.direction}>
-            <Box display="flex" justifyContent="flex-end">
-              <AddItem addThreadForm={addThreadForm} type="thread" />
-            </Box>
+            <MenuBar
+              onChangeSearch={onSearchThreads}
+              Functionalities={[
+                <AddItem addThreadForm={addThreadForm} type="Thread" />,
+              ]}
+              searchOptions={[
+                {
+                  name: 'Title',
+                  value: 'title',
+                },
+              ]}
+            />
             <ThreadList
-              threads={threadState.threads}
+              threads={filteredThreads}
               keepProjectNameHidden={true}
             />
           </TabPanel>

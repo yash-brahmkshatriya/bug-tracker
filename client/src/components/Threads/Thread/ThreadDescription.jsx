@@ -52,7 +52,12 @@ function ThreadDescription({ projectId, threadId, thread }) {
         ) : (
           <Typography
             variant="body1"
-            style={{ marginTop: '8px', whiteSpace: 'pre-line' }}
+            style={{
+              marginTop: '8px',
+              whiteSpace: 'pre-line',
+              maxHeight: '200px',
+              overflowY: 'auto',
+            }}
           >
             {thread.description}
           </Typography>
@@ -95,7 +100,7 @@ const DescriptionForm = ({ projectId, threadId, thread, setEditing }) => {
         id="description"
         multiline
         placeholder="Leave a description"
-        rows={4}
+        rowsMax={5}
         variant="outlined"
         value={discriptionForm.values.description}
         onChange={discriptionForm.handleChange}
@@ -104,24 +109,22 @@ const DescriptionForm = ({ projectId, threadId, thread, setEditing }) => {
         disableUnderline
       />
       <Box display="flex" justifyContent="flex-end">
-        <Button
-          // variant="outlined"
+        <IconButton
           type="submit"
           onClick={() => setEditing(false)}
           style={{ borderRadius: '24px', marginRight: '6px' }}
           disabled={discriptionForm.isSubmitting}
         >
           <CloseIcon />
-        </Button>
-        <Button
-          // variant="outlined"
+        </IconButton>
+        <IconButton
           type="submit"
           onClick={discriptionForm.handleSubmit}
           style={{ borderRadius: '24px' }}
           disabled={discriptionForm.isSubmitting}
         >
           <SaveIcon />
-        </Button>
+        </IconButton>
       </Box>
     </form>
   );

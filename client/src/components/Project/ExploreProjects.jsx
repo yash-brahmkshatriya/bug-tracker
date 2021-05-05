@@ -55,11 +55,13 @@ const SearchBox = ({ explore }) => {
           'searchString',
           `${queryParams.get('by')} : ${queryParams.get('query')}`
         );
-      } else {
+      } else if (queryParams.has('query')) {
         exploreForm.setFieldValue(
           'searchString',
           `${queryParams.get('query')}`
         );
+      } else {
+        exploreForm.setFieldValue('searchString', ``);
       }
       exploreForm.setSubmitting(false);
     }

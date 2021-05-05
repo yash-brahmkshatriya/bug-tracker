@@ -7,6 +7,16 @@ export const useStyles = makeStyles((theme) => {
   const appbarpadding = isSmall ? `0px 0px` : `8px 48px`;
   const imageMargin = isSmall ? `0px` : `15px`;
   return {
+    link: {
+      textDecoration: 'none',
+      '&:focus, &:visited, &:link, &:active,&:hover': {
+        textDecoration: 'none',
+      },
+      color: 'rgba(255,255,255,0.7)',
+    },
+    navLinkActive: {
+      color: theme.palette.primary.light,
+    },
     appBar: {
       display: 'flex',
       flexDirection: 'row',

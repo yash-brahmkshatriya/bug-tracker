@@ -10,10 +10,12 @@ import {
   useTheme,
   useMediaQuery,
 } from '@material-ui/core';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
+import clsx from 'clsx';
 
 const Navbar = (props) => {
   const theme = useTheme();
+  const routerPath = useLocation().pathname;
   const isSmall = useMediaQuery(theme.breakpoints.down('xs'));
   const classes = useStyles();
   const user = false;
@@ -38,6 +40,7 @@ const Navbar = (props) => {
             }
           />
         </RouterLink>
+
         <Typography
           variant={isSmall ? 'h5' : 'h3'}
           className={classes.title}
@@ -47,6 +50,18 @@ const Navbar = (props) => {
         </Typography>
 
         <Toolbar className={classes.toolbar}>
+          <Typography variant="body1" style={{ marginRight: '8px' }}>
+            <RouterLink
+              to="/projects"
+              className={
+                routerPath === '/projects'
+                  ? clsx(classes.link, classes.navLinkActive)
+                  : classes.link
+              }
+            >
+              Explore
+            </RouterLink>
+          </Typography>
           {user ? (
             <Button className={classes.button}>Logout</Button>
           ) : (

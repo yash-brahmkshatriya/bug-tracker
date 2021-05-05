@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { AppBar, Box, InputBase, IconButton, Select } from '@material-ui/core';
+import {
+  AppBar,
+  Box,
+  InputBase,
+  IconButton,
+  Select,
+  useMediaQuery,
+  useTheme,
+  MenuItem,
+} from '@material-ui/core';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import SortIcon from '@material-ui/icons/Sort';
@@ -36,7 +45,7 @@ const menuBarStyles = makeStyles((theme) => ({
     padding: theme.spacing(1, 1, 1, 0),
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create('width'),
-    width: '100%',
+    width: '12ch',
     [theme.breakpoints.up('sm')]: {
       width: '24ch',
       '&:focus': {
@@ -75,11 +84,10 @@ const SearchBar = ({ onChange, searchOptions }) => {
         id="search-by"
         value={searchOption}
         onChange={(e) => setSearchOption(e.target.value)}
-        native
         disableUnderline
       >
         {searchOptions.map((opt) => (
-          <option value={opt.value}>{opt.name}</option>
+          <MenuItem value={opt.value}>{opt.name}</MenuItem>
         ))}
       </Select>
     </div>
@@ -110,9 +118,16 @@ const MenuBar = ({
   Functionalities = DefaultFunctionalities,
   searchOptions = defaultSearchOptions,
 }) => {
+  const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.down('xs'));
   return (
     <AppBar position="static" elevation={0} color="transparent">
-      <Box display="flex" justifyContent="space-between" alignItems="center">
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        flexDirection={isSmall ? 'column' : 'row'}
+      >
         <Box>
           <SearchBar onChange={onChangeSearch} searchOptions={searchOptions} />
         </Box>
