@@ -43,7 +43,12 @@ function ProjectDescription({ mode, editForm, description }) {
           ) : (
             <Typography
               variant="body1"
-              style={{ marginTop: '8px', whiteSpace: 'pre-line' }}
+              style={{
+                marginTop: '8px',
+                whiteSpace: 'pre-line',
+                maxHeight: '200px',
+                overflowY: 'auto',
+              }}
             >
               {description}
             </Typography>

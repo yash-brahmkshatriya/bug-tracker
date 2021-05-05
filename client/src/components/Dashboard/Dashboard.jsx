@@ -26,7 +26,6 @@ import { filterByProperty } from '../Utils/utilFuncs';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
-  const history = useHistory();
   return (
     <div
       role="tabpanel"
@@ -214,32 +213,19 @@ function Dashboard() {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-//           <Box display="flex" justifyContent="flex-end">
-//             <AddItem addThreadForm={addProjectForm} type="project" />
-//           </Box>
-//           <ProjectList
-//             projects={dashBoard.projects}
-//             type="pm"
-//             explore={explore}
-//             userId={user._id}
-//             isDeletable={true}
-//           />
-//         </TabPanel>
-//         <TabPanel value={value} index={1} dir={theme.direction}>
-//           <ProjectList
-//             projects={dashBoard.projects}
-//             type="dv"
-//             explore={explore}
-//             userId={user._id}
-//             isDeletable={false}
-//           />
           <>
-            <MenuBar onChangeSearch={onSearch.projects} />
+            <MenuBar
+              onChangeSearch={onSearch.projects}
+              Functionalities={[
+                <AddItem addThreadForm={addProjectForm} type="project" />,
+              ]}
+            />
             <ProjectList
               projects={filtered.projects}
               type="pm"
               explore={explore}
               userId={user._id}
+              isDeletable={true}
             />
           </>
         </TabPanel>
@@ -273,14 +259,7 @@ function Dashboard() {
   );
 }
 
-const ProjectList = ({
-  projects,
-  type,
-  explore,
-  userId,
-  isDeletable,
-  setReRender,
-}) => {
+const ProjectList = ({ projects, type, explore, userId, isDeletable }) => {
   let res;
   if (projects) {
     if (type === 'pm') {

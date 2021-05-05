@@ -55,7 +55,7 @@ export const projectReducer = (state = initialstate, action) => {
     case ActionTypes.DELETE_PROJECT_REQ:
       return { ...state, loading: true };
     case ActionTypes.DELETE_PROJECT_SUC:
-      return { ...state, loading: false, err: null };
+      return { ...state, loading: false, err: null, project: {} };
     case ActionTypes.DELETE_PROJECT_FAIL:
       return { ...state, loading: false, err: action.payload };
 

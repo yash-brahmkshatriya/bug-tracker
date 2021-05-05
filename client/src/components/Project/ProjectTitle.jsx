@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Typography,
   Box,
@@ -18,6 +18,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useStyles as threadStyles } from '../Threads/threadStyles';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import EditableChip, { AddTagChip } from './EditableChip';
+import ConfirmDialog from '../Utils/ConfirmDialog';
+import DeleteIcon from '@material-ui/icons/Delete';
+import { deleteProject } from '../../redux/actions';
+import { useHistory } from 'react-router';
 
 function ProjectTitle({
   mode,
@@ -38,12 +42,26 @@ function ProjectTitle({
   const theme = useTheme();
   const isXSmall = useMediaQuery(theme.breakpoints.down('xs'));
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
+  const history = useHistory();
+
+  const [delProjDialog, setDelProjDialog] = useState(false);
+
+  const openDialog = () => setDelProjDialog(true);
+  const closeDialog = () => setDelProjDialog(false);
+
+  const handleDeleteProject = () => {
+    dispatch(deleteProject(project._id));
+    closeDialog();
+    history.replace('/');
+  };
+
   useEffect(() => {
     if (!isLoading && !hasError) {
       setMode('view');
     }
     if (!isLoading) editForm.setSubmitting(false);
   }, [isLoading, hasError]);
+
   return (
     <Paper
       elevation={4}
@@ -68,17 +86,18 @@ function ProjectTitle({
               <IconButton onClick={() => setMode('view')}>
                 <CloseIcon />
               </IconButton>
+
+              {isLoading ? (
+                <CircularProgress size={25} />
+              ) : (
+                <IconButton edge="end" aria-label="delete" onClick={openDialog}>
+                  <DeleteIcon />
+                </IconButton>
+              )}
               {isLoading ? (
                 <CircularProgress size={25} />
               ) : (
                 <IconButton
-                  // onClick={() => {
-                  //   if (!isLoading && !hasError) {
-                  //     setMode('view');
-                  //   }
-
-                  // dispatch(updateProject(project._id, editForm.values));
-                  //}}
                   onClick={() => {
                     editForm.handleSubmit();
                   }}
@@ -135,6 +154,12 @@ function ProjectTitle({
           ))}
         </Box>
       </Box>
+      <ConfirmDialog
+        onTrueEvent={handleDeleteProject}
+        onFalseEvent={closeDialog}
+        showDialog={delProjDialog !== false}
+        message="Delete"
+      />
     </Paper>
   );
 }
