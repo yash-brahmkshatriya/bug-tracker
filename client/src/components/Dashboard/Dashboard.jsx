@@ -26,7 +26,6 @@ import { filterByProperty } from '../Utils/utilFuncs';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
-  const history = useHistory();
   return (
     <div
       role="tabpanel"
@@ -214,9 +213,13 @@ function Dashboard() {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          {/* <AddItem addThreadForm={addProjectForm} type="project" /> */}
           <>
-            <MenuBar onChangeSearch={onSearch.projects} />
+            <MenuBar
+              onChangeSearch={onSearch.projects}
+              Functionalities={[
+                <AddItem addThreadForm={addProjectForm} type="project" />,
+              ]}
+            />
             <ProjectList
               projects={filtered.projects}
               type="pm"

@@ -25,7 +25,6 @@ import ProjectDescription from './ProjectDescription';
 import LoadingComponent from '../Utils/Loading';
 import Developers from './Developers';
 
-import AddIcon from '../Utils/AddItem';
 import AddItem from '../Utils/AddItem';
 import { createThread } from '../../redux/actions';
 function TabPanel(props) {
@@ -137,6 +136,7 @@ function SpecificProject() {
       history.push(`/projects/${projectId}/threads/${threadState.thread._id}`);
     }
   }, [threadState, addThreadForm.isSubmitting]);
+
   return !projectState.loading &&
     Object.keys(projectState.project).length > 0 ? (
     <>
