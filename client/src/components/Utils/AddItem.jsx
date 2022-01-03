@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -13,13 +13,13 @@ import {
   useMediaQuery,
   TextField,
   Button,
-} from '@material-ui/core';
-import PostAddIcon from '@material-ui/icons/PostAdd';
+} from "@material-ui/core";
+import PostAddIcon from "@material-ui/icons/PostAdd";
 
-const AddItem = ({ addThreadForm, type }) => {
+const AddItem = ({ addThreadForm }) => {
   const theme = useTheme();
   const [addDevDialog, setAddDevDialog] = useState(false);
-  const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
+  const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <>
@@ -31,7 +31,7 @@ const AddItem = ({ addThreadForm, type }) => {
         <PostAddIcon />
       </IconButton>
       <Dialog open={addDevDialog} fullScreen={isSmall} id="addThread">
-        <DialogTitle>Add {type}</DialogTitle>
+        <DialogTitle>Add Thread</DialogTitle>
         <DialogContent dividers={true}>
           <form onSubmit={addThreadForm.handleSubmit}>
             <TextField
@@ -40,7 +40,7 @@ const AddItem = ({ addThreadForm, type }) => {
               onChange={addThreadForm.handleChange}
               onBlur={addThreadForm.handleBlur}
               fullWidth
-              label={`${type} Title`}
+              label="Thread Title"
               helperText={
                 addThreadForm.errors.title && addThreadForm.touched.title
                   ? addThreadForm.errors.title
@@ -54,14 +54,13 @@ const AddItem = ({ addThreadForm, type }) => {
             />
             <TextField
               id="description"
-              style={{ marginTop: '16px' }}
               multiline
               rows={4}
               value={addThreadForm.values.description}
               onChange={addThreadForm.handleChange}
               onBlur={addThreadForm.handleBlur}
               fullWidth
-              label={`${type} Description`}
+              label="Thread description"
               helperText={
                 addThreadForm.errors.description &&
                 addThreadForm.touched.description
@@ -81,8 +80,6 @@ const AddItem = ({ addThreadForm, type }) => {
           <Button
             autoFocus
             onClick={() => {
-              console.log('clicked');
-              console.log(addThreadForm.values);
               addThreadForm.handleSubmit();
               //addThreadForm.setSubmitting(false);
               setAddDevDialog(false);

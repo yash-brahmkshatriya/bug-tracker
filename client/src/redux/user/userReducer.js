@@ -13,7 +13,7 @@ export const userReducer = (state = initialUserState, action) => {
       return { ...state, loading: true };
 
     case ActionTypes.USER_SIGNIN_SUCCESS:
-      localStorageService.setToken(action.payload.auth_token);
+      localStorageService.setToken(action.payload.token);
       return {
         ...state,
         loading: false,
