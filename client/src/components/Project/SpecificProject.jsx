@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import SwipeableViews from 'react-swipeable-views';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { useParams, useHistory } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import SwipeableViews from "react-swipeable-views";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { useParams, useHistory } from "react-router-dom";
 import {
   AppBar,
   Tabs,
@@ -13,23 +13,21 @@ import {
   Paper,
   Divider,
   IconButton,
-} from '@material-ui/core';
-import { useDispatch, useSelector } from 'react-redux';
-import { getProject, getAllThreads } from '../../redux/actions';
-import ProjectDetails from './ProjectDetails';
-import ThreadList from '../Threads/ThreadList';
-import ProjectTitle from './ProjectTitle';
-import { useFormik } from 'formik';
-import { useStyles as threadStyles } from '../Threads/threadStyles';
-import ProjectDescription from './ProjectDescription';
-import LoadingComponent from '../Utils/Loading';
-import Developers from './Developers';
+} from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
+import { getProject, getAllThreads } from "../../redux/actions";
+import ProjectDetails from "./ProjectDetails";
+import ThreadList from "../Threads/ThreadList";
+import ProjectTitle from "./ProjectTitle";
+import { useFormik } from "formik";
+import { useStyles as threadStyles } from "../Threads/threadStyles";
+import ProjectDescription from "./ProjectDescription";
+import LoadingComponent from "../Utils/Loading";
+import Developers from "./Developers";
 
-import AddItem from '../Utils/AddItem';
-import { createThread } from '../../redux/actions';
-import MenuBar from '../Utils/MenuBar';
-import { filterByProperty } from '../Utils/utilFuncs';
-
+import AddIcon from "../Utils/AddItem";
+import AddItem from "../Utils/AddItem";
+import { createThread } from "../../redux/actions";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -59,15 +57,15 @@ TabPanel.propTypes = {
 function a11yProps(index) {
   return {
     id: `full-width-tab-${index}`,
-    'aria-controls': `full-width-tabpanel-${index}`,
+    "aria-controls": `full-width-tabpanel-${index}`,
   };
 }
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
-    width: '100%',
-    minHeight: '100vh',
+    width: "100%",
+    minHeight: "100vh",
   },
 }));
 
@@ -76,34 +74,21 @@ function SpecificProject() {
   const css = threadStyles();
   const theme = useTheme();
   const history = useHistory();
-  const isXSmall = useMediaQuery(theme.breakpoints.down('xs'));
-  const isTabSpan = useMediaQuery(theme.breakpoints.up('lmd'));
+  const isXSmall = useMediaQuery(theme.breakpoints.down("xs"));
+  const isTabSpan = useMediaQuery(theme.breakpoints.up("lmd"));
   const [value, setValue] = React.useState(0);
   const { projectId } = useParams();
   const dispatch = useDispatch();
   const projectState = useSelector((state) => state.project);
   const project = projectState.project;
   const threadState = useSelector((state) => state.thread);
-  const [filteredThreads, setFilteredThreads] = useState(threadState.threads);
   const isProjectManager =
     useSelector((state) => state.user.user?._id || undefined) ===
     (projectState.project?.projectManager?._id || undefined);
-
   useEffect(() => {
     dispatch(getProject(projectId));
     dispatch(getAllThreads(projectId));
   }, []);
-
-  useEffect(() => {
-    setFilteredThreads(threadState.threads);
-  }, [threadState]);
-
-  const onSearchThreads = (searchString, property = 'title') =>
-    setFilteredThreads((prevState) => {
-      if (searchString === '') return threadState.threads;
-      else return filterByProperty(threadState.threads, property, searchString);
-    });
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -111,18 +96,18 @@ function SpecificProject() {
     setValue(index);
   };
 
-  let spanTextSize = '14px';
+  let spanTextSize = "14px";
   if (isXSmall) {
-    spanTextSize = '9px';
+    spanTextSize = "9px";
   }
   if (isTabSpan) {
-    spanTextSize = '17px';
+    spanTextSize = "17px";
   }
 
   const addThreadForm = useFormik({
     initialValues: {
-      title: '',
-      description: '',
+      title: "",
+      description: "",
     },
     validate: (values) => {
       let errors = {};
@@ -130,8 +115,8 @@ function SpecificProject() {
       title = title.trim();
       description = description.trim();
 
-      if (!title) errors.title = 'Title is Required';
-      if (!description) errors.description = 'Description is Required';
+      if (!title) errors.title = "Title is Required";
+      if (!description) errors.description = "Description is Required";
       return errors;
     },
     onSubmit: (values) => {
@@ -152,7 +137,6 @@ function SpecificProject() {
       history.push(`/projects/${projectId}/threads/${threadState.thread._id}`);
     }
   }, [threadState, addThreadForm.isSubmitting]);
-
   return !projectState.loading &&
     Object.keys(projectState.project).length > 0 ? (
     <>
@@ -168,7 +152,7 @@ function SpecificProject() {
             aria-label="full width tabs example"
           >
             <Tab
-              style={{ textTransform: 'none' }}
+              style={{ textTransform: "none" }}
               label={
                 <span style={{ fontSize: spanTextSize }}>
                   Developer Details
@@ -177,7 +161,7 @@ function SpecificProject() {
               {...a11yProps(0)}
             />
             <Tab
-              style={{ textTransform: 'none' }}
+              style={{ textTransform: "none" }}
               label={<span style={{ fontSize: spanTextSize }}>Threads</span>}
               {...a11yProps(1)}
             />
@@ -185,7 +169,7 @@ function SpecificProject() {
         </AppBar>
 
         <SwipeableViews
-          axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+          axis={theme.direction === "rtl" ? "x-reverse" : "x"}
           index={value}
           onChangeIndex={handleChangeIndex}
         >
@@ -197,20 +181,11 @@ function SpecificProject() {
             />
           </TabPanel>
           <TabPanel value={value} index={1} dir={theme.direction}>
-            <MenuBar
-              onChangeSearch={onSearchThreads}
-              Functionalities={[
-                <AddItem addThreadForm={addThreadForm} type="Thread" />,
-              ]}
-              searchOptions={[
-                {
-                  name: 'Title',
-                  value: 'title',
-                },
-              ]}
-            />
+            <Box display="flex" justifyContent="flex-end">
+              <AddItem addThreadForm={addThreadForm} />
+            </Box>
             <ThreadList
-              threads={filteredThreads}
+              threads={threadState.threads}
               keepProjectNameHidden={true}
             />
           </TabPanel>
