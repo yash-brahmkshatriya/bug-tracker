@@ -36,3 +36,12 @@ export const devLogin = (email) => (dispatch) => {
       dispatch(signInUserFail(err?.request?.body || err.message))
     );
 };
+export const googleLogin = (response) => (dispatch) => {
+  dispatch(signInUserReq());
+  Axios.post("/api/user/googleLogin", { response })
+    .then((data) => data.data)
+    .then((data) => dispatch(signInUserSuccess(data)))
+    .catch((err) =>
+      dispatch(signInUserFail(err?.request?.body || err.message))
+    );
+};
